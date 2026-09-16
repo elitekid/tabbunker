@@ -1,0 +1,377 @@
+{
+  "extName": {
+    "message": "TabBunker"
+  },
+  "extDescription": {
+    "message": "탭은 닫고, 백업은 남깁니다. 한 번에 탭을 보관하고 자동으로 로컬 백업하며 복원 전에 미리 봅니다."
+  },
+  "actionTitle": {
+    "message": "탭 접어 보관"
+  },
+  "commandCollapse": {
+    "message": "현재 창의 탭을 접어 보관"
+  },
+  "vaultTitle": {
+    "message": "TabBunker 보관함"
+  },
+  "searchPlaceholder": {
+    "message": "그룹이나 탭 검색"
+  },
+  "ariaOnboarding": {
+    "message": "온보딩"
+  },
+  "ariaGroupList": {
+    "message": "저장된 탭 그룹"
+  },
+  "ariaPagination": {
+    "message": "페이지"
+  },
+  "import": {
+    "message": "가져오기"
+  },
+  "export": {
+    "message": "내보내기"
+  },
+  "settings": {
+    "message": "설정"
+  },
+  "onboardingTitle": {
+    "message": "TabBunker에 오신 걸 환영합니다"
+  },
+  "onboardingBackup": {
+    "message": "보관한 탭은 다운로드 폴더 안 TabBunker 폴더에 JSON 파일로도 저장됩니다. 상태는 위에 표시됩니다."
+  },
+  "getStarted": {
+    "message": "알겠어요"
+  },
+  "emptyVault": {
+    "message": "아직 보관한 그룹이 없습니다. 툴바 아이콘이나 Alt+Shift+S로 이 창의 탭을 보관하세요."
+  },
+  "importPreview": {
+    "message": "가져오기 미리보기"
+  },
+  "merge": {
+    "message": "합치기"
+  },
+  "replace": {
+    "message": "전체 바꾸기"
+  },
+  "cancel": {
+    "message": "취소"
+  },
+  "exportTitle": {
+    "message": "내보내기"
+  },
+  "exportFormat": {
+    "message": "형식"
+  },
+  "download": {
+    "message": "다운로드"
+  },
+  "exportJson": {
+    "message": "TabBunker JSON"
+  },
+  "exportOneTab": {
+    "message": "OneTab 텍스트"
+  },
+  "exportHtml": {
+    "message": "HTML 북마크"
+  },
+  "settingsTitle": {
+    "message": "TabBunker 설정"
+  },
+  "collapseOptions": {
+    "message": "접기"
+  },
+  "includePinned": {
+    "message": "접을 때 고정 탭도 포함"
+  },
+  "restoreOptions": {
+    "message": "복원"
+  },
+  "removeAfterRestore": {
+    "message": "복원한 탭은 보관함에서 제거"
+  },
+  "dedupeUrls": {
+    "message": "가져올 때 중복 주소 제거"
+  },
+  "backupOptions": {
+    "message": "백업"
+  },
+  "autoFileBackup": {
+    "message": "다운로드 폴더에 자동으로 파일 백업"
+  },
+  "backupSubfolder": {
+    "message": "백업 폴더 이름"
+  },
+  "backupInterval": {
+    "message": "변경 후 파일 백업까지 기다리는 시간"
+  },
+  "interval30s": {
+    "message": "30초"
+  },
+  "interval5m": {
+    "message": "5분"
+  },
+  "interval30m": {
+    "message": "30분"
+  },
+  "shortcuts": {
+    "message": "단축키"
+  },
+  "shortcutCollapse": {
+    "message": "탭 접어 보관: Alt+Shift+S"
+  },
+  "shortcutUndo": {
+    "message": "가져오기 되돌리기: Ctrl+Z (보관함에서)"
+  },
+  "openVault": {
+    "message": "보관함 열기"
+  },
+  "save": {
+    "message": "저장"
+  },
+  "deleteAll": {
+    "message": "모든 데이터 삭제"
+  },
+  "deleteAllConfirm": {
+    "message": "보관한 탭·설정·되돌리기·브라우저 안 스냅샷을 삭제할까요? 다운로드 폴더의 백업 파일은 남습니다."
+  },
+  "saved": {
+    "message": "설정을 저장했습니다."
+  },
+  "deleted": {
+    "message": "모든 데이터를 삭제했습니다."
+  },
+  "trash": {
+    "message": "휴지통"
+  },
+  "prev": {
+    "message": "이전"
+  },
+  "next": {
+    "message": "다음"
+  },
+  "pageInfo": {
+    "message": "$1 / $2 페이지"
+  },
+  "tabCount": {
+    "message": "탭 $1개"
+  },
+  "tabCountOne": {
+    "message": "탭 $1개"
+  },
+  "showAllTabs": {
+    "message": "탭 $1개 모두 보기"
+  },
+  "duplicateLabel": {
+    "message": "중복"
+  },
+  "restoreTabAria": {
+    "message": "$1 복원"
+  },
+  "restore": {
+    "message": "복원"
+  },
+  "restoreAllCount": {
+    "message": "모두 복원 ($1)"
+  },
+  "searchMatchCount": {
+    "message": "링크 $2개 중 $1개 일치"
+  },
+  "lock": {
+    "message": "잠금"
+  },
+  "unlock": {
+    "message": "잠금 해제"
+  },
+  "rename": {
+    "message": "이름 바꾸기"
+  },
+  "delete": {
+    "message": "삭제"
+  },
+  "deleteForever": {
+    "message": "완전 삭제"
+  },
+  "renamePrompt": {
+    "message": "새 그룹 이름:"
+  },
+  "lockedNoDelete": {
+    "message": "먼저 잠금을 해제하세요."
+  },
+  "noValidData": {
+    "message": "가져올 수 있는 데이터가 없습니다."
+  },
+  "importedGroup": {
+    "message": "가져온 그룹 $1"
+  },
+  "backupRingSaved": {
+    "message": "브라우저 안 스냅샷: 저장됨 $1"
+  },
+  "backupRingNone": {
+    "message": "브라우저 안 스냅샷: 아직 없음"
+  },
+  "backupFileOk": {
+    "message": "파일 백업: 마지막 완료 $1"
+  },
+  "backupFilePending": {
+    "message": "파일 백업: 대기 중 (마지막 완료 $1)"
+  },
+  "backupFilePendingNever": {
+    "message": "파일 백업: 대기 중"
+  },
+  "backupFileWriting": {
+    "message": "파일 백업: 저장 중"
+  },
+  "backupFileFailed": {
+    "message": "파일 백업 실패: $1"
+  },
+  "backupFilePaused": {
+    "message": "파일 백업 일시 중지: 다운로드가 취소되었습니다. 지금 백업을 누르면 다시 시작합니다."
+  },
+  "backupFileOff": {
+    "message": "파일 백업: 꺼짐"
+  },
+  "backupFileNever": {
+    "message": "파일 백업: 아직 파일이 없습니다"
+  },
+  "backupNow": {
+    "message": "지금 백업"
+  },
+  "backupRestoreFromFile": {
+    "message": "백업 파일로 복구"
+  },
+  "backupRestoreHint": {
+    "message": "다운로드 폴더 안 TabBunker 폴더에서 tabbunker-latest.json 또는 날짜 파일을 고르세요."
+  },
+  "backupErrAccess": {
+    "message": "브라우저가 파일을 쓰지 못했습니다."
+  },
+  "backupErrDisk": {
+    "message": "디스크 공간이 부족합니다."
+  },
+  "backupErrName": {
+    "message": "백업 폴더 이름을 사용할 수 없습니다. 설정을 확인하세요."
+  },
+  "backupErrStalled": {
+    "message": "다운로드가 끝나지 않았습니다."
+  },
+  "backupErrUnknown": {
+    "message": "다운로드에 실패했습니다. 내보내기로 사본을 저장할 수도 있습니다."
+  },
+  "backupCleanupFailed": {
+    "message": "오래된 날짜 백업 파일 일부를 지우지 못했습니다. 정리될 때까지 새 날짜 파일은 만들지 않습니다."
+  },
+  "backupDatedFailed": {
+    "message": "날짜 백업 파일을 저장하지 못했습니다. 최신본 파일은 정상입니다."
+  },
+  "backupTimeout": {
+    "message": "아직 저장 중입니다. 잠시 후 다시 확인하세요."
+  },
+  "collapseCount": {
+    "message": "현재 창 탭 $1개 보관하고 닫기"
+  },
+  "collapseExcludedPinned": {
+    "message": "고정 탭 $1개는 제외됩니다."
+  },
+  "collapseExcludedSystem": {
+    "message": "브라우저·확장 페이지 $1개는 제외됩니다."
+  },
+  "collapseExcludedBoth": {
+    "message": "고정 탭 $1개와 브라우저·확장 페이지 $2개는 제외됩니다."
+  },
+  "collapseEmpty": {
+    "message": "이 창에는 보관할 탭이 없습니다."
+  },
+  "collapseDone": {
+    "message": "탭 $1개를 보관했습니다."
+  },
+  "collapseDoneOne": {
+    "message": "탭 $1개를 보관했습니다."
+  },
+  "collapsePartial": {
+    "message": "탭 $1개 보관 · $2개 닫힘 · $3개는 열려 있습니다."
+  },
+  "collapseIncognito": {
+    "message": "시크릿 창은 보관하지 않습니다."
+  },
+  "undoBtn": {
+    "message": "되돌리기"
+  },
+  "undoDone": {
+    "message": "탭 $1개를 다시 열었습니다."
+  },
+  "undoDoneOne": {
+    "message": "탭 $1개를 다시 열었습니다."
+  },
+  "undoPartial": {
+    "message": "탭 $1개를 다시 열었습니다. 링크 $2개는 그룹에 남아 있습니다."
+  },
+  "undoImportDone": {
+    "message": "가져오기를 되돌렸습니다."
+  },
+  "undoUnavailable": {
+    "message": "이후 편집으로 되돌릴 수 없습니다. 복원을 사용하세요."
+  },
+  "restoreConfirm": {
+    "message": "탭 $1개를 이 창에 열까요?"
+  },
+  "restoreConfirmOne": {
+    "message": "탭 $1개를 이 창에 열까요?"
+  },
+  "restoreFailedSome": {
+    "message": "링크 $1개는 열지 못해 그룹에 남았습니다."
+  },
+  "importExisting": {
+    "message": "기존 탭 관리자에서 가져오기"
+  },
+  "importCounts": {
+    "message": "그룹 $1 · 링크 $2 · 제외 $3"
+  },
+  "importMergeImpact": {
+    "message": "합치기: 그룹 $1개와 링크 $2개 추가 · 중복 $3개 제외"
+  },
+  "importReplaceImpact": {
+    "message": "전체 바꾸기: 그룹 $1개를 휴지통으로 이동(잠긴 그룹 $2개는 유지) · 그룹 $3개 추가"
+  },
+  "staleEdit": {
+    "message": "다른 곳에서 그룹이 바뀌어 목록을 다시 불러왔습니다. 다시 시도하세요."
+  },
+  "backupFolderChanged": {
+    "message": "폴더 이름을 $1(으)로 바꿨습니다."
+  },
+  "tipPin": {
+    "message": "확장 메뉴에서 TabBunker를 고정하세요."
+  },
+  "tipShortcut": {
+    "message": "단축키: $1"
+  },
+  "tipShortcutNone": {
+    "message": "단축키 미지정"
+  },
+  "tipRestore": {
+    "message": "그룹의 모두 복원으로 탭을 다시 여세요."
+  },
+  "ctxSendTab": {
+    "message": "이 탭을 TabBunker로 보내기"
+  },
+  "ctxSendLink": {
+    "message": "링크를 TabBunker로 보내기"
+  },
+  "ctxSendWindow": {
+    "message": "이 창의 모든 탭 보내기"
+  },
+  "ctxOpenVault": {
+    "message": "TabBunker 보관함 열기"
+  },
+  "savedLinksGroup": {
+    "message": "저장한 링크"
+  },
+  "lockedLabel": {
+    "message": "잠김"
+  },
+  "includePinnedHint": {
+    "message": "우클릭으로 탭 하나를 보낼 때는 고정 여부와 상관없이 보냅니다."
+  }
+}

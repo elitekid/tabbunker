@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>TabBunker Vault</title>
+  <link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="vault.css">
+</head>
+<body>
+  <header class="header">
+    <h1 data-i18n="vaultTitle">TabBunker Vault</h1>
+    <div class="header-actions">
+      <input type="search" id="search" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchPlaceholder">
+      <button id="btn-import" type="button" class="btn" data-i18n="import">Import</button>
+      <button id="btn-export" type="button" class="btn" data-i18n="export">Export</button>
+      <button id="btn-settings" type="button" class="btn" data-i18n="settings">Settings</button>
+    </div>
+  </header>
+
+  <section id="backup-status" class="backup-status" aria-live="polite">
+    <div id="backup-line1" class="backup-line"></div>
+    <div id="backup-line2" class="backup-line"></div>
+    <div class="backup-actions">
+      <button id="btn-backup-now" type="button" class="btn" data-i18n="backupNow">Back up now</button>
+      <button id="btn-backup-restore" type="button" class="btn" data-i18n="backupRestoreFromFile">Restore from backup file</button>
+    </div>
+    <p id="backup-cleanup-failed" class="backup-extra hidden" data-i18n="backupCleanupFailed"></p>
+    <p id="backup-dated-failed" class="backup-extra hidden" data-i18n="backupDatedFailed"></p>
+    <p id="backup-restore-hint" class="backup-hint hidden" data-i18n="backupRestoreHint"></p>
+  </section>
+
+  <div id="collapse-banner" class="collapse-banner hidden" role="status" aria-live="polite">
+    <span id="collapse-banner-text"></span>
+    <button id="btn-collapse-undo" type="button" class="btn" data-i18n="undoBtn">Undo</button>
+  </div>
+
+  <p id="status-message" class="status-message hidden" role="status" aria-live="polite"></p>
+
+  <section id="onboarding" class="onboarding hidden" data-i18n-aria="ariaOnboarding">
+    <h2 data-i18n="onboardingTitle">Welcome to TabBunker</h2>
+    <p data-i18n="onboardingBackup">Saved tabs are also written to a JSON file in Downloads/TabBunker. The status is shown above.</p>
+    <div id="onboarding-tips" class="onboarding-tips">
+      <button id="btn-collapse-primary" type="button" class="btn primary"></button>
+      <p id="collapse-excluded" class="collapse-excluded hidden"></p>
+      <button id="btn-import-existing" type="button" class="btn" data-i18n="importExisting">Import from another tab manager</button>
+      <ul class="tip-list">
+        <li data-i18n="tipPin">Pin TabBunker in the extensions menu.</li>
+        <li id="tip-shortcut"></li>
+        <li data-i18n="tipRestore">Use Restore all on a group to reopen its tabs.</li>
+      </ul>
+      <button id="btn-dismiss-onboarding" type="button" class="btn" data-i18n="getStarted">Got it</button>
+    </div>
+  </section>
+
+  <main id="main" class="main">
+    <div id="group-list" class="group-list" role="list" data-i18n-aria="ariaGroupList"></div>
+    <div id="pagination" class="pagination hidden" data-i18n-aria="ariaPagination"></div>
+    <p id="empty-state" class="empty hidden" data-i18n="emptyVault">Saved tabs are also written to a JSON file in Downloads/TabBunker. The status is shown above.</p>
+  </main>
+
+  <dialog id="import-dialog" aria-labelledby="import-dialog-title">
+    <h2 id="import-dialog-title" data-i18n="importPreview">Import Preview</h2>
+    <div id="import-preview" class="preview"></div>
+    <div class="dialog-actions">
+      <button id="btn-import-merge" type="button" class="btn primary" data-i18n="merge">Merge</button>
+      <button id="btn-import-replace" type="button" class="btn danger" data-i18n="replace">Replace All</button>
+      <button id="btn-import-cancel" type="button" class="btn" data-i18n="cancel">Cancel</button>
+    </div>
+  </dialog>
+
+  <dialog id="export-dialog" aria-labelledby="export-dialog-title">
+    <h2 id="export-dialog-title" data-i18n="exportTitle">Export</h2>
+    <label>
+      <span data-i18n="exportFormat">Format</span>
+      <select id="export-format">
+        <option value="json" data-i18n="exportJson">TabBunker JSON</option>
+        <option value="onetab" data-i18n="exportOneTab">OneTab Text</option>
+        <option value="html" data-i18n="exportHtml">HTML Bookmarks</option>
+      </select>
+    </label>
+    <div class="dialog-actions">
+      <button id="btn-export-download" type="button" class="btn primary" data-i18n="download">Download</button>
+      <button id="btn-export-cancel" type="button" class="btn" data-i18n="cancel">Cancel</button>
+    </div>
+  </dialog>
+
+  <input type="file" id="file-input" accept=".json,.txt,.html" hidden>
+
+  <script type="module" src="vault.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tab list recovery and converter (works offline, nothing is uploaded) - TabBunker</title>
+<meta name="description" content="Paste a OneTab export, a Session Buddy JSON, or a TabBunker backup file and get your links back as a list, an HTML bookmarks file, or a TabBunker JSON. Runs entirely in your browser. No upload, no account.">
+<style>
+  :root { --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea; --bg:#fafbfc; --card:#fff; --accent:#1f5fbf; --warn:#b3540b; --navy:#16213a; --gold:#f5b83d; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Segoe UI",Inter,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; color:var(--ink); background:var(--bg); line-height:1.55; }
+  header { background:var(--navy); color:#fff; padding:26px 20px; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 20px; }
+  h1 { margin:0 0 6px; font-size:24px; }
+  header p { margin:0; color:#dbe3f0; }
+  .notice { border-left:4px solid var(--warn); background:#fff6ee; padding:10px 14px; border-radius:6px; margin:18px 0; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin:14px 0; }
+  textarea { width:100%; min-height:180px; font-family:ui-monospace,Menlo,monospace; font-size:13px; padding:10px; border:1px solid #c9cfd6; border-radius:6px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:10px; }
+  button { padding:8px 14px; border:1px solid #c9cfd6; border-radius:6px; background:#fff; cursor:pointer; font-size:14px; }
+  button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  button:disabled { opacity:.5; cursor:default; }
+  .stat { font-weight:600; }
+  ul.groups { padding-left:18px; }
+  ul.groups li { margin:4px 0; }
+  ul.groups ul { padding-left:18px; color:var(--muted); font-size:13px; }
+  .muted { color:var(--muted); font-size:14px; }
+  footer { color:var(--muted); font-size:13px; padding:24px 20px 40px; }
+  code { background:#f1f3f6; padding:1px 5px; border-radius:4px; font-size:13px; }
+  .install { border:1px dashed var(--line); }
+  a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Get your saved tabs back from an export file</h1>
+  <p>Paste a OneTab export, a Session Buddy JSON, or a TabBunker backup. Everything runs inside this page. Nothing is uploaded anywhere.</p>
+</div></header>
+<main class="wrap">
+  <div class="notice"><b>Read this first.</b> This page can only rebuild a list from a file you still have (an export, a backup, a copy). If your saved list is already empty and you never exported it, this page cannot bring it back. Before you uninstall or reinstall anything, look for an export file, check your browser's other profiles, and check Time Machine or File History for the browser profile folder.</div>
+
+  <div class="card">
+    <label for="src"><b>1. Paste the text, or choose the file</b></label>
+    <p class="muted">Accepted: OneTab "Export" text (one URL per line, optional " | title", blank line between groups), Session Buddy JSON export, TabBunker backup JSON (Downloads/TabBunker/tabbunker-latest.json or a dated tabbunker-*.json).</p>
+    <textarea id="src" placeholder="https://example.com/ | Example&#10;https://developer.mozilla.org/ | MDN&#10;&#10;https://news.ycombinator.com/ | Hacker News" spellcheck="false"></textarea>
+    <div class="row">
+      <input type="file" id="file" accept=".txt,.json,text/plain,application/json">
+      <button id="parse" class="primary">Rebuild the list</button>
+      <button id="clear">Clear</button>
+    </div>
+  </div>
+
+  <div class="card" id="result" hidden>
+    <b>2. Result</b>
+    <p class="stat" id="stat"></p>
+    <ul class="groups" id="list"></ul>
+    <div class="row">
+      <button id="dl-html">Download as HTML bookmarks</button>
+      <button id="dl-json">Download as TabBunker JSON</button>
+      <button id="dl-onetab">Download as OneTab-style text</button>
+      <button id="copy">Copy all links</button>
+    </div>
+    <p class="muted">HTML bookmarks can be imported into any browser (Bookmarks manager, Import). The TabBunker JSON can be imported into the TabBunker vault with a merge preview.</p>
+  </div>
+
+  <div class="card install">
+    <b>3. Optional: keep it from happening again</b>
+    <p class="muted">TabBunker is a free, open-source extension that saves all tabs in one click and writes a backup file to your Downloads folder automatically. Close your tabs. Keep a backup. No account, no server. <span id="store-links"><a href="{GITHUB_URL}">Source code and install links</a></span></p>
+  </div>
+
+  <div class="card">
+    <b>How to verify nothing leaves your browser</b>
+    <p class="muted">Open the developer tools (F12), go to the Network tab, then paste your data and click Rebuild. No request is made. The page is a single HTML file plus three small JavaScript modules, all loaded once from the same site. You can also save this page and run it from your disk.</p>
+  </div>
+
+  <div class="card">
+    <b>한국어 안내</b>
+    <p class="muted">OneTab 내보내기 텍스트, Session Buddy JSON, TabBunker 백업 파일을 붙여 넣거나 선택하면 브라우저 안에서만 읽어 링크 목록을 다시 만들어 줍니다. 어디로도 전송하지 않습니다. 이미 비어 버린 목록은 파일이 없으면 살릴 수 없으니, 확장을 지우거나 다시 설치하기 전에 내보내기 파일과 다른 프로필, 타임머신 백업부터 확인하세요.</p>
+  </div>
+</main>
+<footer class="wrap">TabBunker recovery tool. Runs offline. Source: <a href="{GITHUB_URL}">GitHub</a>.</footer>
+<script type="module">
+  import { importAutoDetect } from './shared/importers.js';
+  import { exportHtmlBookmarks, exportTabBunkerJson, exportOneTabText } from './shared/exporters.js';
+  const $ = (s) => document.querySelector(s);
+  let groups = [];
+  const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  function render() {
+    const tabs = groups.reduce((n, g) => n + (g.tabs?.length || 0), 0);
+    $('#result').hidden = false;
+    $('#stat').textContent = groups.length ? `${groups.length} group(s), ${tabs} link(s) found.` : 'No links found. Check that the text is an export in one of the accepted formats.';
+    $('#list').innerHTML = groups.map((g) => `<li><b>${esc(g.title)}</b> (${g.tabs.length})<ul>${g.tabs.slice(0, 200).map((t) => `<li><a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.title || t.url)}</a></li>`).join('')}${g.tabs.length > 200 ? `<li>... and ${g.tabs.length - 200} more</li>` : ''}</ul></li>`).join('');
+    for (const id of ['dl-html','dl-json','dl-onetab','copy']) $('#' + id).disabled = groups.length === 0;
+  }
+  function parse(text) { groups = importAutoDetect(text); render(); }
+  function download(name, body, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }
+  $('#parse').addEventListener('click', () => parse($('#src').value));
+  $('#clear').addEventListener('click', () => { $('#src').value = ''; groups = []; $('#result').hidden = true; });
+  $('#file').addEventListener('change', async (e) => { const f = e.target.files[0]; if (!f) return; const text = await f.text(); $('#src').value = text; parse(text); });
+  $('#dl-html').addEventListener('click', () => download('recovered-tabs.html', exportHtmlBookmarks(groups, 'Recovered tabs'), 'text/html'));
+  $('#dl-json').addEventListener('click', () => download('recovered-tabs.tabbunker.json', exportTabBunkerJson(groups), 'application/json'));
+  $('#dl-onetab').addEventListener('click', () => download('recovered-tabs.txt', exportOneTabText(groups), 'text/plain'));
+  $('#copy').addEventListener('click', async () => { const text = groups.flatMap((g) => g.tabs.map((t) => t.url)).join('\n'); await navigator.clipboard.writeText(text); $('#copy').textContent = 'Copied'; setTimeout(() => ($('#copy').textContent = 'Copy all links'), 1500); });
+</script>
+</body>
+</html>

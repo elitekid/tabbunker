@@ -1,0 +1,62 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  max-width: 560px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem 1rem;
+  margin: 0 0 1rem;
+  background: var(--card);
+  min-width: 0;
+}
+
+/* 섹션 제목을 테두리 위가 아니라 카드 안 첫 줄에 둔다(브라우저 기본 legend 배치는 테두리에 걸친다) */
+legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+
+legend + * {
+  clear: both;
+}
+
+fieldset label.block {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0.25rem 0 0.75rem;
+}
+
+#status {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+a {
+  color: var(--primary);
+}

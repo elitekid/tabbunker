@@ -1,0 +1,377 @@
+{
+  "extName": {
+    "message": "TabBunker"
+  },
+  "extDescription": {
+    "message": "Close your tabs. Keep a backup. One-click tab saver with automatic local backup and restore preview."
+  },
+  "actionTitle": {
+    "message": "Collapse tabs"
+  },
+  "commandCollapse": {
+    "message": "Collapse current window tabs"
+  },
+  "vaultTitle": {
+    "message": "TabBunker Vault"
+  },
+  "searchPlaceholder": {
+    "message": "Search groups and tabs"
+  },
+  "ariaOnboarding": {
+    "message": "Onboarding"
+  },
+  "ariaGroupList": {
+    "message": "Saved tab groups"
+  },
+  "ariaPagination": {
+    "message": "Pagination"
+  },
+  "import": {
+    "message": "Import"
+  },
+  "export": {
+    "message": "Export"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "onboardingTitle": {
+    "message": "Welcome to TabBunker"
+  },
+  "onboardingBackup": {
+    "message": "Saved tabs are also written to a JSON file in Downloads/TabBunker. The status is shown above."
+  },
+  "getStarted": {
+    "message": "Got it"
+  },
+  "emptyVault": {
+    "message": "No saved groups yet. Click the toolbar icon or press Alt+Shift+S to save the tabs in this window."
+  },
+  "importPreview": {
+    "message": "Import Preview"
+  },
+  "merge": {
+    "message": "Merge"
+  },
+  "replace": {
+    "message": "Replace All"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "exportTitle": {
+    "message": "Export"
+  },
+  "exportFormat": {
+    "message": "Format"
+  },
+  "download": {
+    "message": "Download"
+  },
+  "exportJson": {
+    "message": "TabBunker JSON"
+  },
+  "exportOneTab": {
+    "message": "OneTab text"
+  },
+  "exportHtml": {
+    "message": "HTML bookmarks"
+  },
+  "settingsTitle": {
+    "message": "TabBunker Settings"
+  },
+  "collapseOptions": {
+    "message": "Collapse"
+  },
+  "includePinned": {
+    "message": "Include pinned tabs when collapsing"
+  },
+  "restoreOptions": {
+    "message": "Restore"
+  },
+  "removeAfterRestore": {
+    "message": "Remove restored tabs from the vault"
+  },
+  "dedupeUrls": {
+    "message": "Remove duplicate URLs on import"
+  },
+  "backupOptions": {
+    "message": "Backup"
+  },
+  "autoFileBackup": {
+    "message": "Automatic file backup to Downloads"
+  },
+  "backupSubfolder": {
+    "message": "Backup folder name"
+  },
+  "backupInterval": {
+    "message": "Delay after a change before the file backup"
+  },
+  "interval30s": {
+    "message": "30 seconds"
+  },
+  "interval5m": {
+    "message": "5 minutes"
+  },
+  "interval30m": {
+    "message": "30 minutes"
+  },
+  "shortcuts": {
+    "message": "Keyboard Shortcuts"
+  },
+  "shortcutCollapse": {
+    "message": "Collapse tabs: Alt+Shift+S"
+  },
+  "shortcutUndo": {
+    "message": "Undo import: Ctrl+Z (in Vault)"
+  },
+  "openVault": {
+    "message": "Open Vault"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "deleteAll": {
+    "message": "Delete All Data"
+  },
+  "deleteAllConfirm": {
+    "message": "Delete saved tabs, settings, undo, and in-browser snapshots? Backup files in Downloads will remain."
+  },
+  "saved": {
+    "message": "Settings saved."
+  },
+  "deleted": {
+    "message": "All data deleted."
+  },
+  "trash": {
+    "message": "Trash"
+  },
+  "prev": {
+    "message": "Prev"
+  },
+  "next": {
+    "message": "Next"
+  },
+  "pageInfo": {
+    "message": "Page $1 / $2"
+  },
+  "tabCount": {
+    "message": "$1 tabs"
+  },
+  "tabCountOne": {
+    "message": "$1 tab"
+  },
+  "showAllTabs": {
+    "message": "Show all $1 tabs"
+  },
+  "duplicateLabel": {
+    "message": "Duplicate"
+  },
+  "restoreTabAria": {
+    "message": "Restore $1"
+  },
+  "restore": {
+    "message": "Restore"
+  },
+  "restoreAllCount": {
+    "message": "Restore all ($1)"
+  },
+  "searchMatchCount": {
+    "message": "$1 of $2 links match"
+  },
+  "lock": {
+    "message": "Lock"
+  },
+  "unlock": {
+    "message": "Unlock"
+  },
+  "rename": {
+    "message": "Rename"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "deleteForever": {
+    "message": "Delete Forever"
+  },
+  "renamePrompt": {
+    "message": "New group name:"
+  },
+  "lockedNoDelete": {
+    "message": "Unlock the group first."
+  },
+  "noValidData": {
+    "message": "No importable data found."
+  },
+  "importedGroup": {
+    "message": "Imported $1"
+  },
+  "backupRingSaved": {
+    "message": "In-browser snapshot: saved $1"
+  },
+  "backupRingNone": {
+    "message": "In-browser snapshot: none yet"
+  },
+  "backupFileOk": {
+    "message": "File backup: last completed $1"
+  },
+  "backupFilePending": {
+    "message": "File backup: pending (last completed $1)"
+  },
+  "backupFilePendingNever": {
+    "message": "File backup: pending"
+  },
+  "backupFileWriting": {
+    "message": "File backup: saving"
+  },
+  "backupFileFailed": {
+    "message": "File backup failed: $1"
+  },
+  "backupFilePaused": {
+    "message": "File backup paused: the download was canceled. Use Back up now to resume."
+  },
+  "backupFileOff": {
+    "message": "File backup: off"
+  },
+  "backupFileNever": {
+    "message": "File backup: no file yet"
+  },
+  "backupNow": {
+    "message": "Back up now"
+  },
+  "backupRestoreFromFile": {
+    "message": "Restore from backup file"
+  },
+  "backupRestoreHint": {
+    "message": "Choose tabbunker-latest.json or a dated file in the TabBunker folder inside Downloads."
+  },
+  "backupErrAccess": {
+    "message": "The browser could not write the file."
+  },
+  "backupErrDisk": {
+    "message": "Not enough disk space."
+  },
+  "backupErrName": {
+    "message": "The backup folder name cannot be used. Check Settings."
+  },
+  "backupErrStalled": {
+    "message": "The download did not finish."
+  },
+  "backupErrUnknown": {
+    "message": "The download failed. You can also save a copy with Export."
+  },
+  "backupCleanupFailed": {
+    "message": "Some older dated backup files could not be removed. New dated files are paused until cleanup succeeds."
+  },
+  "backupDatedFailed": {
+    "message": "The dated backup file could not be saved. The latest file is fine."
+  },
+  "backupTimeout": {
+    "message": "Still saving. Check again in a moment."
+  },
+  "collapseCount": {
+    "message": "Save and close $1 tabs in this window"
+  },
+  "collapseExcludedPinned": {
+    "message": "$1 pinned tabs are excluded."
+  },
+  "collapseExcludedSystem": {
+    "message": "$1 browser or extension pages are excluded."
+  },
+  "collapseExcludedBoth": {
+    "message": "$1 pinned tabs and $2 browser or extension pages are excluded."
+  },
+  "collapseEmpty": {
+    "message": "No tabs to save in this window."
+  },
+  "collapseDone": {
+    "message": "Saved $1 tabs."
+  },
+  "collapseDoneOne": {
+    "message": "Saved $1 tab."
+  },
+  "collapsePartial": {
+    "message": "Saved $1 tabs. Closed $2; $3 are still open."
+  },
+  "collapseIncognito": {
+    "message": "Private windows are not saved."
+  },
+  "undoBtn": {
+    "message": "Undo"
+  },
+  "undoDone": {
+    "message": "Reopened $1 tabs."
+  },
+  "undoDoneOne": {
+    "message": "Reopened $1 tab."
+  },
+  "undoPartial": {
+    "message": "Reopened $1 tabs. $2 links remain in the group."
+  },
+  "undoImportDone": {
+    "message": "Import undone."
+  },
+  "undoUnavailable": {
+    "message": "Later edits prevent this undo. Use Restore instead."
+  },
+  "restoreConfirm": {
+    "message": "Open $1 tabs in this window?"
+  },
+  "restoreConfirmOne": {
+    "message": "Open $1 tab in this window?"
+  },
+  "restoreFailedSome": {
+    "message": "$1 links could not be opened and remain in the group."
+  },
+  "importExisting": {
+    "message": "Import from another tab manager"
+  },
+  "importCounts": {
+    "message": "$1 groups · $2 links · $3 excluded"
+  },
+  "importMergeImpact": {
+    "message": "Merge: add $1 groups and $2 links; skip $3 duplicates."
+  },
+  "importReplaceImpact": {
+    "message": "Replace all: move $1 groups to Trash ($2 locked groups stay) and add $3 groups."
+  },
+  "staleEdit": {
+    "message": "This group changed elsewhere. The list was reloaded. Try again."
+  },
+  "backupFolderChanged": {
+    "message": "Folder name changed to $1."
+  },
+  "tipPin": {
+    "message": "Pin TabBunker in the extensions menu."
+  },
+  "tipShortcut": {
+    "message": "Shortcut: $1"
+  },
+  "tipShortcutNone": {
+    "message": "No shortcut set"
+  },
+  "tipRestore": {
+    "message": "Use Restore all on a group to reopen its tabs."
+  },
+  "ctxSendTab": {
+    "message": "Send this tab to TabBunker"
+  },
+  "ctxSendLink": {
+    "message": "Send link to TabBunker"
+  },
+  "ctxSendWindow": {
+    "message": "Send all tabs in this window"
+  },
+  "ctxOpenVault": {
+    "message": "Open TabBunker vault"
+  },
+  "savedLinksGroup": {
+    "message": "Saved links"
+  },
+  "lockedLabel": {
+    "message": "Locked"
+  },
+  "includePinnedHint": {
+    "message": "Sending a single tab from the right-click menu includes it even if it is pinned."
+  }
+}
