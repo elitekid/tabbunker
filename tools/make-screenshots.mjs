@@ -1,6 +1,6 @@
 // 스토어 스크린샷 1280x800 (영어·한국어): 접기, 백업 상태, 가져오기, 온보딩, 설정, 다크
 import { createRequire } from 'node:module';
-import { mkdtempSync, rmSync, cpSync, realpathSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, cpSync, realpathSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -87,6 +87,34 @@ function addCaption(rawPath, outPath, caption, lang) {
   execSync(`magick -size 1280x800 xc:"#16213a" \\( "${rawPath}" -resize 1088x680 \\) -gravity north -geometry +0+0 -composite \\( -size 1200x104 -background none -fill white -font "${font}" -pointsize 40 -gravity center caption:"${safe}" \\) -gravity south -geometry +0+8 -composite "${outPath}"`);
 }
 
+// 사이트(docs/assets)용: 기능 부분만 2배 해상도로 잘라 캡션 없이 저장한다. 스토어 캡처와 달리 크게 읽히는 것이 목적.
+const SITE = decodeURIComponent(new URL('../docs/assets', import.meta.url).pathname);
+mkdirSync(SITE, { recursive: true });
+// opts.vw: 사이트용으로만 창 폭을 좁혀 카드가 폭을 채우게(찍고 1280 으로 되돌림), opts.maxW: 잘라낼 최대 폭(CSS px)
+async function siteShot(pg, lang, name, selectors, pad = 20, scale = 2, opts = {}) {
+  if (opts.vw) { await pg.setViewport({ width: opts.vw, height: 800, deviceScaleFactor: 1 }); await new Promise((r) => setTimeout(r, 400)); }
+  const box = await pg.evaluate((sels, pad) => {
+    let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+    for (const sel of sels) {
+      const el = document.querySelector(sel);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) continue;
+      x1 = Math.min(x1, r.left); y1 = Math.min(y1, r.top); x2 = Math.max(x2, r.right); y2 = Math.max(y2, r.bottom);
+    }
+    if (x1 === Infinity) return null;
+    const x = Math.max(0, x1 - pad), y = Math.max(0, y1 - pad);
+    return { x, y, width: Math.min(innerWidth, x2 + pad) - x, height: y2 + pad - y };
+  }, selectors, pad);
+  if (!box) throw new Error(`site shot ${name}: element not found (${selectors.join(', ')})`);
+  if (opts.maxW) box.width = Math.min(box.width, opts.maxW);
+  const out = `${SITE}/${name}-${lang}.png`;
+  await pg.screenshot({ path: out, clip: { ...box, scale }, captureBeyondViewport: true });
+  execSync(`magick "${out}" -resize "1800x>" -strip "${out}"`);
+  if (opts.vw) { await pg.setViewport({ width: 1280, height: 800, deviceScaleFactor: 1 }); await new Promise((r) => setTimeout(r, 400)); }
+  console.log('wrote site', `${name}-${lang}.png`);
+}
+
 async function cleanupDownloads(page, folders) {
   await page.evaluate(async (subs) => {
     const ds = await chrome.downloads.search({});
@@ -166,6 +194,7 @@ for (const lang of ['en', 'ko']) {
 
   // 2: 백업 상태(상단)
   await capture(2, page, 'backup');
+  await siteShot(page, lang, 'backup', ['#backup-line1', '#backup-line2', '#btn-backup-restore'], 24, 2, { maxW: 560 });
 
   // 3: 가져오기 미리보기
   const oneTabFile = join(extTmp, 'onetab.txt');
@@ -175,6 +204,7 @@ for (const lang of ['en', 'ko']) {
   await fileInput.uploadFile(oneTabFile);
   await sleep(900);
   await capture(3, page, 'import');
+  await siteShot(page, lang, 'import', ['#import-dialog'], 0);
   await page.evaluate(() => document.querySelector('#import-dialog')?.close());
 
   // 4: 온보딩 — 접기 전, 예시 탭 3개 열린 상태
@@ -214,6 +244,8 @@ for (const lang of ['en', 'ko']) {
   await sleep(1500);
   await page.bringToFront().catch(() => {});
   await capture(1, page, 'collapse');
+  await siteShot(page, lang, 'collapse', ['#collapse-banner', '.group-card'], 0, 2, { vw: 860 });
+  { const out = `${SITE}/hero-${lang}.png`; await page.screenshot({ path: out, clip: { x: 0, y: 0, width: 1280, height: 800 } }); execSync(`magick "${out}" -strip "${out}"`); console.log('wrote site', `hero-${lang}.png`); }
 
   // 5: 설정 — 폴더명 TabBunker 로 되돌린 뒤(추가 백업 없음)
   await page.evaluate(() => chrome.runtime.sendMessage({ type: 'updateSettings', patch: { backupSubfolder: 'TabBunker' } }));
@@ -222,6 +254,7 @@ for (const lang of ['en', 'ko']) {
   await opt.reload({ waitUntil: 'load' });
   await sleep(600);
   await capture(5, opt, 'options');
+  await siteShot(opt, lang, 'options', ['fieldset:nth-of-type(3)'], 20);
 
   // 6: 다크 모드
   await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }]);
@@ -230,6 +263,7 @@ for (const lang of ['en', 'ko']) {
   const rawDark = join(tmpdir(), `tb-shot-${lang}-6.png`);
   const outDark = `${OUT}/shot-${lang}-6-dark.png`;
   await page.screenshot({ path: rawDark });
+  await siteShot(page, lang, 'dark', ['#backup-status', '.group-card'], 0, 2, { vw: 860 });
   addCaption(rawDark, outDark, CAPTIONS[lang][5], lang);
   rmSync(rawDark, { force: true });
   console.log('wrote', `shot-${lang}-6-dark.png`);

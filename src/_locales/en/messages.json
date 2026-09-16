@@ -177,7 +177,7 @@
     "message": "Restore all ($1)"
   },
   "searchMatchCount": {
-    "message": "$1 of $2 links match"
+    "message": "Matching links: $1 of $2"
   },
   "lock": {
     "message": "Lock"
@@ -270,7 +270,7 @@
     "message": "Still saving. Check again in a moment."
   },
   "collapseCount": {
-    "message": "Save and close $1 tabs in this window"
+    "message": "Save and close tabs in this window ($1)"
   },
   "collapseExcludedPinned": {
     "message": "$1 pinned tabs are excluded."
@@ -291,7 +291,7 @@
     "message": "Saved $1 tab."
   },
   "collapsePartial": {
-    "message": "Saved $1 tabs. Closed $2; $3 are still open."
+    "message": "Saved: $1. Closed: $2. Still open: $3."
   },
   "collapseIncognito": {
     "message": "Private windows are not saved."
@@ -306,7 +306,7 @@
     "message": "Reopened $1 tab."
   },
   "undoPartial": {
-    "message": "Reopened $1 tabs. $2 links remain in the group."
+    "message": "Reopened: $1. Left in the group: $2."
   },
   "undoImportDone": {
     "message": "Import undone."
@@ -321,19 +321,19 @@
     "message": "Open $1 tab in this window?"
   },
   "restoreFailedSome": {
-    "message": "$1 links could not be opened and remain in the group."
+    "message": "Could not open: $1. Those links stay in the group."
   },
   "importExisting": {
     "message": "Import from another tab manager"
   },
   "importCounts": {
-    "message": "$1 groups · $2 links · $3 excluded"
+    "message": "Groups: $1 · Links: $2 · Excluded lines: $3"
   },
   "importMergeImpact": {
-    "message": "Merge: add $1 groups and $2 links; skip $3 duplicates."
+    "message": "Merge adds new groups: $1, new links: $2. Duplicates skipped: $3."
   },
   "importReplaceImpact": {
-    "message": "Replace all: move $1 groups to Trash ($2 locked groups stay) and add $3 groups."
+    "message": "Replace all moves to Trash: $1. Locked and kept: $2. Added: $3."
   },
   "staleEdit": {
     "message": "This group changed elsewhere. The list was reloaded. Try again."
