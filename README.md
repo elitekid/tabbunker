@@ -2,9 +2,9 @@
 
 **Close your tabs. Keep a backup.**
 
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Install-blue)]({CHROME_STORE_URL})
-[![Microsoft Edge](https://img.shields.io/badge/Edge-Install-blue)]({EDGE_STORE_URL})
-[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Install-blue)]({FIREFOX_ADDON_URL})
+[Website](https://elitekid.github.io/tabbunker/) · [Recovery tool](https://elitekid.github.io/tabbunker/recover/) · [Privacy policy](PRIVACY.md) · [Report a problem](https://github.com/elitekid/tabbunker/issues)
+
+Store listings for Chrome, Edge, and Firefox are in review. Install links will be added here once they are live.
 
 ![TabBunker demo](docs/store/demo.gif)
 

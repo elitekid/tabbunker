@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "minimum_chrome_version": "104",
   "default_locale": "en",
+  "homepage_url": "https://elitekid.github.io/tabbunker/",
   "permissions": [
     "tabs",
     "storage",

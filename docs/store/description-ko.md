@@ -45,7 +45,9 @@ TabBunker가 다른 점은 클릭 이후에 일어나는 일입니다. 모든 �
 OneTab이나 Session Buddy에서 옮기기
 기존 확장에서 데이터를 내보낸 뒤 TabBunker 보관함을 열고 가져오기를 누르고 붙여 넣거나 파일을 고르세요. 실제로 바뀌기 전에 무엇이 합쳐질지 미리보기로 보여 줍니다.
 
-개인정보 처리방침과 소스 코드는 이 페이지의 링크를 참고하세요.
+웹사이트: https://elitekid.github.io/tabbunker/
+소스 코드와 문제 신고: https://github.com/elitekid/tabbunker
+개인정보 처리방침: https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md
 
 ## Edge 검색어
 

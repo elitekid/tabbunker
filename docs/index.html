@@ -58,6 +58,7 @@
   code { background:#f1f3f6; padding:1px 6px; border-radius:4px; font-size:13px; }
   body:not(.ko) [data-lang="ko"] { display:none !important; }
   body.ko [data-lang="en"] { display:none !important; }
+  [hidden] { display:none !important; } /* 스토어 주소가 나오기 전 설치 버튼 숨김 */
   @media (max-width:760px) { .hero .wrap, .two { grid-template-columns:1fr; } .steps { grid-template-columns:1fr; } .hero h1 { font-size:34px; } nav .links a:not(.lang) { display:none; } }
 </style>
 </head>
@@ -81,10 +82,10 @@
     <p class="lead" data-lang="en">One click closes every tab in the window and saves them in a local vault. Every change is backed up automatically, including a plain JSON file in your Downloads folder that survives uninstalls and profile resets.</p>
     <p class="lead" data-lang="ko">클릭 한 번으로 창의 탭을 전부 닫고 보관함에 저장합니다. 모든 변경은 자동으로 백업되고, 다운로드 폴더에 남는 JSON 파일은 확장을 지우거나 프로필을 초기화해도 살아남습니다.</p>
     <div class="cta">
-      <a class="btn gold" href="{CHROME_STORE_URL}" data-lang="en">Add to Chrome</a><a class="btn gold" href="{CHROME_STORE_URL}" data-lang="ko">크롬에 추가</a>
-      <a class="btn ghost" href="{FIREFOX_ADDON_URL}">Firefox</a>
-      <a class="btn ghost" href="{EDGE_STORE_URL}">Edge</a>
-      <a class="btn ghost" href="{GITHUB_URL}">GitHub</a>
+      <a hidden data-store-pending class="btn gold" href="{CHROME_STORE_URL}" data-lang="en">Add to Chrome</a><a hidden data-store-pending class="btn gold" href="{CHROME_STORE_URL}" data-lang="ko">크롬에 추가</a>
+      <a hidden data-store-pending class="btn ghost" href="{FIREFOX_ADDON_URL}">Firefox</a>
+      <a hidden data-store-pending class="btn ghost" href="{EDGE_STORE_URL}">Edge</a>
+      <a class="btn ghost" href="https://github.com/elitekid/tabbunker">GitHub</a>
     </div>
     <small data-lang="en">Free. Open source. No account, no server, no network requests. English and Korean UI.</small>
     <small data-lang="ko">무료. 오픈소스. 계정도 서버도 네트워크 요청도 없음. 한국어·영어 UI.</small>
@@ -164,8 +165,8 @@
 </div></section>
 
 <footer><div class="wrap">
-  <span data-lang="en">TabBunker is open source. <a href="{GITHUB_URL}">Source code</a> · <a href="{GITHUB_URL}/blob/main/PRIVACY.md">Privacy policy</a> · <a href="recover/">Recovery tool</a> · <a href="{GITHUB_URL}/issues">Report a problem</a></span>
-  <span data-lang="ko">TabBunker는 오픈소스입니다. <a href="{GITHUB_URL}">소스 코드</a> · <a href="{GITHUB_URL}/blob/main/PRIVACY.md">개인정보 처리방침</a> · <a href="recover/">복구 도구</a> · <a href="{GITHUB_URL}/issues">문제 신고</a></span>
+  <span data-lang="en">TabBunker is open source. <a href="https://github.com/elitekid/tabbunker">Source code</a> · <a href="https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md">Privacy policy</a> · <a href="recover/">Recovery tool</a> · <a href="https://github.com/elitekid/tabbunker/issues">Report a problem</a></span>
+  <span data-lang="ko">TabBunker는 오픈소스입니다. <a href="https://github.com/elitekid/tabbunker">소스 코드</a> · <a href="https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md">개인정보 처리방침</a> · <a href="recover/">복구 도구</a> · <a href="https://github.com/elitekid/tabbunker/issues">문제 신고</a></span>
 </div></footer>
 <script>
   const btn = document.getElementById('lang-toggle');

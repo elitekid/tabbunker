@@ -45,7 +45,9 @@ Permissions, explained
 Switching from OneTab or Session Buddy
 Export your data from the old extension, open the TabBunker vault, click Import, and paste or choose the file. You will see a preview of what will be merged before anything changes.
 
-Privacy policy and source code: see the links on this page.
+Website: https://elitekid.github.io/tabbunker/
+Source code and issues: https://github.com/elitekid/tabbunker
+Privacy policy: https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md
 
 ## Edge search terms
 
