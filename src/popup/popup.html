@@ -14,6 +14,15 @@
       <p id="backup-status" class="popup-status" aria-live="polite"></p>
     </header>
 
+    <div id="backup-notice" class="backup-notice hidden" role="note">
+      <p class="backup-notice-text" data-i18n="popupBackupNotice"></p>
+      <p id="backup-notice-firefox" class="backup-notice-text hidden" data-i18n="popupBackupNoticeFirefox"></p>
+      <div class="backup-notice-actions">
+        <button id="btn-notice-ok" type="button" class="btn primary" data-i18n="getStarted">Got it</button>
+        <button id="btn-notice-settings" type="button" class="link-btn" data-i18n="popupBackupNoticeSettings">Turn off in Settings</button>
+      </div>
+    </div>
+
     <div id="toast" class="popup-toast hidden" role="status" aria-live="polite">
       <span id="toast-text"></span>
       <button id="btn-toast-undo" type="button" class="link-btn" data-i18n="undoBtn">Undo</button>

@@ -294,13 +294,17 @@ function renderPickList() {
 
 let lastTargets = null;
 
-async function loadCollapseTargets() {
+async function loadCollapseTargets({ keepSelection = false } = {}) {
+  // 탭이 바뀌어 다시 셀 때는 사용자가 끈 탭만 기억하고 새 탭은 선택된 상태로 둔다
+  const unchecked = keepSelection
+    ? new Set(collapseTabs.filter((tab) => !selectedIds.has(tab.id)).map((tab) => tab.id))
+    : new Set();
   const res = await send('getCollapseTargets', { windowId });
   lastTargets = res;
   if (res?.ok) {
     collapseTabs = res.tabs || [];
-    selectedIds = new Set(collapseTabs.map((tab) => tab.id));
-    pickShowAll = false;
+    selectedIds = new Set(collapseTabs.filter((tab) => !unchecked.has(tab.id)).map((tab) => tab.id));
+    if (!keepSelection) pickShowAll = false;
     updateSaveSection(res);
     renderPickList();
   }
@@ -632,6 +636,12 @@ function setupListeners() {
   $('#btn-save-close').addEventListener('click', () => doCollapse(true));
   $('#btn-save-keep').addEventListener('click', () => doCollapse(false));
   $('#btn-toast-undo').addEventListener('click', () => doUndo());
+  $('#btn-notice-ok').addEventListener('click', () => dismissBackupNotice());
+  $('#btn-notice-settings').addEventListener('click', async () => {
+    await dismissBackupNotice();
+    await browserApi.runtime.openOptionsPage();
+    window.close();
+  });
 
   $('#search').addEventListener('input', () => {
     groupsVisible = GROUPS_INITIAL;
@@ -665,12 +675,46 @@ function setupListeners() {
     $('#confirm-dialog').close();
   });
 
+  // 드롭다운이 열린 동안 탭이 열리거나 닫히거나 로딩을 마치면 보관 대상 수를 다시 센다
+  // (파이어폭스는 막 열린 탭이 로딩 중일 때 주소가 비어 제외 대상으로 잡힌다)
+  let retargetTimer = null;
+  const retarget = () => {
+    clearTimeout(retargetTimer);
+    retargetTimer = setTimeout(() => loadCollapseTargets({ keepSelection: true }), 250);
+  };
+  browserApi.tabs?.onCreated?.addListener(retarget);
+  browserApi.tabs?.onRemoved?.addListener(retarget);
+  browserApi.tabs?.onUpdated?.addListener((_id, change) => {
+    if (change.url || change.status === 'complete' || change.pinned !== undefined) retarget();
+  });
+
   browserApi.runtime.onMessage.addListener((msg) => {
     if (msg.type === 'vaultChanged') {
       reloadGroups().then(() => renderGroups());
       reloadBackupStatus();
     }
   });
+}
+
+// 자동 파일 백업이 켜져 있으면 처음 한 번, 다운로드 폴더에 파일이 저장된다는 안내를 보인다.
+// 본 여부는 백업 데이터(설정)와 섞이지 않게 별도 키에 둔다.
+const BACKUP_NOTICE_KEY = 'tk_ui_backupNoticeSeen';
+
+async function renderBackupNotice() {
+  const notice = $('#backup-notice');
+  const settings = backupStatus?.settings;
+  const stored = await browserApi.storage.local.get(BACKUP_NOTICE_KEY);
+  const show = !!settings?.autoFileBackup && !stored[BACKUP_NOTICE_KEY];
+  notice.classList.toggle('hidden', !show);
+  if (!show) return;
+  // 파이어폭스는 다운로드 표시를 숨기는 API가 없어 저장 때 다운로드 목록이 열릴 수 있다
+  const isFirefox = typeof browserApi.runtime.getBrowserInfo === 'function';
+  $('#backup-notice-firefox').classList.toggle('hidden', !isFirefox);
+}
+
+async function dismissBackupNotice() {
+  await browserApi.storage.local.set({ [BACKUP_NOTICE_KEY]: true });
+  $('#backup-notice').classList.add('hidden');
 }
 
 async function init() {
@@ -686,6 +730,7 @@ async function init() {
 
   await reloadGroups();
   await reloadBackupStatus();
+  await renderBackupNotice();
   await loadCollapseTargets();
   renderGroups();
 }

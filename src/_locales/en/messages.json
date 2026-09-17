@@ -502,5 +502,14 @@
   },
   "tipPopup": {
     "message": "To save or reopen tabs, click the TabBunker icon in the toolbar. You can pick which tabs to save and whether to close them."
+  },
+  "popupBackupNotice": {
+    "message": "When you save tabs, a backup file is written to the TabBunker folder in Downloads automatically, so you can recover even after resetting the browser."
+  },
+  "popupBackupNoticeFirefox": {
+    "message": "In Firefox, the downloads list may open briefly when the file is saved."
+  },
+  "popupBackupNoticeSettings": {
+    "message": "Turn off in Settings"
   }
 }

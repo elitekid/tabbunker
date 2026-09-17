@@ -6,6 +6,7 @@
 
 - One-time review request on the vault page after first-run onboarding is done, at least one successful file backup, three or more collapses, and 48 hours since install. Shown as a small non-modal banner with Write a review, Don't ask again, and Report a problem links. No star-rating filter, no rewards, and no repeat after either button is used.
 - TabBunker info section at the bottom of Settings with permanent Write a review, Report a problem, and Source code links.
+- One-time notice at the top of the dropdown that backup files are saved to Downloads/TabBunker, with Got it and Turn off in Settings. On Firefox it also says the downloads list may open briefly, since Firefox cannot hide it.
 - Toolbar dropdown popup to preview tabs, pick which to save, browse recent groups, undo the last save, and open the full vault or settings without closing tabs accidentally.
 
 ### Changed
@@ -23,6 +24,7 @@
 - Group titles show readable dates ("Today 6:37 PM", "Yesterday", "Sep 3", with the year for older groups) in the dropdown and the vault. Stored titles and backup files are unchanged, and renamed groups are shown as is.
 - The dropdown shows a short message when nothing is saved yet or a search has no matches, and never lists trashed groups.
 - Korean text no longer breaks in the middle of a word.
+- The dropdown tab count refreshes when tabs open, close, or finish loading while it is open (Firefox briefly reported reopened tabs as browser pages after Undo).
 
 ## 1.0.0 (2026-09-15)
 

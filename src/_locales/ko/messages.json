@@ -502,5 +502,14 @@
   },
   "tipPopup": {
     "message": "탭을 보관하거나 다시 열 때는 툴바의 TabBunker 아이콘을 누르세요. 보관할 탭을 고르고, 닫을지 정할 수 있습니다."
+  },
+  "popupBackupNotice": {
+    "message": "보관하면 다운로드 폴더 안 TabBunker 폴더에 백업 파일이 자동으로 저장돼요. 브라우저를 초기화해도 여기서 복구할 수 있어요."
+  },
+  "popupBackupNoticeFirefox": {
+    "message": "파이어폭스에서는 파일을 저장할 때 다운로드 목록이 잠깐 열릴 수 있어요."
+  },
+  "popupBackupNoticeSettings": {
+    "message": "설정에서 끄기"
   }
 }
