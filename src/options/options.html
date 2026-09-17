@@ -9,73 +9,153 @@
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <h1 data-i18n="settingsTitle">TabBunker Settings</h1>
+  <header class="options-top">
+    <div class="options-top-in">
+      <h1 data-i18n="settingsTitle">TabBunker Settings</h1>
+      <span id="save-hint" class="save-hint" data-i18n="optionsAutoSaveHint">Changes save automatically</span>
+      <span class="options-spacer" aria-hidden="true"></span>
+      <button id="btn-open-vault" type="button" class="btn" data-i18n="openVault">Open Vault</button>
+    </div>
+  </header>
 
-  <fieldset>
-    <legend data-i18n="collapseOptions">Collapse</legend>
-    <label>
-      <input type="checkbox" id="includePinned">
-      <span data-i18n="includePinned">Include pinned tabs when collapsing</span>
-    </label>
-    <p class="hint" data-i18n="includePinnedHint">Right-click send one tab ignores pin state and always sends that tab.</p>
-  </fieldset>
+  <div id="toast" class="app-toast hidden" role="status" aria-live="polite"></div>
 
-  <fieldset>
-    <legend data-i18n="restoreOptions">Restore</legend>
-    <label>
-      <input type="checkbox" id="removeAfterRestore" checked>
-      <span data-i18n="removeAfterRestore">Remove restored tabs from the vault</span>
-    </label>
-    <label>
-      <input type="checkbox" id="dedupeUrls">
-      <span data-i18n="dedupeUrls">Remove duplicate URLs on import</span>
-    </label>
-  </fieldset>
+  <main class="options-main">
+    <h2 class="section-label" data-i18n="optionsSectionStow">Save tabs</h2>
+    <div class="options-card">
+      <div class="options-row">
+        <div class="options-row-text">
+          <div id="includePinned-label" class="options-row-title" data-i18n="optionsIncludePinnedTitle">Include pinned tabs</div>
+          <div class="options-row-desc" data-i18n="optionsIncludePinnedDesc">When off, pinned tabs stay open when you save a window. Right-click send always sends that tab.</div>
+        </div>
+        <label class="switch-wrap">
+          <input type="checkbox" id="includePinned" role="switch" aria-labelledby="includePinned-label">
+          <span class="switch-ui" aria-hidden="true"></span>
+        </label>
+      </div>
+      <div class="options-row">
+        <div class="options-row-text">
+          <div id="removeAfterRestore-label" class="options-row-title" data-i18n="optionsRemoveAfterRestoreTitle">Remove reopened tabs from the list</div>
+          <div class="options-row-desc" data-i18n="optionsRemoveAfterRestoreDesc">When off, tabs stay in your saved list after you open them.</div>
+        </div>
+        <label class="switch-wrap">
+          <input type="checkbox" id="removeAfterRestore" role="switch" checked aria-labelledby="removeAfterRestore-label">
+          <span class="switch-ui" aria-hidden="true"></span>
+        </label>
+      </div>
+    </div>
 
-  <fieldset>
-    <legend data-i18n="backupOptions">Backup</legend>
-    <label>
-      <input type="checkbox" id="autoFileBackup" checked>
-      <span data-i18n="autoFileBackup">Automatic file backup to Downloads</span>
-    </label>
-    <label>
-      <span data-i18n="backupSubfolder">Backup folder name</span>
-      <input type="text" id="backupSubfolder" value="TabBunker">
-    </label>
-    <p data-i18n="backupInterval">Delay after a change before the file backup</p>
-    <label class="block">
-      <input type="radio" name="backupIntervalSec" id="interval30s" value="30">
-      <span data-i18n="interval30s">30 seconds</span>
-    </label>
-    <label class="block">
-      <input type="radio" name="backupIntervalSec" id="interval5m" value="300">
-      <span data-i18n="interval5m">5 minutes</span>
-    </label>
-    <label class="block">
-      <input type="radio" name="backupIntervalSec" id="interval30m" value="1800">
-      <span data-i18n="interval30m">30 minutes</span>
-    </label>
-  </fieldset>
+    <h2 class="section-label" data-i18n="optionsSectionFileBackup">File backup</h2>
+    <div class="options-card">
+      <div class="options-row">
+        <div class="options-row-text">
+          <div id="autoFileBackup-label" class="options-row-title" data-i18n="optionsAutoFileBackupTitle">Save backup files to Downloads</div>
+          <div id="backup-status-desc" class="options-row-desc backup-status-desc"></div>
+        </div>
+        <label class="switch-wrap">
+          <input type="checkbox" id="autoFileBackup" role="switch" checked aria-labelledby="autoFileBackup-label">
+          <span class="switch-ui" aria-hidden="true"></span>
+        </label>
+      </div>
+      <div class="options-row" data-backup-dependent>
+        <div class="options-row-text">
+          <div class="options-row-title" data-i18n="optionsBackupFolderTitle">Backup folder</div>
+          <div class="options-row-desc" data-i18n="optionsBackupFolderDesc">Created inside your Downloads folder with this name.</div>
+        </div>
+        <label class="path-input">
+          <span class="path-prefix" data-i18n="optionsDownloadsPrefix">Downloads /</span>
+          <input type="text" id="backupSubfolder" class="path-field" value="TabBunker" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+      <div class="options-row" data-backup-dependent>
+        <div class="options-row-text">
+          <div id="backup-interval-label" class="options-row-title" data-i18n="optionsBackupIntervalTitle">Save after changes</div>
+          <div class="options-row-desc" data-i18n="optionsBackupIntervalDesc">Use a longer delay if you move tabs often so files are written less often.</div>
+        </div>
+        <fieldset class="segment" role="radiogroup" aria-labelledby="backup-interval-label">
+          <label class="segment-opt">
+            <input type="radio" name="backupIntervalSec" id="interval30s" value="30">
+            <span data-i18n="interval30s">30 seconds</span>
+          </label>
+          <label class="segment-opt">
+            <input type="radio" name="backupIntervalSec" id="interval5m" value="300">
+            <span data-i18n="interval5m">5 minutes</span>
+          </label>
+          <label class="segment-opt">
+            <input type="radio" name="backupIntervalSec" id="interval30m" value="1800">
+            <span data-i18n="interval30m">30 minutes</span>
+          </label>
+        </fieldset>
+      </div>
+      <div class="options-row" data-backup-dependent>
+        <div class="options-row-text">
+          <div class="options-row-title" data-i18n="optionsBackupNowTitle">Save right now</div>
+        </div>
+        <button id="btn-backup-now" type="button" class="btn" data-i18n="backupNow">Back up now</button>
+      </div>
+    </div>
 
-  <fieldset>
-    <legend data-i18n="shortcuts">Keyboard Shortcuts</legend>
-    <p data-i18n="shortcutCollapse">Collapse tabs: Alt+Shift+S</p>
-    <p data-i18n="shortcutUndo">Undo import: Ctrl+Z (in Vault)</p>
-  </fieldset>
+    <h2 class="section-label" data-i18n="optionsSectionImport">Import</h2>
+    <div class="options-card">
+      <div class="options-row">
+        <div class="options-row-text">
+          <div id="dedupeUrls-label" class="options-row-title" data-i18n="optionsDedupeTitle">Skip duplicate URLs on import</div>
+          <div class="options-row-desc" data-i18n="optionsDedupeDesc">Tabs with the same URL as one you already saved are not imported.</div>
+        </div>
+        <label class="switch-wrap">
+          <input type="checkbox" id="dedupeUrls" role="switch" aria-labelledby="dedupeUrls-label">
+          <span class="switch-ui" aria-hidden="true"></span>
+        </label>
+      </div>
+    </div>
 
-  <p><a id="link-vault" href="../vault/vault.html" data-i18n="openVault">Open Vault</a></p>
+    <h2 class="section-label" data-i18n="optionsSectionShortcuts">Keyboard shortcuts</h2>
+    <div class="options-card">
+      <div class="options-row">
+        <div class="options-row-text">
+          <div class="options-row-title" data-i18n="optionsShortcutTitle">Save this window's tabs right away</div>
+          <div class="options-row-desc" data-i18n="optionsShortcutDesc">Saves without asking you to pick tabs.</div>
+        </div>
+        <div class="shortcut-actions">
+          <div id="shortcut-keys" class="shortcut-keys" aria-live="polite"></div>
+          <button id="btn-shortcut-change" type="button" class="btn" data-i18n="optionsShortcutChange">Change</button>
+          <p id="shortcut-firefox-hint" class="shortcut-hint hidden" data-i18n="optionsShortcutFirefoxHint">Change it in Add-ons Manager, gear menu, Manage Extension Shortcuts.</p>
+          <p id="shortcut-fallback-hint" class="shortcut-hint hidden" data-i18n="optionsShortcutFallbackHint">Open your browser's extension shortcut settings to change this shortcut.</p>
+        </div>
+      </div>
+    </div>
 
-  <fieldset>
-    <legend data-i18n="aboutSection">TabBunker info</legend>
-    <p><a id="link-about-review" href="#" target="_blank" rel="noopener" data-i18n="reviewWrite">Write a review</a></p>
-    <p><a id="link-about-report" href="#" target="_blank" rel="noopener" data-i18n="reportProblem">Report a problem</a></p>
-    <p><a id="link-about-source" href="https://github.com/elitekid/tabbunker" target="_blank" rel="noopener" data-i18n="sourceCode">Source code</a></p>
-  </fieldset>
+    <h2 class="section-label" data-i18n="optionsSectionInfo">About</h2>
+    <div class="options-card">
+      <div class="options-row options-row-info">
+        <div class="options-links">
+          <a id="link-about-review" href="#" target="_blank" rel="noopener" data-i18n="reviewWrite">Write a review</a>
+          <a id="link-about-report" href="#" target="_blank" rel="noopener" data-i18n="reportProblem">Report a problem</a>
+          <a id="link-about-source" href="https://github.com/elitekid/tabbunker" target="_blank" rel="noopener" data-i18n="sourceCode">Source code</a>
+        </div>
+        <span id="version-label" class="version-label"></span>
+      </div>
+    </div>
 
-  <button id="btn-save" type="button" class="btn primary" data-i18n="save">Save</button>
-  <button id="btn-delete-all" type="button" class="btn danger" data-i18n="deleteAll">Delete All Data</button>
+    <h2 class="section-label" data-i18n="optionsSectionDelete">Delete data</h2>
+    <div class="options-card options-card-danger">
+      <div class="options-row">
+        <div class="options-row-text">
+          <div class="options-row-title" data-i18n="optionsDeleteTitle">Delete saved tabs and settings</div>
+          <div class="options-row-desc" data-i18n="optionsDeleteDesc">This cannot be undone. Backup files in Downloads are not deleted.</div>
+        </div>
+        <button id="btn-delete-all" type="button" class="btn danger" data-i18n="optionsDeleteBtn">Delete all</button>
+      </div>
+    </div>
+  </main>
 
-  <p id="status" role="status" aria-live="polite"></p>
+  <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-delete-title">
+    <p id="confirm-delete-title" data-i18n="deleteAllConfirm"></p>
+    <div class="dialog-actions">
+      <button id="btn-confirm-delete" type="button" class="btn danger" data-i18n="optionsDeleteBtn">Delete all</button>
+      <button id="btn-confirm-cancel" type="button" class="btn" data-i18n="cancel" autofocus>Cancel</button>
+    </div>
+  </dialog>
 
   <script type="module" src="options.js"></script>
 </body>

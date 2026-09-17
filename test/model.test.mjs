@@ -156,7 +156,6 @@ describe('filterGroups', () => {
 describe('shouldShowReviewPrompt', () => {
   const now = Date.parse('2026-09-17T12:00:00Z');
   const baseSettings = {
-    firstRunComplete: true,
     collapseCount: REVIEW_PROMPT_MIN_COLLAPSES,
     installedAt: now - REVIEW_PROMPT_MIN_AGE_MS,
   };

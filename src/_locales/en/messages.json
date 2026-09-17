@@ -15,10 +15,7 @@
     "message": "TabBunker Vault"
   },
   "searchPlaceholder": {
-    "message": "Search groups and tabs"
-  },
-  "ariaOnboarding": {
-    "message": "Onboarding"
+    "message": "Search saved tabs"
   },
   "ariaGroupList": {
     "message": "Saved tab groups"
@@ -35,17 +32,8 @@
   "settings": {
     "message": "Settings"
   },
-  "onboardingTitle": {
-    "message": "This is your TabBunker vault"
-  },
-  "onboardingBackup": {
-    "message": "Organize everything you have saved in one place. Saved tabs are also written to a JSON file in Downloads/TabBunker, and the status is shown above."
-  },
   "getStarted": {
     "message": "Got it"
-  },
-  "emptyVault": {
-    "message": "No saved groups yet. Click the TabBunker icon in the toolbar to save the tabs in this window."
   },
   "importPreview": {
     "message": "Import Preview"
@@ -80,32 +68,125 @@
   "settingsTitle": {
     "message": "TabBunker Settings"
   },
-  "collapseOptions": {
-    "message": "Collapse"
+  "optionsAutoSaveHint": {
+    "message": "Changes save automatically"
   },
-  "includePinned": {
-    "message": "Include pinned tabs when collapsing"
+  "optionsSavedFlash": {
+    "message": "Saved"
   },
-  "restoreOptions": {
-    "message": "Restore"
+  "optionsSectionStow": {
+    "message": "Save tabs"
   },
-  "removeAfterRestore": {
-    "message": "Remove restored tabs from the vault"
+  "optionsSectionFileBackup": {
+    "message": "File backup"
   },
-  "dedupeUrls": {
-    "message": "Remove duplicate URLs on import"
+  "optionsSectionImport": {
+    "message": "Import"
   },
-  "backupOptions": {
-    "message": "Backup"
+  "optionsSectionShortcuts": {
+    "message": "Keyboard shortcuts"
   },
-  "autoFileBackup": {
-    "message": "Automatic file backup to Downloads"
+  "optionsSectionInfo": {
+    "message": "About"
   },
-  "backupSubfolder": {
-    "message": "Backup folder name"
+  "optionsSectionDelete": {
+    "message": "Delete data"
   },
-  "backupInterval": {
-    "message": "Delay after a change before the file backup"
+  "optionsIncludePinnedTitle": {
+    "message": "Include pinned tabs"
+  },
+  "optionsIncludePinnedDesc": {
+    "message": "When off, pinned tabs stay open when you save a window. Right-click send always sends that tab."
+  },
+  "optionsRemoveAfterRestoreTitle": {
+    "message": "Remove reopened tabs from the list"
+  },
+  "optionsRemoveAfterRestoreDesc": {
+    "message": "When off, tabs stay in your saved list after you open them."
+  },
+  "optionsAutoFileBackupTitle": {
+    "message": "Save backup files to Downloads"
+  },
+  "optionsBackupRecoverHint": {
+    "message": "You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupStatusOk": {
+    "message": "Last saved $1 · You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupStatusPending": {
+    "message": "Save pending ($1) · You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupStatusPendingNever": {
+    "message": "Save pending · You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupStatusWriting": {
+    "message": "Saving · You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupStatusFailed": {
+    "message": "Save failed: $1 · You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupStatusPaused": {
+    "message": "Paused because the download was canceled. Use Back up now to resume."
+  },
+  "optionsBackupStatusOff": {
+    "message": "File backup is off."
+  },
+  "optionsBackupStatusNever": {
+    "message": "No backup file yet · You can recover from this file even after resetting the browser."
+  },
+  "optionsBackupFolderTitle": {
+    "message": "Backup folder"
+  },
+  "optionsBackupFolderDesc": {
+    "message": "Created inside your Downloads folder with this name."
+  },
+  "optionsDownloadsPrefix": {
+    "message": "Downloads /"
+  },
+  "optionsBackupIntervalTitle": {
+    "message": "Save after changes"
+  },
+  "optionsBackupIntervalDesc": {
+    "message": "Use a longer delay if you move tabs often so files are written less often."
+  },
+  "optionsBackupNowTitle": {
+    "message": "Save right now"
+  },
+  "optionsDedupeTitle": {
+    "message": "Skip duplicate URLs on import"
+  },
+  "optionsDedupeDesc": {
+    "message": "Tabs with the same URL as one you already saved are not imported."
+  },
+  "optionsShortcutTitle": {
+    "message": "Save this window's tabs right away"
+  },
+  "optionsShortcutDesc": {
+    "message": "Saves without asking you to pick tabs."
+  },
+  "optionsShortcutChange": {
+    "message": "Change"
+  },
+  "optionsShortcutNone": {
+    "message": "Not set"
+  },
+  "optionsShortcutFirefoxHint": {
+    "message": "Change it in Add-ons Manager → gear menu → Manage Extension Shortcuts."
+  },
+  "optionsShortcutFallbackHint": {
+    "message": "Open your browser's extension shortcut settings to change this shortcut."
+  },
+  "optionsVersion": {
+    "message": "Version $1"
+  },
+  "optionsDeleteTitle": {
+    "message": "Delete saved tabs and settings"
+  },
+  "optionsDeleteDesc": {
+    "message": "This cannot be undone. Backup files in Downloads are not deleted."
+  },
+  "optionsDeleteBtn": {
+    "message": "Delete all"
   },
   "interval30s": {
     "message": "30 seconds"
@@ -116,29 +197,11 @@
   "interval30m": {
     "message": "30 minutes"
   },
-  "shortcuts": {
-    "message": "Keyboard Shortcuts"
-  },
-  "shortcutCollapse": {
-    "message": "Collapse tabs: Alt+Shift+S"
-  },
-  "shortcutUndo": {
-    "message": "Undo import: Ctrl+Z (in Vault)"
-  },
   "openVault": {
     "message": "Open Vault"
   },
-  "save": {
-    "message": "Save"
-  },
-  "deleteAll": {
-    "message": "Delete All Data"
-  },
   "deleteAllConfirm": {
     "message": "Delete saved tabs, settings, undo, and in-browser snapshots? Backup files in Downloads will remain."
-  },
-  "saved": {
-    "message": "Settings saved."
   },
   "deleted": {
     "message": "All data deleted."
@@ -167,15 +230,6 @@
   "duplicateLabel": {
     "message": "Duplicate"
   },
-  "restoreTabAria": {
-    "message": "Restore $1"
-  },
-  "restore": {
-    "message": "Restore"
-  },
-  "restoreAllCount": {
-    "message": "Restore all ($1)"
-  },
   "searchMatchCount": {
     "message": "Matching links: $1 of $2"
   },
@@ -194,9 +248,6 @@
   "deleteForever": {
     "message": "Delete Forever"
   },
-  "renamePrompt": {
-    "message": "New group name:"
-  },
   "lockedNoDelete": {
     "message": "Unlock the group first."
   },
@@ -206,35 +257,8 @@
   "importedGroup": {
     "message": "Imported $1"
   },
-  "backupRingSaved": {
-    "message": "In-browser snapshot: saved $1"
-  },
-  "backupRingNone": {
-    "message": "In-browser snapshot: none yet"
-  },
-  "backupFileOk": {
-    "message": "File backup: last completed $1"
-  },
-  "backupFilePending": {
-    "message": "File backup: pending (last completed $1)"
-  },
-  "backupFilePendingNever": {
-    "message": "File backup: pending"
-  },
-  "backupFileWriting": {
-    "message": "File backup: saving"
-  },
-  "backupFileFailed": {
-    "message": "File backup failed: $1"
-  },
   "backupFilePaused": {
     "message": "File backup paused: the download was canceled. Use Back up now to resume."
-  },
-  "backupFileOff": {
-    "message": "File backup: off"
-  },
-  "backupFileNever": {
-    "message": "File backup: no file yet"
   },
   "backupNow": {
     "message": "Back up now"
@@ -312,7 +336,7 @@
     "message": "Import undone."
   },
   "undoUnavailable": {
-    "message": "Later edits prevent this undo. Use Restore instead."
+    "message": "Later edits prevent this undo. Use Open instead."
   },
   "restoreConfirm": {
     "message": "Open $1 tabs in this window?"
@@ -341,18 +365,6 @@
   "backupFolderChanged": {
     "message": "Folder name changed to $1."
   },
-  "tipPin": {
-    "message": "If you don't see the icon, pin TabBunker from the puzzle-shaped extensions menu."
-  },
-  "tipShortcut": {
-    "message": "Press $1 to save the tabs in this window right away, without picking."
-  },
-  "tipShortcutNone": {
-    "message": "You can set a shortcut for saving right away in your browser’s extension shortcut settings."
-  },
-  "tipRestore": {
-    "message": "Use this page for bigger jobs: import and export, dragging tabs between groups, trash, and restoring from a backup file."
-  },
   "ctxSendTab": {
     "message": "Send this tab to TabBunker"
   },
@@ -371,9 +383,6 @@
   "lockedLabel": {
     "message": "Locked"
   },
-  "includePinnedHint": {
-    "message": "Sending a single tab from the right-click menu includes it even if it is pinned."
-  },
   "reviewPromptBody": {
     "message": "Has TabBunker been useful? A short review on the store helps other people find it."
   },
@@ -385,9 +394,6 @@
   },
   "reportProblem": {
     "message": "Report a problem"
-  },
-  "aboutSection": {
-    "message": "TabBunker info"
   },
   "sourceCode": {
     "message": "Source code"
@@ -500,9 +506,6 @@
   "popupNoMatch": {
     "message": "No tabs match your search"
   },
-  "tipPopup": {
-    "message": "To save or reopen tabs, click the TabBunker icon in the toolbar. You can pick which tabs to save and whether to close them."
-  },
   "popupBackupNotice": {
     "message": "When you save tabs, a backup file is written to the TabBunker folder in Downloads automatically, so you can recover even after resetting the browser."
   },
@@ -511,5 +514,29 @@
   },
   "popupBackupNoticeSettings": {
     "message": "Turn off in Settings"
+  },
+  "vaultEmptyTitle": {
+    "message": "No saved tabs yet"
+  },
+  "vaultEmptyBody": {
+    "message": "Click the TabBunker icon in the toolbar to pick tabs from this window to save. If you do not see the icon, pin TabBunker from the puzzle-shaped extensions menu."
+  },
+  "vaultSnapshotLabel": {
+    "message": "In-browser snapshot"
+  },
+  "vaultSnapshotOk": {
+    "message": "$1"
+  },
+  "vaultSnapshotNone": {
+    "message": "None yet"
+  },
+  "openTabAria": {
+    "message": "Open $1"
+  },
+  "openAllCount": {
+    "message": "Open all ($1)"
+  },
+  "recoverFromTrash": {
+    "message": "Recover"
   }
 }

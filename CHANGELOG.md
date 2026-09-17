@@ -4,7 +4,7 @@
 
 ### Added
 
-- One-time review request on the vault page after first-run onboarding is done, at least one successful file backup, three or more collapses, and 48 hours since install. Shown as a small non-modal banner with Write a review, Don't ask again, and Report a problem links. No star-rating filter, no rewards, and no repeat after either button is used.
+- One-time review request on the vault page after at least one successful file backup, three or more collapses, and 48 hours since install. Shown as a small non-modal banner with Write a review, Don't ask again, and Report a problem links. No star-rating filter, no rewards, and no repeat after either button is used.
 - TabBunker info section at the bottom of Settings with permanent Write a review, Report a problem, and Source code links.
 - One-time notice at the top of the dropdown that backup files are saved to Downloads/TabBunker, with Got it and Turn off in Settings. On Firefox it also says the downloads list may open briefly, since Firefox cannot hide it.
 - Toolbar dropdown popup to preview tabs, pick which to save, browse recent groups, undo the last save, and open the full vault or settings without closing tabs accidentally.
@@ -16,6 +16,10 @@
 - Keyboard shortcut and context-menu save still work instantly and show a badge count instead of opening the vault.
 - Fresh install no longer opens the vault page automatically.
 - Automatic file backup downloads on Chrome and Edge hide the browser download bubble while a backup is in progress.
+- Settings page redesigned to match the dropdown: changes save instantly (no Save button), switches and segmented choices, file backup status with last saved time and Back up now, the folder shown as Downloads / name, the real keyboard shortcut read from the browser (so Windows shows Alt+Shift+S and Mac shows its symbols) with a Change button on Chrome and Edge, and Delete all moved into its own section with an in-page confirmation that focuses Cancel.
+- The vault now matches the dropdown and settings: sticky header, backup status with a colored dot and relative time, click a tab row to open it, text-style group actions (Open all, Rename, Lock, Delete), and "Open"/"Open all" instead of "Restore". Renaming happens in place (Enter saves, Esc cancels). Browser alert, confirm and prompt dialogs are replaced by in-page dialogs and a short notice under the header.
+- The dismissible welcome card in the vault is gone. When nothing is saved, the vault shows a short how-to with Import from another tab manager, and it disappears once you save tabs. The review request no longer depends on that card.
+- Korean text uses one consistent polite tone across the dropdown, vault and settings.
 
 ### Fixed
 

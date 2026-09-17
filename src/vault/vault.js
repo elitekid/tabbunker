@@ -1,11 +1,15 @@
 // Vault 페이지: 그룹 목록, 검색, 가져오기/보내기, 페이지네이션
 
 import { browserApi } from '../shared/browser.js';
+import {
+  fileBackupStatusParts,
+  snapshotStatusParts,
+  statusLineHtml,
+} from '../shared/backup-status-ui.js';
 import { exportByFormat } from '../shared/exporters.js';
 import { importAutoDetectWithReport } from '../shared/importers.js';
 import {
   computeImportImpact,
-  deriveFileStatus,
   displayGroupTitle,
   filterGroups,
   findDuplicateUrls,
@@ -13,8 +17,10 @@ import {
 import { shouldShowReviewPrompt } from '../shared/review-prompt.js';
 import { loadSettings } from '../shared/storage.js';
 import { getStoreReviewUrl, ISSUES_URL } from '../shared/store-links.js';
+import { showToast } from '../shared/ui-toast.js';
 
 const PAGE_SIZE = 200;
+const LARGE_OPEN = 30;
 const DATA_FAVICON_RE =
   /^data:image\/(png|jpe?g|gif|webp|x-icon|vnd\.microsoft\.icon|svg\+xml)[;,]/i;
 const AVATAR_VARS = [
@@ -34,7 +40,8 @@ let flatTabItems = [];
 let expandedCardIds = new Set();
 let currentPage = 0;
 let collapseBanner = null;
-let statusMessageTimer = null;
+let renamingGroupId = null;
+let pendingOpenGroupId = null;
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -44,14 +51,6 @@ function t(key, subs = []) {
 
 function tPlural(oneKey, manyKey, count) {
   return t(count === 1 ? oneKey : manyKey, [count]);
-}
-
-function formatBackupLine(text) {
-  const idx = text.indexOf(':');
-  if (idx === -1) return escapeHtml(text);
-  const label = text.slice(0, idx + 1);
-  const rest = text.slice(idx + 1);
-  return `<span class="backup-line-label">${escapeHtml(label)}</span>${escapeHtml(rest)}`;
 }
 
 async function send(type, payload = {}) {
@@ -135,103 +134,49 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;');
 }
 
-function formatDateTime(ts) {
-  if (!ts) return '';
-  try {
-    const uiLang = browserApi.i18n.getUILanguage?.() || navigator.language || 'en';
-    return new Date(ts).toLocaleString(uiLang, { dateStyle: 'medium', timeStyle: 'short' });
-  } catch {
-    return '';
-  }
-}
-
-function showStatusMessage(text) {
-  const el = $('#status-message');
-  if (!text) {
-    el.classList.add('hidden');
-    el.textContent = '';
-    return;
-  }
-  el.textContent = text;
-  el.classList.remove('hidden');
-  clearTimeout(statusMessageTimer);
-  statusMessageTimer = setTimeout(() => {
-    el.classList.add('hidden');
-  }, 8000);
-}
-
-function backupErrorMessage(code) {
-  const map = {
-    access: 'backupErrAccess',
-    disk: 'backupErrDisk',
-    name: 'backupErrName',
-    stalled: 'backupErrStalled',
-    unknown: 'backupErrUnknown',
-  };
-  return t(map[code] || 'backupErrUnknown');
-}
-
-function fileStatusLine(status, state, settings) {
-  switch (status) {
-    case 'off':
-      return t('backupFileOff');
-    case 'paused':
-      return t('backupFilePaused');
-    case 'writing':
-      return t('backupFileWriting');
-    case 'failed':
-      return t('backupFileFailed', [backupErrorMessage(state?.lastError?.code)]);
-    case 'pending':
-      if (state?.lastFileOkAt) {
-        return t('backupFilePending', [formatDateTime(state.lastFileOkAt)]);
-      }
-      return t('backupFilePendingNever');
-    case 'ok':
-      return t('backupFileOk', [formatDateTime(state?.lastFileOkAt)]);
-    case 'never':
-    default:
-      return t('backupFileNever');
-  }
+function notify(text, warn = false) {
+  const el = $('#toast');
+  el.classList.toggle('warn', warn);
+  showToast(el, text);
 }
 
 function renderBackupHeader() {
-  const line1 = $('#backup-line1');
-  const line2 = $('#backup-line2');
+  const snapshotEl = $('#backup-line-snapshot');
+  const fileEl = $('#backup-line-file');
   const cleanupEl = $('#backup-cleanup-failed');
   const datedEl = $('#backup-dated-failed');
+  const locale = browserApi.i18n.getUILanguage?.();
 
   if (!backupStatus?.ok) {
-    line1.textContent = t('backupRingNone');
-    line2.textContent = t('backupFileNever');
+    snapshotEl.innerHTML = statusLineHtml(
+      'vaultSnapshotLabel',
+      snapshotStatusParts(null, t, locale),
+      t
+    );
+    fileEl.innerHTML = statusLineHtml(
+      null,
+      fileBackupStatusParts(null, t),
+      t
+    );
     cleanupEl.classList.add('hidden');
     datedEl.classList.add('hidden');
     return;
   }
 
-  const { revision, state, settings: st } = backupStatus;
-  const meta = { revision };
-  if (state?.lastRingAt) {
-    line1.innerHTML = formatBackupLine(t('backupRingSaved', [formatDateTime(state.lastRingAt)]));
-  } else {
-    line1.innerHTML = formatBackupLine(t('backupRingNone'));
-  }
+  const { state } = backupStatus;
+  snapshotEl.innerHTML = statusLineHtml(
+    'vaultSnapshotLabel',
+    snapshotStatusParts(state, t, locale),
+    t
+  );
+  fileEl.innerHTML = statusLineHtml(
+    null,
+    fileBackupStatusParts(backupStatus, t),
+    t
+  );
 
-  const status = deriveFileStatus(meta, state, st || settings);
-  line2.innerHTML = formatBackupLine(fileStatusLine(status, state, st || settings));
-
-  if (state?.cleanupBlocked) {
-    cleanupEl.textContent = t('backupCleanupFailed');
-    cleanupEl.classList.remove('hidden');
-  } else {
-    cleanupEl.classList.add('hidden');
-  }
-
-  if (state?.datedError) {
-    datedEl.textContent = t('backupDatedFailed');
-    datedEl.classList.remove('hidden');
-  } else {
-    datedEl.classList.add('hidden');
-  }
+  cleanupEl.classList.toggle('hidden', !state?.cleanupBlocked);
+  datedEl.classList.toggle('hidden', !state?.datedError);
 }
 
 async function reloadGroups() {
@@ -254,8 +199,6 @@ async function reloadBackupStatus() {
 }
 
 function isReviewBannerBlocked() {
-  if (!settings.firstRunComplete) return true;
-  if (!$('#onboarding').classList.contains('hidden')) return true;
   if ($('#import-dialog').open) return true;
   return false;
 }
@@ -272,11 +215,7 @@ function renderReviewBanner() {
       settings: st,
       backupState: backupStatus.state,
     }) && !isReviewBannerBlocked();
-  if (!show) {
-    banner.classList.add('hidden');
-    return;
-  }
-  banner.classList.remove('hidden');
+  banner.classList.toggle('hidden', !show);
 }
 
 function renderCollapseBanner() {
@@ -313,7 +252,7 @@ function showCollapseBanner(data) {
 }
 
 async function handleStale() {
-  showStatusMessage(t('staleEdit'));
+  notify(t('staleEdit'), true);
   await reloadGroups();
   render();
 }
@@ -321,7 +260,7 @@ async function handleStale() {
 async function handleUndoResult(res) {
   if (!res?.ok) {
     if (res.code === 'stale') {
-      showStatusMessage(t('undoUnavailable'));
+      notify(t('undoUnavailable'), true);
     } else if (res.code === 'none') {
       collapseBanner = null;
       renderCollapseBanner();
@@ -329,20 +268,20 @@ async function handleUndoResult(res) {
     return;
   }
   if (res.kind === 'import') {
-    showStatusMessage(t('undoImportDone'));
+    notify(t('undoImportDone'));
     collapseBanner = null;
     renderCollapseBanner();
   } else if (res.kind === 'collapse') {
     const remaining = res.remaining ?? 0;
     if (remaining > 0) {
-      showStatusMessage(t('undoPartial', [res.reopened, remaining]));
+      notify(t('undoPartial', [res.reopened, remaining]));
     } else {
-      showStatusMessage(tPlural('undoDoneOne', 'undoDone', res.reopened));
+      notify(tPlural('undoDoneOne', 'undoDone', res.reopened));
     }
     collapseBanner = null;
     renderCollapseBanner();
   } else if (res.kind === 'collapse-keep') {
-    showStatusMessage(t('undoKeepDone'));
+    notify(t('undoKeepDone'));
     collapseBanner = null;
     renderCollapseBanner();
   }
@@ -354,7 +293,7 @@ async function handleUndoResult(res) {
 async function doUndo() {
   const res = await send('undo');
   if (!res?.ok && res.code === 'stale') {
-    showStatusMessage(t('undoUnavailable'));
+    notify(t('undoUnavailable'), true);
     return;
   }
   if (res?.ok) {
@@ -362,31 +301,6 @@ async function doUndo() {
     renderCollapseBanner();
   }
   await handleUndoResult(res);
-}
-
-async function updateOnboarding() {
-  const onboarding = $('#onboarding');
-  const tips = $('#onboarding-tips');
-  if (!settings.firstRunComplete) {
-    onboarding.classList.remove('hidden');
-    tips.classList.remove('hidden');
-  } else {
-    onboarding.classList.add('hidden');
-    tips.classList.add('hidden');
-  }
-
-  try {
-    const cmds = await browserApi.commands.getAll();
-    const collapse = cmds.find((c) => c.name === 'collapse-tabs');
-    const shortcutEl = $('#tip-shortcut');
-    if (collapse?.shortcut) {
-      shortcutEl.textContent = t('tipShortcut', [collapse.shortcut]);
-    } else {
-      shortcutEl.textContent = t('tipShortcutNone');
-    }
-  } catch {
-    $('#tip-shortcut').textContent = t('tipShortcutNone');
-  }
 }
 
 function applyI18n() {
@@ -410,33 +324,22 @@ function applyI18n() {
   });
 }
 
+function openFilePicker() {
+  $('#backup-restore-hint').classList.add('hidden');
+  $('#file-input').click();
+}
+
 function setupEventListeners() {
   $('#search').addEventListener('input', () => {
     currentPage = 0;
     render();
   });
 
-  $('#btn-import').addEventListener('click', () => {
-    $('#backup-restore-hint').classList.add('hidden');
-    $('#file-input').click();
-  });
-  $('#btn-import-existing').addEventListener('click', () => {
-    $('#backup-restore-hint').classList.add('hidden');
-    $('#file-input').click();
-  });
+  $('#btn-import').addEventListener('click', openFilePicker);
+  $('#btn-import-empty').addEventListener('click', openFilePicker);
   $('#btn-export').addEventListener('click', () => $('#export-dialog').showModal());
   $('#btn-settings').addEventListener('click', () => {
     browserApi.runtime.openOptionsPage();
-  });
-
-  $('#btn-dismiss-onboarding').addEventListener('click', async () => {
-    const res = await send('updateSettings', { patch: { firstRunComplete: true } });
-    if (res?.ok) {
-      settings = res.settings || { ...settings, firstRunComplete: true };
-    }
-    $('#onboarding-tips').classList.add('hidden');
-    $('#onboarding').classList.add('hidden');
-    renderReviewBanner();
   });
 
   $('#link-review-report').href = ISSUES_URL;
@@ -464,12 +367,11 @@ function setupEventListeners() {
     renderReviewBanner();
   });
 
-
   $('#btn-backup-now').addEventListener('click', async () => {
     const res = await send('backupNow');
     await reloadBackupStatus();
     if (!res?.ok && res.code === 'timeout') {
-      showStatusMessage(t('backupTimeout'));
+      notify(t('backupTimeout'), true);
     }
   });
 
@@ -494,6 +396,18 @@ function setupEventListeners() {
   $('#btn-export-download').addEventListener('click', handleExport);
   $('#btn-export-cancel').addEventListener('click', () => $('#export-dialog').close());
 
+  $('#btn-confirm-ok').addEventListener('click', async () => {
+    $('#confirm-dialog').close();
+    if (pendingOpenGroupId) {
+      await doOpenGroup(pendingOpenGroupId, true);
+      pendingOpenGroupId = null;
+    }
+  });
+  $('#btn-confirm-cancel').addEventListener('click', () => {
+    pendingOpenGroupId = null;
+    $('#confirm-dialog').close();
+  });
+
   browserApi.runtime.onMessage.addListener((msg) => {
     if (msg.type === 'vaultChanged') {
       reloadGroups().then(() => render());
@@ -509,10 +423,8 @@ function setupEventListeners() {
     if (document.visibilityState === 'visible') {
       reloadGroups().then(() => render());
       reloadBackupStatus();
-      updateOnboarding();
     }
   });
-
 
   browserApi.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
@@ -541,7 +453,7 @@ async function handleFileSelect(e) {
   });
   pendingImportSkipped = report.skipped || { badLines: 0, noUrl: 0, trashedGroups: 0 };
   if (pendingImportGroups.length === 0) {
-    alert(t('noValidData'));
+    notify(t('noValidData'), true);
     e.target.value = '';
     return;
   }
@@ -616,26 +528,47 @@ function getOriginalGroup(groupId) {
   return allGroups.find((g) => g.id === groupId);
 }
 
+function hasActiveGroups() {
+  return allGroups.some((g) => !g.trashedAt);
+}
+
 function render() {
-  const query = $('#search').value;
+  const query = $('#search').value.trim();
   const filtered = filterGroups(allGroups, query);
   const active = filtered.filter((g) => !g.trashedAt);
   const trashed = allGroups.filter((g) => g.trashedAt);
+  const anyActive = hasActiveGroups();
+
+  const emptyEl = $('#empty-state');
+  const nomatchEl = $('#search-nomatch');
+  const list = $('#group-list');
+  const pag = $('#pagination');
+
+  if (!anyActive) {
+    emptyEl.classList.remove('hidden');
+    nomatchEl.classList.add('hidden');
+    list.innerHTML = '';
+    pag.classList.add('hidden');
+    return;
+  }
+
+  emptyEl.classList.add('hidden');
+
+  if (query && active.length === 0) {
+    nomatchEl.classList.remove('hidden');
+    list.innerHTML = '';
+    pag.classList.add('hidden');
+    return;
+  }
+
+  nomatchEl.classList.add('hidden');
 
   flatTabItems = buildFlatItems(active);
   const totalPages = Math.max(1, Math.ceil(flatTabItems.length / PAGE_SIZE));
   if (currentPage >= totalPages) currentPage = totalPages - 1;
 
   const duplicates = findDuplicateUrls(allGroups);
-  const list = $('#group-list');
   list.innerHTML = '';
-
-  if (active.length === 0 && trashed.length === 0) {
-    $('#empty-state').classList.remove('hidden');
-    $('#pagination').classList.add('hidden');
-    return;
-  }
-  $('#empty-state').classList.add('hidden');
 
   const start = currentPage * PAGE_SIZE;
   const pageItems = flatTabItems.slice(start, start + PAGE_SIZE);
@@ -709,31 +642,65 @@ function renderGroupCard(group, duplicates, query, isTrash = false) {
   const header = document.createElement('div');
   header.className = 'group-header';
 
-  const title = document.createElement('span');
-  title.className = 'group-title';
-  title.textContent = displayGroupTitle(group.title, {
-    locale: browserApi.i18n.getUILanguage?.(),
-    today: (time) => t('dateToday', [time]),
-    yesterday: (time) => t('dateYesterday', [time]),
-  });
-  title.title = group.title;
-
-  const meta = document.createElement('span');
-  meta.className = 'group-meta';
-  if (group._filtered) {
-    meta.textContent = t('searchMatchCount', [group.tabs?.length || 0, totalTabs]);
+  if (renamingGroupId === group.id && !isTrash) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'rename-input group-title-input';
+    input.value = group.title;
+    input.setAttribute('aria-label', t('rename'));
+    // Enter·입력칸 벗어남은 저장, Esc는 취소. 입력칸이 사라질 때 생기는 blur 로 한 번 더 처리되지 않게 막는다
+    let renameDone = false;
+    input.addEventListener('keydown', async (e) => {
+      if (renameDone) return;
+      if (e.key === 'Enter') {
+        renameDone = true;
+        e.preventDefault();
+        await finishRename(group.id, input.value);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        renameDone = true;
+        renamingGroupId = null;
+        render();
+      }
+    });
+    input.addEventListener('blur', () => {
+      if (renameDone) return;
+      renameDone = true;
+      finishRename(group.id, input.value);
+    });
+    header.appendChild(input);
+    card.appendChild(header);
+    requestAnimationFrame(() => {
+      input.focus();
+      input.select();
+    });
   } else {
-    meta.textContent = tPlural('tabCountOne', 'tabCount', totalTabs);
-  }
+    const title = document.createElement('span');
+    title.className = 'group-title';
+    title.textContent = displayGroupTitle(group.title, {
+      locale: browserApi.i18n.getUILanguage?.(),
+      today: (time) => t('dateToday', [time]),
+      yesterday: (time) => t('dateYesterday', [time]),
+    });
+    title.title = group.title;
 
-  header.append(title, meta);
-  if (group.locked) {
-    const locked = document.createElement('span');
-    locked.className = 'locked-label';
-    locked.textContent = t('lockedLabel');
-    header.appendChild(locked);
+    const meta = document.createElement('span');
+    meta.className = 'group-meta';
+    if (group._filtered) {
+      meta.textContent = t('searchMatchCount', [group.tabs?.length || 0, totalTabs]);
+    } else {
+      meta.textContent = tPlural('tabCountOne', 'tabCount', totalTabs);
+    }
+
+    header.append(title, meta);
+    if (group.locked) {
+      const locked = document.createElement('span');
+      locked.className = 'locked-label';
+      locked.textContent = t('lockedLabel');
+      header.appendChild(locked);
+    }
+    card.appendChild(header);
   }
-  card.appendChild(header);
 
   const tabList = document.createElement('ul');
   tabList.className = 'tab-list';
@@ -745,58 +712,50 @@ function renderGroupCard(group, duplicates, query, isTrash = false) {
 
   for (const tab of tabsToShow || []) {
     const li = document.createElement('li');
-    li.className = 'tab-item';
-    li.draggable = !group.locked && !isTrash;
-    li.dataset.tabUrl = tab.url;
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'tab-item';
+    row.draggable = !group.locked && !isTrash;
+    row.dataset.tabUrl = tab.url;
+    row.setAttribute('aria-label', t('openTabAria', [tab.title || tab.url]));
 
     if (duplicates.has(normalizeUrlLocal(tab.url))) {
-      li.classList.add('duplicate');
+      row.classList.add('duplicate');
     }
 
-    appendFavicon(li, tab);
+    appendFavicon(row, tab);
 
     const main = document.createElement('div');
     main.className = 'tab-main';
-    const link = document.createElement('a');
-    link.className = 'tab-title-link';
-    link.href = tab.url;
-    link.textContent = tab.title || tab.url;
-    link.target = '_blank';
-    link.rel = 'noopener';
+    const titleText = document.createElement('span');
+    titleText.className = 'tab-title-text';
+    titleText.textContent = tab.title || tab.url;
     const domain = document.createElement('span');
     domain.className = 'tab-domain';
     domain.textContent = domainFromUrl(tab.url);
-    main.append(link, domain);
+    main.append(titleText, domain);
+    row.appendChild(main);
 
-    const actions = document.createElement('div');
-    actions.className = 'tab-actions';
-    const restoreBtn = document.createElement('button');
-    restoreBtn.className = 'btn';
-    restoreBtn.textContent = t('restore');
-    restoreBtn.setAttribute('aria-label', t('restoreTabAria', [tab.title || tab.url]));
-    restoreBtn.addEventListener('click', () => restoreTab(original, tab));
-
-    actions.appendChild(restoreBtn);
-    if (li.classList.contains('duplicate')) {
+    if (row.classList.contains('duplicate')) {
       const badge = document.createElement('span');
       badge.className = 'dup-badge';
       badge.textContent = t('duplicateLabel');
-      li.append(main, badge, actions);
-    } else {
-      li.append(main, actions);
+      row.appendChild(badge);
     }
 
     if (!isTrash) {
-      li.addEventListener('dragstart', (e) => {
+      row.addEventListener('click', () => openTab(original, tab));
+      row.addEventListener('dragstart', (e) => {
         const idx = original.tabs.findIndex((tb) => tb.url === tab.url);
         e.dataTransfer.setData('text/tab-url', tab.url);
         e.dataTransfer.setData('text/group-id', group.id);
         e.dataTransfer.setData('text/tab-index', String(idx));
       });
-      li.addEventListener('dragover', (e) => e.preventDefault());
-      li.addEventListener('drop', (e) => handleTabDrop(e, group));
+      row.addEventListener('dragover', (e) => e.preventDefault());
+      row.addEventListener('drop', (e) => handleTabDrop(e, group));
     }
 
+    li.appendChild(row);
     tabList.appendChild(li);
   }
 
@@ -818,23 +777,26 @@ function renderGroupCard(group, duplicates, query, isTrash = false) {
   actions.className = 'group-actions';
 
   if (!isTrash) {
-    addActionButton(actions, t('restoreAllCount', [totalTabs]), () => restoreGroup(original), 'btn primary');
-    addActionButton(actions, group.locked ? t('unlock') : t('lock'), () => toggleLock(group));
-    addActionButton(actions, t('rename'), () => renameGroup(group));
-    addActionButton(actions, t('delete'), () => trashGroup(group), 'btn btn-delete');
+    addLinkAction(actions, t('openAllCount', [totalTabs]), () => openGroup(original));
+    addLinkAction(actions, t('rename'), () => {
+      renamingGroupId = group.id;
+      render();
+    });
+    addLinkAction(actions, group.locked ? t('unlock') : t('lock'), () => toggleLock(group));
+    addLinkAction(actions, t('delete'), () => trashGroup(group), true);
   } else {
-    addActionButton(actions, t('restore'), () => untrashGroup(group));
-    addActionButton(actions, t('deleteForever'), () => deleteGroupPermanently(group), 'btn danger btn-delete');
+    addLinkAction(actions, t('recoverFromTrash'), () => untrashGroup(group));
+    addLinkAction(actions, t('deleteForever'), () => deleteGroupPermanently(group), true);
   }
 
   card.appendChild(actions);
   return card;
 }
 
-function addActionButton(container, label, handler, className = 'btn') {
+function addLinkAction(container, label, handler, danger = false) {
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = className;
+  btn.className = 'link-btn' + (danger ? ' danger' : '');
   btn.textContent = label;
   btn.addEventListener('click', handler);
   container.appendChild(btn);
@@ -871,7 +833,7 @@ async function handleTabDrop(e, targetGroup) {
   render();
 }
 
-async function restoreTab(group, tab) {
+async function openTab(group, tab) {
   const index = group.tabs.findIndex((tb) => tb.url === tab.url);
   if (index < 0) return;
   const res = await send('restoreTabs', {
@@ -887,18 +849,25 @@ async function restoreTab(group, tab) {
   render();
 }
 
-async function restoreGroup(group) {
-  let res = await send('restoreGroup', { groupId: group.id });
-  if (!res?.ok && res.code === 'confirm-required') {
-    if (!confirm(tPlural('restoreConfirmOne', 'restoreConfirm', res.count))) return;
-    res = await send('restoreGroup', { groupId: group.id, confirmLarge: true });
+async function openGroup(group) {
+  const count = group.tabs?.length || 0;
+  if (count >= LARGE_OPEN) {
+    pendingOpenGroupId = group.id;
+    $('#confirm-title').textContent = tPlural('restoreConfirmOne', 'restoreConfirm', count);
+    $('#confirm-dialog').showModal();
+    return;
   }
+  await doOpenGroup(group.id, false);
+}
+
+async function doOpenGroup(groupId, confirmLarge) {
+  const res = await send('restoreGroup', { groupId, confirmLarge });
   if (!res?.ok) {
     if (res.code === 'stale') await handleStale();
     return;
   }
   if (res.failed > 0) {
-    showStatusMessage(t('restoreFailedSome', [res.failed]));
+    notify(t('restoreFailedSome', [res.failed]), true);
   }
   await reloadGroups();
   render();
@@ -911,10 +880,19 @@ async function toggleLock(group) {
   render();
 }
 
-async function renameGroup(group) {
-  const newTitle = prompt(t('renamePrompt'), group.title);
-  if (!newTitle || newTitle === group.title) return;
-  const res = await send('renameGroup', { id: group.id, title: newTitle });
+async function finishRename(groupId, title) {
+  const trimmed = (title || '').trim();
+  renamingGroupId = null;
+  if (!trimmed) {
+    render();
+    return;
+  }
+  const group = allGroups.find((g) => g.id === groupId);
+  if (group && trimmed === group.title) {
+    render();
+    return;
+  }
+  const res = await send('renameGroup', { id: groupId, title: trimmed });
   if (!res?.ok && res.code === 'stale') await handleStale();
   await reloadGroups();
   render();
@@ -924,7 +902,7 @@ async function trashGroup(group) {
   const res = await send('trashGroup', { id: group.id });
   if (!res?.ok) {
     if (res.code === 'locked') {
-      showStatusMessage(t('lockedNoDelete'));
+      notify(t('lockedNoDelete'), true);
     } else if (res.code === 'stale') {
       await handleStale();
     }
@@ -945,7 +923,7 @@ async function deleteGroupPermanently(group) {
   const res = await send('deleteGroupForever', { id: group.id });
   if (!res?.ok) {
     if (res.code === 'locked') {
-      showStatusMessage(t('lockedNoDelete'));
+      notify(t('lockedNoDelete'), true);
     } else if (res.code === 'stale') {
       await handleStale();
     }
@@ -966,7 +944,6 @@ async function init() {
 
   await reloadGroups();
   await reloadBackupStatus();
-  await updateOnboarding();
   renderReviewBanner();
   render();
 }

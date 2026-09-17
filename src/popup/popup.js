@@ -1,6 +1,7 @@
 // 툴바 드롭다운: 보관·목록·되돌리기
 import { browserApi } from '../shared/browser.js';
-import { deriveFileStatus, displayGroupTitle, filterGroups } from '../shared/model.js';
+import { fileBackupStatusParts } from '../shared/backup-status-ui.js';
+import { displayGroupTitle, filterGroups } from '../shared/model.js';
 
 const GROUPS_INITIAL = 15;
 const GROUPS_MORE = 15;
@@ -115,73 +116,13 @@ function appendFavicon(parent, tab) {
   parent.appendChild(span);
 }
 
-function formatRelativeTime(ts) {
-  if (!ts) return '';
-  const sec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
-  if (sec < 60) return t('popupBackupJustNow');
-  const min = Math.floor(sec / 60);
-  if (min < 60) return t('popupBackupMinutesAgo', [min]);
-  const hr = Math.floor(min / 60);
-  if (hr < 48) return t('popupBackupHoursAgo', [hr]);
-  const uiLang = browserApi.i18n.getUILanguage?.() || 'en';
-  try {
-    return new Date(ts).toLocaleString(uiLang, { dateStyle: 'short', timeStyle: 'short' });
-  } catch {
-    return '';
-  }
-}
-
-function backupErrorMessage(code) {
-  const map = {
-    access: 'backupErrAccess',
-    disk: 'backupErrDisk',
-    name: 'backupErrName',
-    stalled: 'backupErrStalled',
-    unknown: 'backupErrUnknown',
-  };
-  return t(map[code] || 'backupErrUnknown');
-}
-
 function renderBackupStatus() {
   const el = $('#backup-status');
   if (!backupStatus?.ok) {
     el.textContent = '';
     return;
   }
-  const { revision, state, settings } = backupStatus;
-  const status = deriveFileStatus({ revision }, state, settings);
-  let dotClass = 'status-dot';
-  let text = '';
-  switch (status) {
-    case 'off':
-      dotClass += ' off';
-      text = t('popupBackupOff');
-      break;
-    case 'paused':
-      dotClass += ' failed';
-      text = t('backupFilePaused');
-      break;
-    case 'writing':
-      dotClass += ' writing';
-      text = t('popupBackupWriting');
-      break;
-    case 'failed':
-      dotClass += ' failed';
-      text = t('popupBackupFailed', [backupErrorMessage(state?.lastError?.code)]);
-      break;
-    case 'pending':
-      dotClass += ' pending';
-      text = state?.lastFileOkAt
-        ? t('popupBackupPending', [formatRelativeTime(state.lastFileOkAt)])
-        : t('popupBackupPendingNever');
-      break;
-    case 'ok':
-      text = t('popupBackupOk', [formatRelativeTime(state?.lastFileOkAt)]);
-      break;
-    default:
-      dotClass += ' off';
-      text = t('popupBackupNever');
-  }
+  const { dotClass, text } = fileBackupStatusParts(backupStatus, t);
   el.innerHTML = `<span class="${dotClass}" aria-hidden="true"></span><span>${text}</span>`;
 }
 
@@ -451,20 +392,31 @@ function renderGroupCard(group, query) {
       input.className = 'rename-input';
       input.value = group.title;
       input.setAttribute('aria-label', t('rename'));
+      // Enter·입력칸 벗어남은 저장, Esc는 취소. 입력칸이 사라질 때 생기는 blur 로 한 번 더 처리되지 않게 막는다
+      let renameDone = false;
       input.addEventListener('keydown', async (e) => {
+        if (renameDone) return;
         if (e.key === 'Enter') {
+          renameDone = true;
           await finishRename(group.id, input.value);
         } else if (e.key === 'Escape') {
+          e.preventDefault();
+          renameDone = true;
           renamingGroupId = null;
           renderGroups();
         }
       });
       input.addEventListener('blur', () => {
+        if (renameDone) return;
+        renameDone = true;
         finishRename(group.id, input.value);
       });
       card.appendChild(input);
-      input.focus();
-      input.select();
+      // 카드가 목록에 붙은 뒤에야 커서를 넣을 수 있다
+      requestAnimationFrame(() => {
+        input.focus();
+        input.select();
+      });
     } else {
       const actions = document.createElement('div');
       actions.className = 'group-actions';

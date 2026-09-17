@@ -9,27 +9,32 @@
   <link rel="stylesheet" href="vault.css">
 </head>
 <body>
-  <header class="header">
-    <h1 data-i18n="vaultTitle">TabBunker Vault</h1>
-    <div class="header-actions">
-      <input type="search" id="search" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchPlaceholder">
-      <button id="btn-import" type="button" class="btn" data-i18n="import">Import</button>
-      <button id="btn-export" type="button" class="btn" data-i18n="export">Export</button>
-      <button id="btn-settings" type="button" class="btn" data-i18n="settings">Settings</button>
+  <header class="vault-top">
+    <div class="vault-top-in">
+      <h1 data-i18n="vaultTitle">TabBunker Vault</h1>
+      <div class="vault-top-actions">
+        <input type="search" id="search" class="search-input" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchPlaceholder">
+        <button id="btn-import" type="button" class="btn" data-i18n="import">Import</button>
+        <button id="btn-export" type="button" class="btn" data-i18n="export">Export</button>
+        <button id="btn-settings" type="button" class="btn" data-i18n="settings">Settings</button>
+      </div>
+    </div>
+    <div class="vault-backup">
+      <div class="vault-backup-lines" aria-live="polite">
+        <p id="backup-line-snapshot" class="backup-status-line"></p>
+        <p id="backup-line-file" class="backup-status-line"></p>
+      </div>
+      <div class="vault-backup-actions">
+        <button id="btn-backup-now" type="button" class="btn" data-i18n="backupNow">Back up now</button>
+        <button id="btn-backup-restore" type="button" class="btn" data-i18n="backupRestoreFromFile">Restore from backup file</button>
+      </div>
+      <p id="backup-cleanup-failed" class="backup-extra hidden" data-i18n="backupCleanupFailed"></p>
+      <p id="backup-dated-failed" class="backup-extra hidden" data-i18n="backupDatedFailed"></p>
+      <p id="backup-restore-hint" class="backup-hint hidden" data-i18n="backupRestoreHint"></p>
     </div>
   </header>
 
-  <section id="backup-status" class="backup-status" aria-live="polite">
-    <div id="backup-line1" class="backup-line"></div>
-    <div id="backup-line2" class="backup-line"></div>
-    <div class="backup-actions">
-      <button id="btn-backup-now" type="button" class="btn" data-i18n="backupNow">Back up now</button>
-      <button id="btn-backup-restore" type="button" class="btn" data-i18n="backupRestoreFromFile">Restore from backup file</button>
-    </div>
-    <p id="backup-cleanup-failed" class="backup-extra hidden" data-i18n="backupCleanupFailed"></p>
-    <p id="backup-dated-failed" class="backup-extra hidden" data-i18n="backupDatedFailed"></p>
-    <p id="backup-restore-hint" class="backup-hint hidden" data-i18n="backupRestoreHint"></p>
-  </section>
+  <div id="toast" class="app-toast hidden" role="status" aria-live="polite"></div>
 
   <div id="review-banner" class="review-banner hidden" role="status" aria-live="polite">
     <p id="review-banner-text" class="review-banner-text" data-i18n="reviewPromptBody"></p>
@@ -45,27 +50,15 @@
     <button id="btn-collapse-undo" type="button" class="btn" data-i18n="undoBtn">Undo</button>
   </div>
 
-  <p id="status-message" class="status-message hidden" role="status" aria-live="polite"></p>
-
-  <section id="onboarding" class="onboarding hidden" data-i18n-aria="ariaOnboarding">
-    <h2 data-i18n="onboardingTitle">Welcome to TabBunker</h2>
-    <p data-i18n="onboardingBackup">Saved tabs are also written to a JSON file in Downloads/TabBunker. The status is shown above.</p>
-    <div id="onboarding-tips" class="onboarding-tips">
-      <ul class="tip-list">
-        <li data-i18n="tipPopup">Click the TabBunker icon in the toolbar to save or reopen tabs.</li>
-        <li data-i18n="tipPin">If you don't see the icon, pin TabBunker from the extensions menu.</li>
-        <li id="tip-shortcut"></li>
-        <li data-i18n="tipRestore">This page is for bigger jobs: import and export, dragging tabs between groups, trash, and restoring from a backup file.</li>
-      </ul>
-      <button id="btn-import-existing" type="button" class="btn" data-i18n="importExisting">Import from another tab manager</button>
-      <button id="btn-dismiss-onboarding" type="button" class="btn" data-i18n="getStarted">Got it</button>
-    </div>
-  </section>
-
   <main id="main" class="main">
+    <div id="empty-state" class="empty-state-panel hidden">
+      <p class="empty-state-title" data-i18n="vaultEmptyTitle">No saved tabs yet</p>
+      <p class="empty-state-body" data-i18n="vaultEmptyBody"></p>
+      <button id="btn-import-empty" type="button" class="btn" data-i18n="importExisting">Import from another tab manager</button>
+    </div>
+    <p id="search-nomatch" class="empty-nomatch hidden" data-i18n="popupNoMatch">No tabs match your search</p>
     <div id="group-list" class="group-list" role="list" data-i18n-aria="ariaGroupList"></div>
     <div id="pagination" class="pagination hidden" data-i18n-aria="ariaPagination"></div>
-    <p id="empty-state" class="empty hidden" data-i18n="emptyVault">Saved tabs are also written to a JSON file in Downloads/TabBunker. The status is shown above.</p>
   </main>
 
   <dialog id="import-dialog" aria-labelledby="import-dialog-title">
@@ -74,7 +67,7 @@
     <div class="dialog-actions">
       <button id="btn-import-merge" type="button" class="btn primary" data-i18n="merge">Merge</button>
       <button id="btn-import-replace" type="button" class="btn danger" data-i18n="replace">Replace All</button>
-      <button id="btn-import-cancel" type="button" class="btn" data-i18n="cancel">Cancel</button>
+      <button id="btn-import-cancel" type="button" class="btn" data-i18n="cancel" autofocus>Cancel</button>
     </div>
   </dialog>
 
@@ -91,6 +84,14 @@
     <div class="dialog-actions">
       <button id="btn-export-download" type="button" class="btn primary" data-i18n="download">Download</button>
       <button id="btn-export-cancel" type="button" class="btn" data-i18n="cancel">Cancel</button>
+    </div>
+  </dialog>
+
+  <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-title">
+    <p id="confirm-title"></p>
+    <div class="dialog-actions">
+      <button id="btn-confirm-ok" type="button" class="btn primary" data-i18n="popupConfirmOpen">Open</button>
+      <button id="btn-confirm-cancel" type="button" class="btn" data-i18n="cancel">Cancel</button>
     </div>
   </dialog>
 
