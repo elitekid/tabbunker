@@ -130,6 +130,10 @@ Bug reports, import failures, and data-recovery questions are welcome via GitHub
 - [Import failed](.github/ISSUE_TEMPLATE/import_failed.md)
 - [Data recovery](.github/ISSUE_TEMPLATE/data_recovery.md)
 
+## Sister extension: PageBunker
+
+[PageBunker](https://elitekid.github.io/pagebunker/) is a read-later extension built the same way: save the article you are reading, read it offline, search the full text, and keep an automatic backup in your Downloads folder. It imports Pocket and Instapaper exports. No account, no server. Source: [elitekid/pagebunker](https://github.com/elitekid/pagebunker).
+
 ---
 
 ## 한국어 요약
@@ -141,5 +145,7 @@ Bug reports, import failures, and data-recovery questions are welcome via GitHub
 복원 미리보기, 단일 탭·그룹 복원, 잠금, 이름 변경, 검색, 드래그, 휴지통(30일), 되돌리기 1회를 지원합니다. OneTab 텍스트, Session Buddy JSON, TabBunker JSON 가져오기와 JSON·OneTab 텍스트·HTML 북마크 내보내기가 가능합니다.
 
 권한은 `tabs`, `storage`/`unlimitedStorage`, `downloads`, `alarms`, `contextMenus`, 크롬만 `favicon`이며 호스트 권한·네트워크 요청·계정·분석 SDK는 없습니다. Chrome·Edge(동일 zip), Firefox(별도 zip), 영어·한국어 UI를 지원합니다.
+
+같은 개발자의 [PageBunker](https://elitekid.github.io/pagebunker/)는 같은 방식으로 만든 나중에 읽기 확장입니다. 읽던 글을 저장해 인터넷 없이 읽고 본문 전체를 검색하며, 다운로드 폴더에 자동으로 백업합니다. Pocket·Instapaper 내보내기를 가져올 수 있고 가입·서버가 없습니다.
 
 빌드: `node scripts/build.mjs` → `dist/`. 스모크 테스트: `node tools/scenario.mjs <dist/chrome 절대경로>`, `node tools/scenario-firefox.mjs <dist/firefox 절대경로>`.
