@@ -43,7 +43,7 @@ Permissions, explained
 - favicon (Chrome only): read favicons from the browser local cache for the vault. No network requests.
 
 Switching from OneTab or Session Buddy
-Export your data from the old extension, open the TabBunker vault, click Import, and paste or choose the file. You will see a preview of what will be merged before anything changes.
+Export your data from the old extension, open the TabBunker vault, click Import, and choose the exported file (for OneTab, save its text export to a .txt file first). You will see a preview of what will be merged before anything changes.
 
 Website: https://elitekid.github.io/tabbunker/
 Source code and issues: https://github.com/elitekid/tabbunker

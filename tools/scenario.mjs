@@ -209,7 +209,7 @@ function spawnChrome() {
   mkdirSync(join(profile, 'crash'), { recursive: true });
   return spawn(CHROME, [
     '--headless=new', '--no-first-run', '--no-default-browser-check', '--disable-gpu',
-    '--no-sandbox', '--disable-setuid-sandbox',
+    '--no-sandbox', '--use-mock-keychain', '--password-store=basic', '--disable-setuid-sandbox',
     '--remote-allow-origins=*', '--disable-breakpad',
     `--crash-dumps-dir=${join(profile, 'crash')}`,
     `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
@@ -468,7 +468,7 @@ try {
   writeChromePrefs(f12Profile, { prompt_for_download: true });
   const f12Port = port + 1;
   const f12Chrome = spawn(CHROME, [
-    '--headless=new', '--no-first-run', '--disable-gpu',
+    '--headless=new', '--no-first-run', '--disable-gpu', '--use-mock-keychain', '--password-store=basic',
     `--remote-debugging-port=${f12Port}`, `--user-data-dir=${f12Profile}`,
     `--load-extension=${ext}`, `--disable-extensions-except=${ext}`, 'about:blank',
   ], { stdio: 'ignore' });

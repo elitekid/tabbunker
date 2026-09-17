@@ -84,7 +84,7 @@ function addCaption(rawPath, outPath, caption, lang) {
   const font = lang === 'ko' ? KO_FONT : '/System/Library/Fonts/Supplemental/Arial.ttf';
   const safe = caption.replace(/"/g, '\\"');
   // 스토어 규격 1280x800 유지: 화면을 1088x680 으로 줄여 위에 두고, 아래 120px 띠에 캡션을 줄바꿈해 넣는다
-  execSync(`magick -size 1280x800 xc:"#16213a" \\( "${rawPath}" -resize 1088x680 \\) -gravity north -geometry +0+0 -composite \\( -size 1200x104 -background none -fill white -font "${font}" -pointsize 40 -gravity center caption:"${safe}" \\) -gravity south -geometry +0+8 -composite "${outPath}"`);
+  execSync(`magick -size 1280x800 xc:"#16213a" \\( "${rawPath}" -resize 1088x680 \\) -gravity north -geometry +0+0 -composite \\( -size 1200x104 -background none -fill white -font "${font}" -pointsize 40 -gravity center caption:"${safe}" \\) -gravity south -geometry +0+8 -composite -alpha off -depth 8 -strip "PNG24:${outPath}"`); // 크롬 스토어: 24비트 PNG(알파 없음)만 받음
 }
 
 // 사이트(docs/assets)용: 기능 부분만 2배 해상도로 잘라 캡션 없이 저장한다. 스토어 캡처와 달리 크게 읽히는 것이 목적.
@@ -142,7 +142,7 @@ for (const lang of ['en', 'ko']) {
     headless: true,
     userDataDir: profile,
     ignoreDefaultArgs: ['--disable-extensions'],
-    args: ['--no-sandbox', `--load-extension=${ext}`, `--disable-extensions-except=${ext}`, `--lang=${lang}`],
+    args: ['--no-sandbox', '--use-mock-keychain', '--password-store=basic', `--load-extension=${ext}`, `--disable-extensions-except=${ext}`, `--lang=${lang}`],
     env: { ...process.env, LANG: lang === 'ko' ? 'ko_KR.UTF-8' : 'en_US.UTF-8' },
   });
   await sleep(2500);

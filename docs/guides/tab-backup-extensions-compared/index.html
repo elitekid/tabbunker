@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tab backup extensions compared: OneTab, Session Buddy, Tab Session Manager, TheTab, Toby, TabBunker</title>
+<meta name="description" content="A dated look at tab saver extensions: free tier, automatic file backup, preview before restore, open source, account, browsers, users and last update.">
+<link rel="canonical" href="https://elitekid.github.io/tabbunker/guides/tab-backup-extensions-compared/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tab backup extensions compared: OneTab, Session Buddy, Tab Session Manager, TheTab, Toby, TabBunker">
+<meta property="og:description" content="A dated look at tab saver extensions: free tier, automatic file backup, preview before restore, open source, account, browsers, users and last update.">
+<meta property="og:url" content="https://elitekid.github.io/tabbunker/guides/tab-backup-extensions-compared/">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAQAElEQVR4nOydCXwV9bXHz2QnIEKACAhK6wIESEgkriw+F2zdJVihyJZga12q7RNfrVbp+9j6RGtVROizbCICT0ARtYraIrghCCgoKkrBsCYkLBJCyDLvPzN37r3JTVQk57/M/X0TTn45KMnMnPM//21mkmzbJgCAOhIIAKAUJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqCYJAouX3y59ast27YU79y+o2R3admesv37D3xzsKKy6siR2to6AvqRmJCQmpbSMr1Fm9bHtcs4vmNmuxM7Z3br2umUbl1OP/VkCihWkF6Ndqjy8Acfbli9buNHG77YsPGr6poaAkEhOTmpd49Tcvqc3i+n55ln9E5vkUZBIQhJuLuk7M3lHyx758N3Vn5kWSQOyLKc47KIxLGFNPzB8p97Zvb55/W7cGD+CZntyHDMTsKXlq54+bUVK95fRyBeGXB27mWX9L988AAyFiOTsGTP3vnPL12w+I2y8n3h3z7UXkZZ+OPH3z6jzdCrLrrumsGZ7duSaRiWhDt2ls6a99KcBf8gABrj50N/MmbYFZ07dSBzMCYJKyoqp85cOH3OYgLguygccdWNYwpatmxBJmBGEorO56Sn5u/bfyAyWI8euENDx+iMNq1vueE60UEl7dE9CT/btOXhJ2a/t+pjAuDoOSc/+45bRvY4rRtpjNZJOHPukocnPe1OT7vtXMzQHH74v49//K2jxgy/gnRF0yQ8WFF59/2T31j2vn9eYWGPyV406Mw/3XNLKy1HiTom4UcbvrhzwmPbdpQQAM1Hl86ZEyfcltP7dNIM7ZLw5aUrRAbG9C2goZtHT/zjbZdptrKvVxLOmrtk4qSnCQBO7rx11GidhogaJeETT82fMv25hkNtWFgGe1PRtbeMu470QJf7CR+d+uyUGc+JboM4Rw2tRfDD37z+KdMXiJAjPdCiEooa+OT058hvpTygobm1JvVQfSUU40DRCxWtU7iVgoaWo0U9FGvRpBrFlfCl19y50FBf3SO2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">
+<style>
+  :root { --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea; --bg:#fafbfc; --card:#fff; --accent:#1f5fbf; --navy:#16213a; --navy2:#2b3a55; --gold:#f5b83d; --warn:#b3540b; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; font-family:-apple-system,"Segoe UI",Inter,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 20px; }
+  .narrow { max-width:760px; }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; background:var(--card); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; }
+  nav .brand { display:flex; align-items:center; gap:10px; font-weight:700; text-decoration:none; color:var(--ink); }
+  nav .brand img { width:28px; height:28px; border-radius:7px; }
+  nav .links a { margin-left:16px; color:var(--muted); text-decoration:none; font-size:14px; }
+  nav .links a:hover { color:var(--ink); }
+  .lang { border:1px solid var(--line); border-radius:999px; padding:3px 10px; font-size:13px; background:#fff; cursor:pointer; margin-left:16px; }
+  header.hero { background:radial-gradient(circle at 15% 15%, var(--navy2) 0, var(--navy) 60%); color:#fff; padding:48px 20px 40px; }
+  .hero h1 { font-size:36px; line-height:1.15; margin:0 0 12px; letter-spacing:-.8px; }
+  .hero p.lead { font-size:17px; color:#dbe3f0; margin:0 0 10px; }
+  .hero small { display:block; color:#9fb0cc; font-size:13px; }
+  .btn { display:inline-block; padding:11px 18px; border-radius:8px; text-decoration:none; font-weight:600; font-size:15px; border:1px solid transparent; }
+  .btn.gold { background:var(--gold); color:var(--navy); }
+  .btn.ghost { border-color:#7d8aa8; color:var(--navy); }
+  article { padding:36px 0 20px; }
+  h2 { font-size:24px; margin:40px 0 8px; letter-spacing:-.4px; }
+  h3 { font-size:17px; margin:22px 0 6px; }
+  p, li { font-size:16px; }
+  ul, ol { padding-left:22px; }
+  li { margin:6px 0; }
+  a { color:var(--accent); }
+  .honest { border-left:4px solid var(--warn); background:#fff6ee; padding:12px 16px; border-radius:6px; margin:18px 0; font-size:15px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin:18px 0; }
+  .card.cta { border-style:dashed; }
+  .cta .btns { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+  .muted { color:var(--muted); font-size:14px; }
+  .checked { font-size:14px; color:var(--muted); margin:0 0 10px; }
+  .tablewrap { overflow-x:auto; margin:10px 0 6px; }
+  table { width:100%; border-collapse:collapse; background:var(--card); font-size:14px; min-width:900px; }
+  th, td { border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top; }
+  th { background:#f1f3f6; }
+  td.name { font-weight:600; white-space:nowrap; }
+  code { background:#f1f3f6; padding:1px 6px; border-radius:4px; font-size:13px; word-break:break-all; }
+  footer { color:var(--muted); font-size:13px; padding:34px 20px 54px; border-top:1px solid var(--line); }
+  footer a { color:var(--accent); }
+  body:not(.ko) [data-lang="ko"] { display:none !important; }
+  body.ko [data-lang="en"] { display:none !important; }
+  [hidden] { display:none !important; } /* 스토어 주소가 나오기 전 설치 버튼 숨김 */
+  @media (max-width:760px) { .hero h1 { font-size:28px; } nav .links a:not(.lang) { display:none; } }
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="../../"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAQAElEQVR4nOydCXwV9bXHz2QnIEKACAhK6wIESEgkriw+F2zdJVihyJZga12q7RNfrVbp+9j6RGtVROizbCICT0ARtYraIrghCCgoKkrBsCYkLBJCyDLvPzN37r3JTVQk57/M/X0TTn45KMnMnPM//21mkmzbJgCAOhIIAKAUJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqAYJCEAikESAqCYJAouX3y59ast27YU79y+o2R3admesv37D3xzsKKy6siR2to6AvqRmJCQmpbSMr1Fm9bHtcs4vmNmuxM7Z3br2umUbl1OP/VkCihWkF6Ndqjy8Acfbli9buNHG77YsPGr6poaAkEhOTmpd49Tcvqc3i+n55ln9E5vkUZBIQhJuLuk7M3lHyx758N3Vn5kWSQOyLKc47KIxLGFNPzB8p97Zvb55/W7cGD+CZntyHDMTsKXlq54+bUVK95fRyBeGXB27mWX9L988AAyFiOTsGTP3vnPL12w+I2y8n3h3z7UXkZZ+OPH3z6jzdCrLrrumsGZ7duSaRiWhDt2ls6a99KcBf8gABrj50N/MmbYFZ07dSBzMCYJKyoqp85cOH3OYgLguygccdWNYwpatmxBJmBGEorO56Sn5u/bfyAyWI8euENDx+iMNq1vueE60UEl7dE9CT/btOXhJ2a/t+pjAuDoOSc/+45bRvY4rRtpjNZJOHPukocnPe1OT7vtXMzQHH74v49//K2jxgy/gnRF0yQ8WFF59/2T31j2vn9eYWGPyV406Mw/3XNLKy1HiTom4UcbvrhzwmPbdpQQAM1Hl86ZEyfcltP7dNIM7ZLw5aUrRAbG9C2goZtHT/zjbZdptrKvVxLOmrtk4qSnCQBO7rx11GidhogaJeETT82fMv25hkNtWFgGe1PRtbeMu470QJf7CR+d+uyUGc+JboM4Rw2tRfDD37z+KdMXiJAjPdCiEooa+OT058hvpTygobm1JvVQfSUU40DRCxWtU7iVgoaWo0U9FGvRpBrFlfCl19y50FBf3SO2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" alt="">TabBunker</a>
+  <div class="links">
+    <a href="../../" data-lang="en">Home</a><a href="../../" data-lang="ko">홈</a>
+    <a href="../" data-lang="en">Guides</a><a href="../" data-lang="ko">안내 글</a>
+    <a href="../../recover/" data-lang="en">Recovery tool</a><a href="../../recover/" data-lang="ko">복구 도구</a>
+    <a href="https://github.com/elitekid/tabbunker">GitHub</a>
+    <button class="lang" id="lang-toggle" type="button">한국어</button>
+  </div>
+</nav>
+
+<header class="hero"><div class="wrap narrow">
+  <h1 data-lang="en">Tab backup extensions compared</h1>
+  <h1 data-lang="ko">탭 백업 확장 비교</h1>
+  <p class="lead" data-lang="en">OneTab, Session Buddy, Tab Session Manager, TheTab, Toby, and TabBunker, on the things that matter when a saved list goes missing: does a file exist outside the browser, can you see what a restore will do, and what does it cost.</p>
+  <p class="lead" data-lang="ko">OneTab, Session Buddy, Tab Session Manager, TheTab, Toby, TabBunker를 저장 목록이 사라졌을 때 중요한 기준으로 비교합니다. 브라우저 밖에 파일이 남는지, 복원 전에 무엇이 바뀔지 볼 수 있는지, 비용은 얼마인지.</p>
+  <small data-lang="en">Written by the TabBunker author. Facts checked 2026-09-16 on each product's Chrome Web Store page and official site. Corrections welcome.</small>
+  <small data-lang="ko">TabBunker 제작자가 썼습니다. 사실은 2026-09-16에 각 제품의 크롬 웹 스토어 페이지와 공식 사이트에서 확인했습니다. 정정은 언제든 환영합니다.</small>
+</div></header>
+
+<article><div class="wrap">
+
+  <div class="wrap narrow" style="padding:0">
+  <p data-lang="en">This page is written by the person who makes TabBunker, so read it as one participant's notes, not a neutral review. To keep it fair: every product gets a line on what it does well, TabBunker's weaknesses are listed in their own box, and anything we did not verify is marked "not checked" rather than assumed.</p>
+  <p data-lang="ko">이 글은 TabBunker를 만드는 사람이 썼습니다. 중립적인 리뷰가 아니라 참여자 한 명의 정리로 읽어 주세요. 공정하게 쓰기 위해 제품마다 잘하는 점을 한 줄씩 적었고, TabBunker의 약점은 따로 상자에 모았으며, 확인하지 못한 항목은 넘겨짚지 않고 "확인 못함"으로 표시했습니다.</p>
+  </div>
+
+  <h2 data-lang="en">The table</h2><h2 data-lang="ko">비교표</h2>
+  <p class="checked" data-lang="en">Checked 2026-09-16 on each product's store page. User counts and versions are what the Chrome Web Store showed that day. TabBunker facts come from its own source code and documentation. "Not checked" means we did not verify it, not that the product lacks it.</p>
+  <p class="checked" data-lang="ko">2026-09-16 기준 각 스토어 페이지에서 확인. 사용자 수와 버전은 그날 크롬 웹 스토어에 표시된 값입니다. TabBunker 항목은 소스 코드와 문서에서 가져왔습니다. "확인 못함"은 확인하지 않았다는 뜻이지 그 기능이 없다는 뜻이 아닙니다.</p>
+
+  <div class="tablewrap" data-lang="en">
+  <table>
+    <tr>
+      <th>Product</th><th>Free?</th><th>Automatic file backup</th><th>Preview before restore or import</th><th>Open source</th><th>Account required</th><th>Browsers</th><th>Users and last update (2026-09-16)</th>
+    </tr>
+    <tr>
+      <td class="name">TabBunker</td>
+      <td>Free. No paid tier.</td>
+      <td>Yes. After each change (30 seconds by default, 5 or 30 minutes selectable) it overwrites <code>tabbunker-latest.json</code> in Downloads/TabBunker and keeps an hourly dated copy (30 kept). Can be turned off.</td>
+      <td>Yes, for both restore and import. Import shows group and tab counts and overlap, then offers Merge or Replace all.</td>
+      <td>Yes, MIT license.</td>
+      <td>No. No server, no network requests.</td>
+      <td>Chrome, Edge, Firefox. No Safari.</td>
+      <td>Listed on the Chrome Web Store and Microsoft Edge Add-ons on September 17, 2026. The Firefox listing is still in review. Too new for a user count or rating.</td>
+    </tr>
+    <tr>
+      <td class="name">OneTab</td>
+      <td>Free.</td>
+      <td>No automatic file backup. Manual text export and import.</td>
+      <td>Not checked.</td>
+      <td>Not checked.</td>
+      <td>Not checked.</td>
+      <td>Chrome (store page checked). Its troubleshooting page also covers Edge and Firefox.</td>
+      <td>2,000,000 users. v2.18, 2026-07-05. Interface in 48 languages.</td>
+    </tr>
+    <tr>
+      <td class="name">Session Buddy</td>
+      <td>Free. A future cloud feature is announced as paid.</td>
+      <td>Not checked. Has a manual Backup command and export and import in more than 15 formats (JSON, CSV, HTML and others).</td>
+      <td>Not checked.</td>
+      <td>Not checked.</td>
+      <td>Not checked.</td>
+      <td>Chrome (store page checked). Others not checked.</td>
+      <td>1,000,000 users. v4.1.2, 2026-04-28. Interface in 1 language.</td>
+    </tr>
+    <tr>
+      <td class="name">Tab Session Manager</td>
+      <td>Free.</td>
+      <td>Yes. Automatic session save, automatic backup files in a "TabSessionManager - Backup" folder under Downloads, JSON export and import, and Google Drive sync.</td>
+      <td>Not checked.</td>
+      <td>Yes.</td>
+      <td>Not checked. Google Drive sync is offered as a feature.</td>
+      <td>Chrome, Firefox, Edge.</td>
+      <td>100,000 users. v7.4.0, 2026-07-18. Interface in 32 languages.</td>
+    </tr>
+    <tr>
+      <td class="name">TheTab</td>
+      <td>Free.</td>
+      <td>Yes. Scheduled daily or weekly backup file in the Downloads folder, a bookmark-folder mirror, and a crash snapshot every 5 minutes. Full JSON export. Imports OneTab, Session Buddy, and Tab Session Manager data.</td>
+      <td>Not mentioned on its store page.</td>
+      <td>Not mentioned on its store page.</td>
+      <td>Not checked.</td>
+      <td>Chrome (store page checked). Others not checked.</td>
+      <td>About 1,000 users. v3.22.2, 2026-09-15. Interface in 55 languages.</td>
+    </tr>
+    <tr>
+      <td class="name">Toby</td>
+      <td>Free plan limits saved tabs to 60. Paid plan is $6 per month, or $4.50 per month billed yearly (official pricing page).</td>
+      <td>No automatic file backup. Cloud sync. Export is mentioned in its FAQ.</td>
+      <td>Not checked.</td>
+      <td>Not checked.</td>
+      <td>Not checked.</td>
+      <td>Chrome (store page checked). Others not checked.</td>
+      <td>300,000 users. v1.13.1, 2026-06-03. Interface in 1 language.</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="tablewrap" data-lang="ko">
+  <table>
+    <tr>
+      <th>제품</th><th>무료 여부</th><th>자동 파일 백업</th><th>복원·가져오기 전 미리보기</th><th>오픈소스</th><th>계정 필요</th><th>지원 브라우저</th><th>사용자 수·마지막 업데이트 (2026-09-16)</th>
+    </tr>
+    <tr>
+      <td class="name">TabBunker</td>
+      <td>무료. 유료 등급 없음.</td>
+      <td>있음. 변경할 때마다(기본 30초, 5분·30분 선택) 다운로드 폴더 안 TabBunker 폴더의 <code>tabbunker-latest.json</code>을 덮어쓰고, 한 시간에 하나씩 날짜 파일을 남김(최근 30개). 끌 수 있음.</td>
+      <td>있음. 복원과 가져오기 모두. 가져오기는 그룹·탭 수와 겹치는 양을 보여 준 뒤 합치기 또는 전체 바꾸기를 고르게 함.</td>
+      <td>예. MIT 라이선스.</td>
+      <td>아니요. 서버도 네트워크 요청도 없음.</td>
+      <td>크롬, 엣지, 파이어폭스. 사파리는 미지원.</td>
+      <td>2026년 9월 17일 크롬 웹 스토어와 엣지 부가 기능에 공개. 파이어폭스는 아직 심사 중. 막 공개돼 사용자 수와 평점은 아직 없음.</td>
+    </tr>
+    <tr>
+      <td class="name">OneTab</td>
+      <td>무료.</td>
+      <td>자동 파일 백업 없음. 텍스트 내보내기·가져오기는 수동.</td>
+      <td>확인 못함.</td>
+      <td>확인 못함.</td>
+      <td>확인 못함.</td>
+      <td>크롬(스토어 페이지 확인). 문제 해결 문서는 엣지와 파이어폭스도 다룸.</td>
+      <td>사용자 200만. v2.18, 2026-07-05. 48개 언어.</td>
+    </tr>
+    <tr>
+      <td class="name">Session Buddy</td>
+      <td>무료. 앞으로 나올 클라우드 기능만 유료로 예고.</td>
+      <td>확인 못함. 수동 Backup 명령이 있고, 15개 이상 형식(JSON, CSV, HTML 등)으로 내보내기·가져오기 가능.</td>
+      <td>확인 못함.</td>
+      <td>확인 못함.</td>
+      <td>확인 못함.</td>
+      <td>크롬(스토어 페이지 확인). 그 외 확인 못함.</td>
+      <td>사용자 100만. v4.1.2, 2026-04-28. 1개 언어.</td>
+    </tr>
+    <tr>
+      <td class="name">Tab Session Manager</td>
+      <td>무료.</td>
+      <td>있음. 세션 자동 저장, 다운로드 폴더 안 "TabSessionManager - Backup" 폴더에 자동 백업 파일, JSON 내보내기·가져오기, Google Drive 동기화.</td>
+      <td>확인 못함.</td>
+      <td>예.</td>
+      <td>확인 못함. Google Drive 동기화 기능이 있음.</td>
+      <td>크롬, 파이어폭스, 엣지.</td>
+      <td>사용자 10만. v7.4.0, 2026-07-18. 32개 언어.</td>
+    </tr>
+    <tr>
+      <td class="name">TheTab</td>
+      <td>무료.</td>
+      <td>있음. 일·주 단위로 예약한 백업 파일을 다운로드 폴더에 저장, 북마크 폴더 미러, 5분마다 충돌 대비 스냅샷. JSON 전체 내보내기. OneTab, Session Buddy, Tab Session Manager 데이터 가져오기.</td>
+      <td>스토어 페이지에 언급 없음.</td>
+      <td>스토어 페이지에 언급 없음.</td>
+      <td>확인 못함.</td>
+      <td>크롬(스토어 페이지 확인). 그 외 확인 못함.</td>
+      <td>사용자 약 1천. v3.22.2, 2026-09-15. 55개 언어.</td>
+    </tr>
+    <tr>
+      <td class="name">Toby</td>
+      <td>무료 요금제는 저장 탭 60개 제한. 유료는 월 6달러, 연간 결제 시 월 4.5달러(공식 요금 페이지).</td>
+      <td>자동 파일 백업 없음. 클라우드 동기화. FAQ에 내보내기 언급.</td>
+      <td>확인 못함.</td>
+      <td>확인 못함.</td>
+      <td>확인 못함.</td>
+      <td>크롬(스토어 페이지 확인). 그 외 확인 못함.</td>
+      <td>사용자 30만. v1.13.1, 2026-06-03. 1개 언어.</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="wrap narrow" style="padding:0">
+
+  <h2 data-lang="en">What each one does well</h2><h2 data-lang="ko">각 제품이 잘하는 점</h2>
+  <ul data-lang="en">
+    <li><b>OneTab</b> has the largest user base here and a plain text export that many other tools, TabBunker included, can read. It has been around long enough to have a documented troubleshooting path, and it ships in 48 languages.</li>
+    <li><b>Session Buddy</b> has the highest rating of the group with the most reviews, exports in more than 15 formats, and publishes data-location and backup documents that make manual recovery possible.</li>
+    <li><b>Tab Session Manager</b> already covers automatic save, automatic file backup, and cloud sync through Google Drive, is open source, and runs on all three browsers. Its focus is sessions and window state rather than a one-click list, which suits people who want whole windows back.</li>
+    <li><b>TheTab</b> combines scheduled daily or weekly file backups with a bookmark mirror and a crash snapshot, imports from three other tools, and was updated the day before we checked. It supports 55 languages.</li>
+    <li><b>Toby</b> syncs through the cloud, so a list saved on one computer shows up on another, and it has a large user base for a product with a paid plan.</li>
+    <li><b>TabBunker</b> writes the backup file after every change rather than on a schedule, shows a preview before restore and import, is open source, and uses a small permission set with no host permissions. Chrome, Edge, and Firefox from the same code.</li>
+  </ul>
+  <ul data-lang="ko">
+    <li><b>OneTab</b>은 이 중에서 사용자가 가장 많고, 텍스트 내보내기 형식이 단순해 TabBunker를 포함한 여러 도구가 그대로 읽습니다. 오래 쓰인 만큼 문제 해결 절차가 문서로 정리돼 있고, 48개 언어를 지원합니다.</li>
+    <li><b>Session Buddy</b>는 이 중 평점이 가장 높고 리뷰도 가장 많으며, 15개 이상 형식으로 내보낼 수 있고, 데이터 위치와 백업 문서를 공개해 손으로 복구할 길을 열어 둡니다.</li>
+    <li><b>Tab Session Manager</b>는 자동 저장, 자동 파일 백업, Google Drive를 통한 클라우드 동기화를 이미 제공하고, 오픈소스이며, 세 브라우저에서 모두 동작합니다. 목록보다 세션과 창 상태에 초점이 있어 창을 통째로 되살리고 싶은 사람에게 맞습니다.</li>
+    <li><b>TheTab</b>은 일·주 단위 예약 파일 백업에 북마크 미러와 충돌 대비 스냅샷을 더했고, 다른 도구 세 가지의 데이터를 가져올 수 있으며, 확인 전날에도 업데이트됐습니다. 55개 언어를 지원합니다.</li>
+    <li><b>Toby</b>는 클라우드로 동기화해 한 컴퓨터에서 저장한 목록이 다른 컴퓨터에도 보이고, 유료 요금제가 있는 제품치고 사용자가 많습니다.</li>
+    <li><b>TabBunker</b>는 정해진 시각이 아니라 변경이 있을 때마다 백업 파일을 쓰고, 복원과 가져오기 전에 미리보기를 보여 주며, 오픈소스이고, 호스트 권한 없이 적은 권한만 씁니다. 같은 코드로 크롬·엣지·파이어폭스를 지원합니다.</li>
+  </ul>
+
+  <div class="honest" data-lang="en"><b>Where TabBunker is behind.</b>
+    <ul>
+      <li>It is new. At the time of writing it is not in any store, so it has no user count, no rating, and no track record.</li>
+      <li>No sync. There is no server, so a list on one computer does not appear on another. You copy the JSON file by hand.</li>
+      <li>No Safari. In Firefox, saved tabs show a domain initial instead of a favicon.</li>
+      <li>The interface is in English and Korean only, against 32 to 55 languages for some of the others.</li>
+      <li>The file backup can be switched off, only covers changes made after install, and does not help with a failing disk or a deleted Downloads folder.</li>
+    </ul>
+  </div>
+  <div class="honest" data-lang="ko"><b>TabBunker가 뒤처지는 점.</b>
+    <ul>
+      <li>신규 제품입니다. 이 글을 쓰는 시점에 어느 스토어에도 올라가 있지 않아 사용자 수도 평점도 사용 이력도 없습니다.</li>
+      <li>동기화가 없습니다. 서버가 없으니 한 컴퓨터의 목록이 다른 컴퓨터에 나타나지 않습니다. JSON 파일을 직접 복사해야 합니다.</li>
+      <li>사파리를 지원하지 않습니다. 파이어폭스에서는 파비콘 대신 도메인 첫 글자가 보입니다.</li>
+      <li>화면 언어는 영어와 한국어뿐입니다. 다른 제품 일부는 32개에서 55개 언어를 지원합니다.</li>
+      <li>파일 백업은 끌 수 있고, 설치 이후의 변경만 담으며, 디스크 고장이나 다운로드 폴더 삭제에는 도움이 되지 않습니다.</li>
+    </ul>
+  </div>
+
+  <h2 data-lang="en">Which one fits which need</h2><h2 data-lang="ko">어떤 경우에 어떤 제품이 맞나</h2>
+  <ul data-lang="en">
+    <li><b>You want the list on more than one computer.</b> Tab Session Manager (Google Drive) or Toby (its own cloud). TabBunker has no sync.</li>
+    <li><b>You want whole windows and sessions back, not just a list.</b> Tab Session Manager.</li>
+    <li><b>You want a backup file on a schedule plus a bookmark copy.</b> TheTab.</li>
+    <li><b>You are happy with OneTab or Session Buddy and only want a safety copy.</b> Export on a schedule and keep the file outside the browser profile. If something has already gone wrong, start with <a href="../recover-lost-tabs/">the recovery guide</a>.</li>
+    <li><b>You want a file written after every change, a preview before anything is restored, and no account.</b> TabBunker.</li>
+  </ul>
+  <ul data-lang="ko">
+    <li><b>목록을 여러 컴퓨터에서 보고 싶다.</b> Tab Session Manager(Google Drive) 또는 Toby(자체 클라우드). TabBunker에는 동기화가 없습니다.</li>
+    <li><b>목록이 아니라 창과 세션을 통째로 되살리고 싶다.</b> Tab Session Manager.</li>
+    <li><b>정해진 주기의 백업 파일과 북마크 사본을 원한다.</b> TheTab.</li>
+    <li><b>OneTab이나 Session Buddy가 만족스럽고 안전한 사본만 필요하다.</b> 정기적으로 내보내고 파일을 브라우저 프로필 밖에 두세요. 이미 문제가 생겼다면 <a href="../recover-lost-tabs/">복구 안내</a>부터 보세요.</li>
+    <li><b>변경할 때마다 파일이 남고, 복원 전에 미리 보고, 계정은 만들고 싶지 않다.</b> TabBunker.</li>
+  </ul>
+
+  <div class="card cta">
+    <b data-lang="en">Trying TabBunker</b>
+    <b data-lang="ko">TabBunker 써 보기</b>
+    <p class="muted" data-lang="en">Free and open source. One click closes the tabs in the current window into a local vault, and a JSON backup lands in Downloads/TabBunker after each change. Imports OneTab text and Session Buddy JSON with a preview, so you can keep your old extension installed until the vault looks right.</p>
+    <p class="muted" data-lang="ko">무료 오픈소스입니다. 클릭 한 번으로 현재 창의 탭을 로컬 보관함에 넣고, 변경할 때마다 다운로드 폴더 안 TabBunker 폴더에 JSON 백업이 남습니다. OneTab 텍스트와 Session Buddy JSON을 미리보기와 함께 가져오므로, 보관함이 제대로 보일 때까지 기존 확장을 그대로 두어도 됩니다.</p>
+    <div class="btns">
+      <a class="btn gold" href="https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm" data-lang="en">Add to Chrome</a><a class="btn gold" href="https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm" data-lang="ko">크롬에 추가</a>
+      <a hidden data-store-pending class="btn ghost" href="{FIREFOX_ADDON_URL}">Firefox</a>
+      <a class="btn ghost" href="https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf">Edge</a>
+      <a class="btn ghost" href="../../" data-lang="en">What TabBunker does</a><a class="btn ghost" href="../../" data-lang="ko">TabBunker 소개</a>
+      <a class="btn ghost" href="https://github.com/elitekid/tabbunker">GitHub</a>
+    </div>
+  </div>
+
+  <h2 data-lang="en">How this was checked</h2><h2 data-lang="ko">확인 방법</h2>
+  <p class="muted" data-lang="en">On 2026-09-16 we opened each product's Chrome Web Store page and recorded the user count, version, update date, language count, and the backup and export features described there. Toby's pricing comes from its official pricing page. Tab Session Manager's open source status and backup folder come from its public repository. TabBunker's entries come from its source code and README. We did not install and test the other products for this page, which is why several cells say "not checked". If you make one of these products and a cell is wrong, open an issue and it will be fixed with the new date noted.</p>
+  <p class="muted" data-lang="ko">2026-09-16에 각 제품의 크롬 웹 스토어 페이지를 열어 사용자 수, 버전, 업데이트 날짜, 언어 수, 그리고 거기에 적힌 백업·내보내기 기능을 기록했습니다. Toby의 요금은 공식 요금 페이지에서, Tab Session Manager의 오픈소스 여부와 백업 폴더는 공개 저장소에서 가져왔습니다. TabBunker 항목은 소스 코드와 README에서 가져왔습니다. 이 글을 위해 다른 제품을 설치해 직접 써 보지는 않았고, 그래서 여러 칸이 "확인 못함"입니다. 이 제품들을 만드는 분이 틀린 칸을 발견하면 이슈를 남겨 주세요. 날짜를 적고 고치겠습니다.</p>
+  <p class="muted" data-lang="en">Corrections: <a href="https://github.com/elitekid/tabbunker/issues">GitHub Issues</a>.</p>
+  <p class="muted" data-lang="ko">정정 요청: <a href="https://github.com/elitekid/tabbunker/issues">GitHub Issues</a>.</p>
+
+  </div>
+</div></article>
+
+<footer><div class="wrap">
+  <span data-lang="en">TabBunker is open source. <a href="https://github.com/elitekid/tabbunker">Source code</a> · <a href="https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md">Privacy policy</a> · <a href="../../recover/">Recovery tool</a> · <a href="../">Guides</a> · <a href="https://github.com/elitekid/tabbunker/issues">Report a problem</a></span>
+  <span data-lang="ko">TabBunker는 오픈소스입니다. <a href="https://github.com/elitekid/tabbunker">소스 코드</a> · <a href="https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md">개인정보 처리방침</a> · <a href="../../recover/">복구 도구</a> · <a href="../">안내 글</a> · <a href="https://github.com/elitekid/tabbunker/issues">문제 신고</a></span>
+</div></footer>
+<script>
+  const btn = document.getElementById('lang-toggle');
+  const apply = (ko) => { document.body.classList.toggle('ko', ko); document.documentElement.lang = ko ? 'ko' : 'en'; btn.textContent = ko ? 'English' : '한국어'; localStorage.setItem('tb-lang', ko ? 'ko' : 'en'); };
+  const saved = localStorage.getItem('tb-lang');
+  apply(saved ? saved === 'ko' : (navigator.language || '').toLowerCase().startsWith('ko'));
+  btn.addEventListener('click', () => apply(!document.body.classList.contains('ko')));
+</script>
+<!-- 확인 필요: OneTab의 엣지·파이어폭스 지원은 위기 복구 글 초안이 인용한 OneTab 문제 해결 문서(크롬/엣지 폴더, Firefox Refresh 언급)에서 간접 확인한 것이다. 게시 전 OneTab 공식 사이트의 브라우저 목록을 직접 확인할 것. -->
+<!-- 확인 필요: Session Buddy, TheTab, Toby의 계정 필요 여부와 다른 브라우저 지원 여부는 자료에 없어 "확인 못함"으로 두었다. 게시 전 채울 수 있으면 채울 것. -->
+</body>
+</html>

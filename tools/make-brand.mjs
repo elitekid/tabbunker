@@ -15,7 +15,7 @@ const mark = (size, radius = 0.22) => `
   <rect x="40" y="88" width="30" height="9" rx="4.5" fill="#f5b83d"/>
 </svg>`;
 const page = (w, h, body, bg = 'transparent') => `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;width:${w}px;height:${h}px;background:${bg};overflow:hidden;font-family:-apple-system,"Segoe UI",Inter,sans-serif}</style></head><body>${body}</body></html>`;
-const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ['--no-sandbox'] });
+const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ['--no-sandbox', '--use-mock-keychain', '--password-store=basic'] });
 const p = await browser.newPage();
 async function shot(w, h, html, file, omitBg = true) { await p.setViewport({ width: w, height: h, deviceScaleFactor: 1 }); await p.setContent(html, { waitUntil: 'load' }); await p.screenshot({ path: file, omitBackground: omitBg, clip: { x: 0, y: 0, width: w, height: h } }); console.log('wrote', file); }
 for (const s of [16, 32, 48, 128]) await shot(s, s, page(s, s, mark(s)), `${OUT}/src/icons/icon${s}.png`);

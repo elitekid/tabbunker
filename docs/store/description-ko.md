@@ -43,7 +43,7 @@ TabBunker가 다른 점은 클릭 이후에 일어나는 일입니다. 모든 �
 - favicon (크롬만): 보관함 표시용으로 브라우저 로컬 파비콘 캐시를 읽습니다. 네트워크 없음.
 
 OneTab이나 Session Buddy에서 옮기기
-기존 확장에서 데이터를 내보낸 뒤 TabBunker 보관함을 열고 가져오기를 누르고 붙여 넣거나 파일을 고르세요. 실제로 바뀌기 전에 무엇이 합쳐질지 미리보기로 보여 줍니다.
+기존 확장에서 데이터를 내보낸 뒤 TabBunker 보관함을 열고 가져오기를 누르고 내보낸 파일을 고르세요(OneTab 은 내보내기 텍스트를 .txt 파일로 먼저 저장하세요). 실제로 바뀌기 전에 무엇이 합쳐질지 미리보기로 보여 줍니다.
 
 웹사이트: https://elitekid.github.io/tabbunker/
 소스 코드와 문제 신고: https://github.com/elitekid/tabbunker

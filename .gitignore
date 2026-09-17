@@ -1,3 +1,12 @@
 dist/
 .DS_Store
 node_modules/
+
+# 내부 작업 문서는 비공개 저장소(tab-bunker-internal)에 둔다
+docs/marketing/
+docs/design/
+docs/naming/
+docs/review/
+docs/name-check.md
+docs/publish-guide.html
+BRIEF.md

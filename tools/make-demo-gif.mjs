@@ -80,7 +80,7 @@ async function run(lang) {
   const extId = createHash('sha256').update(ext).digest('hex').slice(0, 32).replace(/[0-9a-f]/g, (c) => String.fromCharCode(97 + parseInt(c, 16)));
   const profile = mkdtempSync(join(tmpdir(), 'tb-gifp-'));
   execSync(`defaults write com.google.chrome.for.testing AppleLanguages -array ${lang}`);
-  const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, userDataDir: profile, ignoreDefaultArgs: ['--disable-extensions'], args: ['--no-sandbox', `--load-extension=${ext}`, `--disable-extensions-except=${ext}`, `--lang=${lang}`] });
+  const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, userDataDir: profile, ignoreDefaultArgs: ['--disable-extensions'], args: ['--no-sandbox', '--use-mock-keychain', '--password-store=basic', `--load-extension=${ext}`, `--disable-extensions-except=${ext}`, `--lang=${lang}`] });
   const shots = [];
   try {
     await sleep(2500);

@@ -10,7 +10,7 @@ const ext = process.argv[2];
 if (!ext) { console.error('dist/chrome 경로 필요'); process.exit(2); }
 const port = 9555 + Math.floor(Math.random() * 300);
 const profile = mkdtempSync(join(tmpdir(), 'tk-smoke-'));
-const args = ['--headless=new', '--no-first-run', '--no-default-browser-check', '--disable-gpu',
+const args = ['--headless=new', '--no-first-run', '--no-default-browser-check', '--disable-gpu', '--use-mock-keychain', '--password-store=basic',
   `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`,
   `--load-extension=${ext}`, `--disable-extensions-except=${ext}`, 'about:blank'];
 const chrome = spawn(CHROME, args, { stdio: ['ignore', 'ignore', 'pipe'] });
