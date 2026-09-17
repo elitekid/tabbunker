@@ -24,6 +24,7 @@ TabBunker **makes no network requests**.
 | `tabs` | Collapse and restore tabs |
 | `storage` | Store groups and settings |
 | `downloads` | Save automatic backup files |
+| `downloads.ui` (Chrome, Edge) | Hide the download popup only while an automatic backup file is being saved |
 | `unlimitedStorage` | Store large tab collections |
 | `alarms` | Debounce backups and run trash cleanup |
 | `contextMenus` | Register right-click menu items only |
@@ -63,6 +64,7 @@ TabBunker는 **네트워크 요청을 하지 않습니다**.
 | `tabs` | 탭 접기·복원 |
 | `storage` | 그룹·설정 저장 |
 | `downloads` | 자동 백업 파일 저장 |
+| `downloads.ui` (크롬·엣지) | 자동 백업 파일을 저장하는 동안만 다운로드 창 숨기기 |
 | `unlimitedStorage` | 대량 탭 저장 |
 | `alarms` | 백업 디바운스·휴지통 정리 |
 | `contextMenus` | 우클릭 메뉴 항목 등록에만 사용 |

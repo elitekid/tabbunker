@@ -41,12 +41,22 @@ body {
 
 .popup-toast {
   margin: 0 10px 10px;
+  padding: 9px 10px;
+  background: var(--success-bg);
+  color: #047857;
+  font-weight: 600;
   border-radius: var(--radius);
   border: 1px solid var(--success-border);
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .popup-toast {
+    color: #6EE7B7;
+  }
 }
 
 .save-sec {

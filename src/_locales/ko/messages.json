@@ -6,10 +6,10 @@
     "message": "툴바에서 보관할 탭을 골라 닫고 언제든 다시 열어요. 다운로드 폴더에 백업 파일을 자동으로 남기고, 계정은 필요 없어요."
   },
   "actionTitle": {
-    "message": "탭 접어 보관"
+    "message": "탭 보관"
   },
   "commandCollapse": {
-    "message": "현재 창의 탭을 접어 보관"
+    "message": "이 창의 탭 바로 보관"
   },
   "vaultTitle": {
     "message": "TabBunker 보관함"
