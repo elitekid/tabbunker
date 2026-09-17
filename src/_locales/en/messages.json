@@ -36,16 +36,16 @@
     "message": "Settings"
   },
   "onboardingTitle": {
-    "message": "Welcome to TabBunker"
+    "message": "This is your TabBunker vault"
   },
   "onboardingBackup": {
-    "message": "Saved tabs are also written to a JSON file in Downloads/TabBunker. The status is shown above."
+    "message": "Organize everything you have saved in one place. Saved tabs are also written to a JSON file in Downloads/TabBunker, and the status is shown above."
   },
   "getStarted": {
     "message": "Got it"
   },
   "emptyVault": {
-    "message": "No saved groups yet. Click the toolbar icon or press Alt+Shift+S to save the tabs in this window."
+    "message": "No saved groups yet. Click the TabBunker icon in the toolbar to save the tabs in this window."
   },
   "importPreview": {
     "message": "Import Preview"
@@ -342,16 +342,16 @@
     "message": "Folder name changed to $1."
   },
   "tipPin": {
-    "message": "Pin TabBunker in the extensions menu."
+    "message": "If you don't see the icon, pin TabBunker from the puzzle-shaped extensions menu."
   },
   "tipShortcut": {
-    "message": "Shortcut: $1"
+    "message": "Press $1 to save the tabs in this window right away, without picking."
   },
   "tipShortcutNone": {
-    "message": "No shortcut set"
+    "message": "You can set a shortcut for saving right away in your browser’s extension shortcut settings."
   },
   "tipRestore": {
-    "message": "Use Restore all on a group to reopen its tabs."
+    "message": "Use this page for bigger jobs: import and export, dragging tabs between groups, trash, and restoring from a backup file."
   },
   "ctxSendTab": {
     "message": "Send this tab to TabBunker"
@@ -391,5 +391,116 @@
   },
   "sourceCode": {
     "message": "Source code"
+  },
+  "popupHint": {
+    "message": "Saved tabs can be reopened from the Vault at any time."
+  },
+  "popupTabsInWindow": {
+    "message": "Tabs in this window: $1"
+  },
+  "popupTabsSelected": {
+    "message": "$2 of $1 tabs selected"
+  },
+  "popupPickTabs": {
+    "message": "Pick tabs"
+  },
+  "popupFold": {
+    "message": "Fold"
+  },
+  "popupSaveClose": {
+    "message": "Save and close"
+  },
+  "popupSaveKeep": {
+    "message": "Save without closing"
+  },
+  "popupSaveCloseN": {
+    "message": "Save $1 and close"
+  },
+  "popupSavedToast": {
+    "message": "Saved $1 tabs"
+  },
+  "popupSavedToastOne": {
+    "message": "Saved $1 tab"
+  },
+  "popupSavedSection": {
+    "message": "Saved tabs"
+  },
+  "popupSearchPlaceholder": {
+    "message": "Search saved tabs"
+  },
+  "popupManageFull": {
+    "message": "Open full vault"
+  },
+  "popupMoreTabsPick": {
+    "message": "$1 more tabs"
+  },
+  "popupShowMore": {
+    "message": "Show more"
+  },
+  "popupOpenAll": {
+    "message": "Open all"
+  },
+  "popupConfirmOpen": {
+    "message": "Open"
+  },
+  "popupExcludedPinned": {
+    "message": "$1 pinned tabs are excluded."
+  },
+  "popupExcludedSystem": {
+    "message": "$1 browser or extension pages are excluded."
+  },
+  "popupExcludedBoth": {
+    "message": "$1 pinned tabs and $2 browser or extension pages are excluded."
+  },
+  "popupBackupOk": {
+    "message": "File backup $1"
+  },
+  "popupBackupPending": {
+    "message": "File backup pending ($1)"
+  },
+  "popupBackupPendingNever": {
+    "message": "File backup pending"
+  },
+  "popupBackupWriting": {
+    "message": "File backup in progress"
+  },
+  "popupBackupFailed": {
+    "message": "File backup failed: $1"
+  },
+  "popupBackupOff": {
+    "message": "File backup off"
+  },
+  "popupBackupNever": {
+    "message": "No file backup yet"
+  },
+  "popupBackupJustNow": {
+    "message": "just now"
+  },
+  "popupBackupMinutesAgo": {
+    "message": "$1 min ago"
+  },
+  "popupBackupHoursAgo": {
+    "message": "$1 hr ago"
+  },
+  "undoKeepDone": {
+    "message": "Save undone. Tabs were not closed."
+  },
+  "dateToday": {
+    "message": "Today $1"
+  },
+  "dateYesterday": {
+    "message": "Yesterday $1"
+  },
+  "popupEmptyTitle": {
+    "message": "No saved tabs yet"
+  },
+  "popupEmptyBody": {
+    "message": "Saved tabs gather here, ready to reopen anytime."
+  },
+  "popupNoMatch": {
+    "message": "No tabs match your search"
+  },
+  "tipPopup": {
+    "message": "To save or reopen tabs, click the TabBunker icon in the toolbar. You can pick which tabs to save and whether to close them."
   }
 }

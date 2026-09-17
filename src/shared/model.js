@@ -65,6 +65,38 @@ export function defaultGroupTitle(date = Date.now()) {
   );
 }
 
+const DEFAULT_TITLE_RE = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})(?: - (.*))?$/s;
+
+/**
+ * 화면 표시용 그룹 제목. 저장된 기본 제목(YYYY-MM-DD HH:MM - 첫 탭)만 읽기 쉬운 날짜로 바꾸고,
+ * 사용자가 바꾼 제목은 그대로 둔다. 저장 데이터는 건드리지 않는다.
+ * @param {string} title
+ * @param {{ locale?: string, now?: number, today?: (time: string) => string, yesterday?: (time: string) => string }} opts
+ */
+export function displayGroupTitle(title, opts = {}) {
+  const m = DEFAULT_TITLE_RE.exec(String(title ?? ''));
+  if (!m) return title;
+  const [, y, mo, d, h, mi, rest] = m;
+  const date = new Date(Number(y), Number(mo) - 1, Number(d), Number(h), Number(mi));
+  if (Number.isNaN(date.getTime())) return title;
+
+  const locale = opts.locale || undefined;
+  const now = new Date(opts.now ?? Date.now());
+  const time = date.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
+  const startOfDay = (x) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const dayDiff = Math.round((startOfDay(now) - startOfDay(date)) / 86400000);
+
+  let when;
+  if (dayDiff === 0 && opts.today) when = opts.today(time);
+  else if (dayDiff === 1 && opts.yesterday) when = opts.yesterday(time);
+  else {
+    const dateOpts = { month: 'short', day: 'numeric' };
+    if (date.getFullYear() !== now.getFullYear()) dateOpts.year = 'numeric';
+    when = `${date.toLocaleDateString(locale, dateOpts)} ${time}`;
+  }
+  return rest ? `${when} · ${rest}` : when;
+}
+
 /** 접기 시 그룹 제목: 날짜시간 + 첫 탭 제목 */
 export function collapseGroupTitle(tabs, date = Date.now()) {
   const base = defaultGroupTitle(date);

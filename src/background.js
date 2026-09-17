@@ -1,7 +1,6 @@
 // 백그라운드: 명령 큐, mutate, 백업 엔진, 메시지 API
 
 import {
-  action,
   actionBadge,
   alarms,
   browserApi,
@@ -174,10 +173,8 @@ async function resolveWindowId(hints = {}) {
   return win.id;
 }
 
-async function ensureVaultTab(windowId, opts = {}) {
-  const { collapsedBanner = false } = opts;
+async function ensureVaultTab(windowId) {
   const extUrl = browserApi.runtime.getURL('vault/vault.html');
-  const query = collapsedBanner ? '?collapsed=1' : '';
   const existing = await tabs.query({ windowId, url: extUrl + '*' });
   if (existing.length > 0) {
     await tabs.update(existing[0].id, { active: true });
@@ -185,7 +182,7 @@ async function ensureVaultTab(windowId, opts = {}) {
   }
   return tabs.create({
     windowId,
-    url: extUrl + query,
+    url: extUrl,
     active: true,
   });
 }
@@ -298,7 +295,32 @@ async function scheduleRetry(state) {
   await alarms.create(ALARM_BACKUP, { when: retryNotBefore });
 }
 
+// 자동 백업 다운로드 동안만 브라우저 다운로드 표시(버블)를 숨긴다. 크롬·엣지 전용, 파이어폭스는 API 없음
+async function setDownloadUi(enabled) {
+  const fn = browserApi.downloads?.setUiOptions;
+  if (typeof fn !== 'function') return;
+  try {
+    await fn.call(browserApi.downloads, { enabled });
+  } catch {
+    /* 권한 없음 등 */
+  }
+}
+
+// 진행 중인 백업 다운로드가 없으면 다운로드 표시를 되돌린다
+async function restoreDownloadUiIfIdle() {
+  const state = await loadBackupState();
+  if (!state.inflight) await setDownloadUi(true);
+}
+
 async function handleBackupFailure(state, code) {
+  try {
+    await handleBackupFailureInner(state, code);
+  } finally {
+    await setDownloadUi(true);
+  }
+}
+
+async function handleBackupFailureInner(state, code) {
   if (code === 'canceled') {
     await saveBackupState({
       ...state,
@@ -413,6 +435,7 @@ async function startDatedDownload(state, revision, subfolder) {
   const url = makeUrl(body);
   const filename = datedFilename(subfolder);
   try {
+    await setDownloadUi(false);
     const id = await downloads.download({
       url,
       filename,
@@ -677,6 +700,7 @@ async function runBackup(trigger) {
   const url = makeUrl(body);
 
   try {
+    await setDownloadUi(false);
     const id = await downloads.download({
       url,
       filename,
@@ -705,6 +729,7 @@ async function runBackup(trigger) {
     const items = await downloads.search({ id });
     if (items[0] && (items[0].state === 'complete' || items[0].state === 'interrupted')) {
       await settleDownload(items[0]);
+      await restoreDownloadUiIfIdle();
       state = await loadBackupState();
     }
 
@@ -795,11 +820,12 @@ async function ensureTrashAlarm() {
 
 const ready = ensureMigrated()
   .then(() => ensureTrashAlarm())
-  .then(() => reconcileStartup());
+  .then(() => reconcileStartup())
+  .then(() => restoreDownloadUiIfIdle());
 
 // --- 접기 ---
 
-async function commitAndClose(windowId, browserTabs) {
+async function commitCollapse(windowId, browserTabs, { closeTabs = true } = {}) {
   const tabData = browserTabs.map((t) =>
     createTab({
       url: urlOf(t),
@@ -819,45 +845,60 @@ async function commitAndClose(windowId, browserTabs) {
     await applyGroupChanges({ put: [group] });
   });
 
-  const closingIds = new Set(browserTabs.map((t) => t.id));
-  const remainingInWindow = await tabs.query({ windowId });
-  const allWillClose =
-    remainingInWindow.length > 0 &&
-    remainingInWindow.every((t) => closingIds.has(t.id));
-  if (allWillClose) {
-    await ensureVaultTab(windowId, { collapsedBanner: true });
-  }
-
-  const removeResults = await Promise.allSettled(
-    browserTabs.map((t) => tabs.remove(t.id))
-  );
-
-  const closedIndexes = [];
   let closed = 0;
   let remaining = 0;
-  for (let i = 0; i < removeResults.length; i++) {
-    if (removeResults[i].status === 'fulfilled') {
-      closedIndexes.push(i);
-      closed++;
-    } else {
-      remaining++;
+  const closedIndexes = [];
+
+  if (closeTabs) {
+    const closingIds = new Set(browserTabs.map((t) => t.id));
+    const remainingInWindow = await tabs.query({ windowId });
+    const allWillClose =
+      remainingInWindow.length > 0 &&
+      remainingInWindow.every((t) => closingIds.has(t.id));
+    if (allWillClose) {
+      await tabs.create({ windowId, active: true });
+    }
+
+    const removeResults = await Promise.allSettled(
+      browserTabs.map((t) => tabs.remove(t.id))
+    );
+
+    for (let i = 0; i < removeResults.length; i++) {
+      if (removeResults[i].status === 'fulfilled') {
+        closedIndexes.push(i);
+        closed++;
+      } else {
+        remaining++;
+      }
     }
   }
 
   const meta = await loadMeta();
-  await saveUndo({
-    kind: 'collapse',
-    at: Date.now(),
-    revisionAfter: meta.revision,
-    payload: {
-      groupId: group.id,
-      windowId,
-      title: group.title,
-      urls: tabData.map((t) => t.url),
-      closedIndexes,
-      pinned: tabData.map((t) => t.pinned),
-    },
-  });
+  const undoPayload = {
+    groupId: group.id,
+    title: group.title,
+    urls: tabData.map((t) => t.url),
+  };
+  if (closeTabs) {
+    await saveUndo({
+      kind: 'collapse',
+      at: Date.now(),
+      revisionAfter: meta.revision,
+      payload: {
+        ...undoPayload,
+        windowId,
+        closedIndexes,
+        pinned: tabData.map((t) => t.pinned),
+      },
+    });
+  } else {
+    await saveUndo({
+      kind: 'collapse-keep',
+      at: Date.now(),
+      revisionAfter: meta.revision,
+      payload: undoPayload,
+    });
+  }
 
   broadcast('collapsed', {
     groupId: group.id,
@@ -865,9 +906,10 @@ async function commitAndClose(windowId, browserTabs) {
     closed,
     remaining,
     windowId,
+    keepOpen: !closeTabs,
   });
 
-  if (closed > 0) {
+  if (tabData.length > 0 && (closeTabs ? closed > 0 : true)) {
     await incrementCollapseCount();
   }
 
@@ -877,6 +919,7 @@ async function commitAndClose(windowId, browserTabs) {
     count: tabData.length,
     closed,
     remaining,
+    keepOpen: !closeTabs,
   };
 }
 
@@ -886,7 +929,7 @@ async function incrementCollapseCount() {
   await saveSettings({ ...settings, collapseCount });
 }
 
-async function doCollapse(hints) {
+async function doCollapse(hints, opts = {}) {
   const windowId = await resolveWindowId(hints);
   const win = await windows.get(windowId);
   if (win.incognito) {
@@ -896,12 +939,11 @@ async function doCollapse(hints) {
   const { eligible } = await getCollapseTargets(windowId);
 
   if (eligible.length === 0) {
-    await ensureVaultTab(windowId, { collapsedBanner: true });
     return { ok: false, code: 'empty' };
   }
 
-  await ensureVaultTab(windowId, { collapsedBanner: true });
-  return commitAndClose(windowId, eligible);
+  const closeTabs = opts.closeTabs !== false;
+  return commitCollapse(windowId, eligible, { closeTabs });
 }
 
 async function doCollapseTabs(msg) {
@@ -945,7 +987,42 @@ async function doCollapseTabs(msg) {
     return { ok: false, code: 'system' };
   }
 
-  return commitAndClose(windowId, eligible);
+  const closeTabs = msg.closeTabs !== false;
+  return commitCollapse(windowId, eligible, { closeTabs });
+}
+
+async function doCollapseWithOptions(msg, sender) {
+  const windowId = await resolveWindowId({ windowId: msg.windowId, senderTab: sender.tab });
+  const win = await windows.get(windowId);
+  if (win.incognito) {
+    return { ok: false, code: 'incognito' };
+  }
+
+  const closeTabs = msg.closeTabs !== false;
+  let browserTabs = [];
+
+  if (Array.isArray(msg.tabIds) && msg.tabIds.length > 0) {
+    const tabIds = [...new Set(msg.tabIds.filter((id) => Number.isInteger(id)))];
+    for (const id of tabIds) {
+      try {
+        const t = await tabs.get(id);
+        if (t.windowId === windowId && !isSystemUrl(urlOf(t))) {
+          browserTabs.push(t);
+        }
+      } catch {
+        /* skip */
+      }
+    }
+  } else {
+    const { eligible } = await getCollapseTargets(windowId);
+    browserTabs = eligible;
+  }
+
+  if (browserTabs.length === 0) {
+    return { ok: false, code: 'empty' };
+  }
+
+  return commitCollapse(windowId, browserTabs, { closeTabs });
 }
 
 const SAVED_LINKS_TITLES = new Set(['Saved links', '저장한 링크']);
@@ -1040,17 +1117,55 @@ async function handleMessage(msg, sender) {
         const settings = await loadSettings();
         const undo = await loadUndo();
         let undoInfo = null;
-        if (undo?.kind === 'collapse') {
-          const g = (await loadGroups()).find((x) => x.id === undo.payload?.groupId);
+        // 보관 뒤 다른 변경이 있으면 되돌릴 수 없으니 되돌리기 알림을 내리지 않는다
+        const undoStale = undo?.revisionAfter != null && undo.revisionAfter !== meta.revision;
+        if (undoStale && (undo.kind === 'collapse' || undo.kind === 'collapse-keep')) {
+          undoInfo = null;
+        } else if (undo?.kind === 'collapse') {
           undoInfo = {
             kind: 'collapse',
             count: undo.payload?.closedIndexes?.length ?? 0,
+            groupId: undo.payload?.groupId,
+          };
+        } else if (undo?.kind === 'collapse-keep') {
+          undoInfo = {
+            kind: 'collapse-keep',
+            count: undo.payload?.urls?.length ?? 0,
             groupId: undo.payload?.groupId,
           };
         } else if (undo?.kind === 'import') {
           undoInfo = { kind: 'import' };
         }
         return { ok: true, revision: meta.revision, state, settings, undo: undoInfo };
+      }
+
+      case 'openVault': {
+        const wid = await resolveWindowId({ windowId: msg.windowId, senderTab: sender.tab });
+        await ensureVaultTab(wid);
+        return { ok: true };
+      }
+
+      case 'getCollapseTargets': {
+        const windowId = await resolveWindowId({
+          windowId: msg.windowId,
+          senderTab: sender.tab,
+        });
+        const win = await windows.get(windowId);
+        const { eligible, pinnedExcluded, systemExcluded } =
+          await getCollapseTargets(windowId);
+        return {
+          ok: true,
+          incognito: !!win.incognito,
+          pinnedExcluded,
+          systemExcluded,
+          tabs: eligible.map((t) => ({
+            id: t.id,
+            title: t.title || '',
+            url: urlOf(t),
+            favIconUrl: t.favIconUrl || '',
+            pinned: !!t.pinned,
+          })),
+        };
       }
 
       case 'getCollapsePreview': {
@@ -1072,7 +1187,7 @@ async function handleMessage(msg, sender) {
 
       case 'collapse':
         return enqueue('collapse', () =>
-          doCollapse({ windowId: msg.windowId, senderTab: sender.tab })
+          doCollapseWithOptions(msg, sender)
         );
 
       case 'collapseTabs':
@@ -1323,6 +1438,27 @@ async function doUndo(msg, sender) {
   const undo = await loadUndo();
   if (!undo) return { ok: false, code: 'none' };
 
+  if (undo.kind === 'collapse-keep') {
+    return mutate('undoCollapseKeep', async (ctx) => {
+      const groups = await loadGroups();
+      const g = groups.find((x) => x.id === undo.payload.groupId);
+      if (!g || g.trashedAt) return { ok: false, code: 'stale' };
+      if (g.title !== undo.payload.title) return { ok: false, code: 'stale' };
+      const currentUrls = (g.tabs || []).map((t) => t.url);
+      const payloadUrls = undo.payload.urls || [];
+      if (
+        currentUrls.length !== payloadUrls.length ||
+        !currentUrls.every((u, i) => u === payloadUrls[i])
+      ) {
+        return { ok: false, code: 'stale' };
+      }
+      await ctx.begin();
+      await applyGroupChanges({ remove: [g.id] });
+      await clearUndo();
+      return { ok: true, kind: 'collapse-keep', reopened: 0, remaining: 0 };
+    });
+  }
+
   if (undo.kind === 'collapse') {
     return mutate('undoCollapse', async (ctx) => {
       const groups = await loadGroups();
@@ -1521,6 +1657,7 @@ browserApi.downloads.onChanged.addListener((delta) => {
     await ready;
     const items = await downloads.search({ id: delta.id });
     if (items[0]) await settleDownload(items[0]);
+    await restoreDownloadUiIfIdle();
   }).catch(console.error);
 });
 
@@ -1535,23 +1672,20 @@ browserApi.alarms.onAlarm.addListener((alarm) => {
       if (state.inflight) {
         await runBackup('retry');
       }
+      await restoreDownloadUiIfIdle();
     }).catch(console.error);
   } else if (alarm.name === ALARM_TRASH) {
     enqueue('trashPurge', () => runTrashPurge()).catch(console.error);
   }
 });
 
-action.onClicked.addListener((tab) => {
-  enqueue('actionCollapse', () =>
-    doCollapse({ senderTab: tab })
-  ).catch(console.error);
-});
-
 browserApi.commands.onCommand.addListener((command, tab) => {
   if (command === 'collapse-tabs') {
-    enqueue('commandCollapse', () =>
-      doCollapse({ senderTab: tab })
-    ).catch(console.error);
+    enqueue('commandCollapse', async () => {
+      const res = await doCollapse({ senderTab: tab });
+      await handleOpResult(res);
+      return res;
+    }).catch(console.error);
   }
 });
 
@@ -1577,7 +1711,7 @@ if (contextMenus?.onClicked) {
           );
         case 'tb-open-vault': {
           const wid = tab?.windowId ?? (await windows.getLastFocused({ windowTypes: ['normal'] })).id;
-          await ensureVaultTab(wid, { collapsedBanner: false });
+          await ensureVaultTab(wid);
           return;
         }
         default:
@@ -1604,8 +1738,6 @@ browserApi.runtime.onInstalled.addListener((details) => {
     if (details.reason === 'install') {
       const settings = await loadSettings();
       await saveSettings({ ...settings, installedAt: Date.now() });
-      const url = browserApi.runtime.getURL('vault/vault.html');
-      await tabs.create({ url });
     }
   }).catch(console.error);
 });

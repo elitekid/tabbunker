@@ -59,6 +59,9 @@ dialog {
 body {
   background: var(--bg);
   color: var(--text);
+  /* 한국어가 단어 중간에서 줄바꿈되지 않게, 긴 주소는 필요할 때만 끊는다 */
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 dialog {

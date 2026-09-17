@@ -6,6 +6,7 @@ import { importAutoDetectWithReport } from '../shared/importers.js';
 import {
   computeImportImpact,
   deriveFileStatus,
+  displayGroupTitle,
   filterGroups,
   findDuplicateUrls,
 } from '../shared/model.js';
@@ -248,6 +249,7 @@ async function reloadBackupStatus() {
   }
   renderBackupHeader();
   renderReviewBanner();
+  syncCollapseBannerWithUndo();
   return backupStatus;
 }
 
@@ -293,6 +295,13 @@ function renderCollapseBanner() {
   banner.classList.remove('hidden');
 }
 
+function syncCollapseBannerWithUndo() {
+  const undo = backupStatus?.undo;
+  if (undo?.kind === 'collapse' || undo?.kind === 'collapse-keep') return;
+  collapseBanner = null;
+  renderCollapseBanner();
+}
+
 function showCollapseBanner(data) {
   collapseBanner = {
     count: data.count,
@@ -301,26 +310,6 @@ function showCollapseBanner(data) {
     groupId: data.groupId,
   };
   renderCollapseBanner();
-}
-
-async function waitForCollapseUndo() {
-  const deadline = Date.now() + 5000;
-  while (Date.now() < deadline) {
-    const res = await send('getBackupStatus');
-    if (res?.ok && res.undo?.kind === 'collapse') {
-      backupStatus = res;
-      showCollapseBanner({
-        count: res.undo.count,
-        closed: res.undo.count,
-        remaining: 0,
-        groupId: res.undo.groupId,
-      });
-      await reloadGroups();
-      render();
-      return;
-    }
-    await new Promise((r) => setTimeout(r, 300));
-  }
 }
 
 async function handleStale() {
@@ -352,6 +341,10 @@ async function handleUndoResult(res) {
     }
     collapseBanner = null;
     renderCollapseBanner();
+  } else if (res.kind === 'collapse-keep') {
+    showStatusMessage(t('undoKeepDone'));
+    collapseBanner = null;
+    renderCollapseBanner();
   }
   await reloadGroups();
   await reloadBackupStatus();
@@ -363,6 +356,10 @@ async function doUndo() {
   if (!res?.ok && res.code === 'stale') {
     showStatusMessage(t('undoUnavailable'));
     return;
+  }
+  if (res?.ok) {
+    collapseBanner = null;
+    renderCollapseBanner();
   }
   await handleUndoResult(res);
 }
@@ -376,40 +373,6 @@ async function updateOnboarding() {
   } else {
     onboarding.classList.add('hidden');
     tips.classList.add('hidden');
-  }
-
-  const preview = await send('getCollapsePreview');
-  const btn = $('#btn-collapse-primary');
-  const excludedEl = $('#collapse-excluded');
-
-  if (preview?.ok) {
-    const eligible = preview.eligible ?? 0;
-    btn.textContent = t('collapseCount', [eligible]);
-    btn.disabled = eligible === 0;
-    if (eligible === 0) {
-      btn.title = t('collapseEmpty');
-    } else {
-      btn.title = '';
-    }
-    const pinned = preview.pinnedExcluded ?? 0;
-    const system = preview.systemExcluded ?? 0;
-    if (pinned === 0 && system === 0) {
-      excludedEl.classList.add('hidden');
-    } else if (pinned > 0 && system > 0) {
-      excludedEl.textContent = t('collapseExcludedBoth', [pinned, system]);
-      excludedEl.classList.remove('hidden');
-    } else if (pinned > 0) {
-      excludedEl.textContent = t('collapseExcludedPinned', [pinned]);
-      excludedEl.classList.remove('hidden');
-    } else {
-      excludedEl.textContent = t('collapseExcludedSystem', [system]);
-      excludedEl.classList.remove('hidden');
-    }
-  } else {
-    btn.textContent = t('collapseCount', [0]);
-    btn.disabled = true;
-    btn.title = t('collapseEmpty');
-    excludedEl.classList.add('hidden');
   }
 
   try {
@@ -501,23 +464,6 @@ function setupEventListeners() {
     renderReviewBanner();
   });
 
-  $('#btn-collapse-primary').addEventListener('click', async () => {
-    const res = await send('collapse');
-    if (!res?.ok) {
-      if (res.code === 'empty') {
-        showStatusMessage(t('collapseEmpty'));
-      } else if (res.code === 'incognito') {
-        showStatusMessage(t('collapseIncognito'));
-      }
-      return;
-    }
-    if (res.ok) {
-      showCollapseBanner(res);
-      await reloadGroups();
-      await reloadBackupStatus();
-      render();
-    }
-  });
 
   $('#btn-backup-now').addEventListener('click', async () => {
     const res = await send('backupNow');
@@ -563,8 +509,10 @@ function setupEventListeners() {
     if (document.visibilityState === 'visible') {
       reloadGroups().then(() => render());
       reloadBackupStatus();
+      updateOnboarding();
     }
   });
+
 
   browserApi.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
@@ -763,7 +711,12 @@ function renderGroupCard(group, duplicates, query, isTrash = false) {
 
   const title = document.createElement('span');
   title.className = 'group-title';
-  title.textContent = group.title;
+  title.textContent = displayGroupTitle(group.title, {
+    locale: browserApi.i18n.getUILanguage?.(),
+    today: (time) => t('dateToday', [time]),
+    yesterday: (time) => t('dateYesterday', [time]),
+  });
+  title.title = group.title;
 
   const meta = document.createElement('span');
   meta.className = 'group-meta';
@@ -1010,17 +963,12 @@ async function init() {
   applyI18n();
   setupEventListeners();
   renderBackupHeader();
-  $('#btn-collapse-primary').textContent = t('collapseCount', [0]);
 
   await reloadGroups();
   await reloadBackupStatus();
   await updateOnboarding();
   renderReviewBanner();
   render();
-
-  if (new URLSearchParams(location.search).get('collapsed') === '1') {
-    waitForCollapseUndo();
-  }
 }
 
 init();

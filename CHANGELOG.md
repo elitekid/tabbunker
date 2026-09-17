@@ -6,6 +6,23 @@
 
 - One-time review request on the vault page after first-run onboarding is done, at least one successful file backup, three or more collapses, and 48 hours since install. Shown as a small non-modal banner with Write a review, Don't ask again, and Report a problem links. No star-rating filter, no rewards, and no repeat after either button is used.
 - TabBunker info section at the bottom of Settings with permanent Write a review, Report a problem, and Source code links.
+- Toolbar dropdown popup to preview tabs, pick which to save, browse recent groups, undo the last save, and open the full vault or settings without closing tabs accidentally.
+
+### Changed
+
+- Clicking the toolbar icon opens a dropdown instead of immediately saving and closing every tab in the window.
+- Saving tabs no longer opens or focuses the vault tab; a toast with Undo appears in the dropdown (or on the next open if the dropdown was closed).
+- Keyboard shortcut and context-menu save still work instantly and show a badge count instead of opening the vault.
+- Fresh install no longer opens the vault page automatically.
+- Automatic file backup downloads on Chrome and Edge hide the browser download bubble while a backup is in progress.
+
+### Fixed
+
+- Vault "Saved N tabs" banner now disappears after Undo restores the tabs.
+- The vault first-run card no longer has a "Save and close tabs" button that closed every tab in the window from the vault page. It now points to the toolbar dropdown, pinning, the instant-save shortcut, and what the full vault is for.
+- Group titles show readable dates ("Today 6:37 PM", "Yesterday", "Sep 3", with the year for older groups) in the dropdown and the vault. Stored titles and backup files are unchanged, and renamed groups are shown as is.
+- The dropdown shows a short message when nothing is saved yet or a search has no matches, and never lists trashed groups.
+- Korean text no longer breaks in the middle of a word.
 
 ## 1.0.0 (2026-09-15)
 

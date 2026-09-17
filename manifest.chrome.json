@@ -13,7 +13,8 @@
     "unlimitedStorage",
     "alarms",
     "contextMenus",
-    "favicon"
+    "favicon",
+    "downloads.ui"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' data:"
@@ -24,6 +25,7 @@
   },
   "action": {
     "default_title": "__MSG_actionTitle__",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",

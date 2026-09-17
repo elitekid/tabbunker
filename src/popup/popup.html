@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="light dark">
+  <title>TabBunker</title>
+  <link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup" role="dialog" aria-label="TabBunker">
+    <header class="popup-hd">
+      <h1 class="popup-title" data-i18n="extName">TabBunker</h1>
+      <p id="backup-status" class="popup-status" aria-live="polite"></p>
+    </header>
+
+    <div id="toast" class="popup-toast hidden" role="status" aria-live="polite">
+      <span id="toast-text"></span>
+      <button id="btn-toast-undo" type="button" class="link-btn" data-i18n="undoBtn">Undo</button>
+    </div>
+
+    <section class="save-sec" aria-labelledby="save-heading">
+      <div class="save-row">
+        <h2 id="save-heading" class="save-heading"></h2>
+        <button id="btn-pick-toggle" type="button" class="pick-toggle" aria-expanded="false"></button>
+      </div>
+      <p id="exclude-note" class="save-note hidden"></p>
+      <div id="pick-list" class="pick-list hidden" role="listbox" aria-multiselectable="true"></div>
+      <div class="save-btns">
+        <button id="btn-save-close" type="button" class="btn primary save-btn"></button>
+        <button id="btn-save-keep" type="button" class="btn save-btn" data-i18n="popupSaveKeep">Save without closing</button>
+      </div>
+    </section>
+
+    <p id="saved-label" class="section-label" data-i18n="popupSavedSection">Saved tabs</p>
+    <input type="search" id="search" class="popup-search" data-i18n-placeholder="popupSearchPlaceholder" data-i18n-aria="popupSearchPlaceholder">
+
+    <div id="groups-empty" class="groups-empty hidden">
+      <p class="groups-empty-title" data-i18n="popupEmptyTitle">No saved tabs yet</p>
+      <p class="groups-empty-body" data-i18n="popupEmptyBody"></p>
+    </div>
+    <p id="groups-nomatch" class="groups-nomatch hidden" data-i18n="popupNoMatch">No tabs match your search</p>
+    <div id="group-list" class="group-list" role="list"></div>
+    <button id="btn-more-groups" type="button" class="btn more-groups hidden"></button>
+
+    <footer class="popup-ft">
+      <button id="btn-open-vault" type="button" class="link-btn" data-i18n="popupManageFull">Open full vault</button>
+      <button id="btn-settings" type="button" class="link-btn" data-i18n="settings">Settings</button>
+    </footer>
+  </div>
+
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+    <p id="confirm-title"></p>
+    <div class="dialog-actions">
+      <button id="btn-confirm-ok" type="button" class="btn primary" data-i18n="popupConfirmOpen">Open</button>
+      <button id="btn-confirm-cancel" type="button" class="btn" data-i18n="cancel">Cancel</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
