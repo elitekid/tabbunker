@@ -373,5 +373,23 @@
   },
   "includePinnedHint": {
     "message": "우클릭으로 탭 하나를 보낼 때는 고정 여부와 상관없이 보냅니다."
+  },
+  "reviewPromptBody": {
+    "message": "TabBunker가 도움이 됐나요? 스토어에 짧은 리뷰를 남겨 주시면 다른 사람들이 찾는 데 도움이 됩니다."
+  },
+  "reviewWrite": {
+    "message": "리뷰 쓰기"
+  },
+  "reviewDismiss": {
+    "message": "다시 묻지 않기"
+  },
+  "reportProblem": {
+    "message": "문제 신고"
+  },
+  "aboutSection": {
+    "message": "TabBunker 정보"
+  },
+  "sourceCode": {
+    "message": "소스 코드"
   }
 }

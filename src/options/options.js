@@ -3,6 +3,7 @@
 import { browserApi } from '../shared/browser.js';
 import { sanitizeSubfolder } from '../shared/model.js';
 import { loadSettings } from '../shared/storage.js';
+import { getStoreReviewUrl, ISSUES_URL } from '../shared/store-links.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -34,6 +35,9 @@ async function init() {
   $('autoFileBackup').checked = settings.autoFileBackup;
   $('backupSubfolder').value = settings.backupSubfolder || 'TabBunker';
   setIntervalRadio(settings.backupIntervalSec ?? 30);
+
+  $('link-about-review').href = getStoreReviewUrl();
+  $('link-about-report').href = ISSUES_URL;
 
   $('btn-save').addEventListener('click', save);
   $('btn-delete-all').addEventListener('click', deleteAll);

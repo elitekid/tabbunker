@@ -75,7 +75,12 @@ async function withDb(fn) {
 /** 설정 읽기 */
 export async function loadSettings() {
   const data = await browserApi.storage.local.get(KEYS.settings);
-  return { ...DEFAULT_SETTINGS, ...(data[KEYS.settings] || {}) };
+  const settings = { ...DEFAULT_SETTINGS, ...(data[KEYS.settings] || {}) };
+  if (settings.installedAt == null) {
+    settings.installedAt = Date.now();
+    await saveSettings(settings);
+  }
+  return settings;
 }
 
 /** 설정 저장 */

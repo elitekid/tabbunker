@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 (2026-09-17)
+
+### Added
+
+- One-time review request on the vault page after first-run onboarding is done, at least one successful file backup, three or more collapses, and 48 hours since install. Shown as a small non-modal banner with Write a review, Don't ask again, and Report a problem links. No star-rating filter, no rewards, and no repeat after either button is used.
+- TabBunker info section at the bottom of Settings with permanent Write a review, Report a problem, and Source code links.
+
 ## 1.0.0 (2026-09-15)
 
 ### Added

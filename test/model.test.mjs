@@ -11,6 +11,11 @@ import {
   purgeExpiredTrash,
   filterGroups,
 } from '../src/shared/model.js';
+import {
+  REVIEW_PROMPT_MIN_AGE_MS,
+  REVIEW_PROMPT_MIN_COLLAPSES,
+  shouldShowReviewPrompt,
+} from '../src/shared/review-prompt.js';
 
 describe('normalizeUrl', () => {
   it('소문자로 정규화', () => {
@@ -145,5 +150,44 @@ describe('filterGroups', () => {
     const byUrl = filterGroups(groups, 'example.com');
     assert.equal(byUrl.length, 1);
     assert.equal(byUrl[0].tabs.length, 1);
+  });
+});
+
+describe('shouldShowReviewPrompt', () => {
+  const now = Date.parse('2026-09-17T12:00:00Z');
+  const baseSettings = {
+    firstRunComplete: true,
+    collapseCount: REVIEW_PROMPT_MIN_COLLAPSES,
+    installedAt: now - REVIEW_PROMPT_MIN_AGE_MS,
+  };
+  const baseState = { lastFileOkAt: now - 1000 };
+
+  it('모든 조건 충족 시 true', () => {
+    assert.equal(
+      shouldShowReviewPrompt({ settings: baseSettings, backupState: baseState, now }),
+      true
+    );
+  });
+
+  it('collapseCount 부족 시 false', () => {
+    assert.equal(
+      shouldShowReviewPrompt({
+        settings: { ...baseSettings, collapseCount: REVIEW_PROMPT_MIN_COLLAPSES - 1 },
+        backupState: baseState,
+        now,
+      }),
+      false
+    );
+  });
+
+  it('reviewPrompt dismissed 시 false', () => {
+    assert.equal(
+      shouldShowReviewPrompt({
+        settings: { ...baseSettings, reviewPrompt: 'dismissed' },
+        backupState: baseState,
+        now,
+      }),
+      false
+    );
   });
 });

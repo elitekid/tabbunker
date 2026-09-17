@@ -373,5 +373,23 @@
   },
   "includePinnedHint": {
     "message": "Sending a single tab from the right-click menu includes it even if it is pinned."
+  },
+  "reviewPromptBody": {
+    "message": "Has TabBunker been useful? A short review on the store helps other people find it."
+  },
+  "reviewWrite": {
+    "message": "Write a review"
+  },
+  "reviewDismiss": {
+    "message": "Don't ask again"
+  },
+  "reportProblem": {
+    "message": "Report a problem"
+  },
+  "aboutSection": {
+    "message": "TabBunker info"
+  },
+  "sourceCode": {
+    "message": "Source code"
   }
 }

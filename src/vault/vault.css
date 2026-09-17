@@ -55,6 +55,34 @@ body {
   font-size: 0.85rem;
 }
 
+.review-banner {
+  padding: 0.75rem 1.5rem;
+  background: var(--success-bg);
+  border-bottom: 1px solid var(--success-border);
+  font-size: 14px;
+}
+
+.review-banner-text {
+  margin: 0 0 0.5rem;
+}
+
+.review-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.review-banner-link {
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.review-banner-link:hover {
+  text-decoration: underline;
+}
+
 .collapse-banner {
   display: flex;
   flex-wrap: wrap;

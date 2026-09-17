@@ -11,6 +11,8 @@ export const DEFAULT_SETTINGS = {
   dedupeUrls: false,
   firstRunComplete: false,
   savedLinksGroupId: null,
+  installedAt: null,
+  collapseCount: 0,
 };
 
 const WIN_RESERVED = new Set([

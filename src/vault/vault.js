@@ -9,7 +9,9 @@ import {
   filterGroups,
   findDuplicateUrls,
 } from '../shared/model.js';
+import { shouldShowReviewPrompt } from '../shared/review-prompt.js';
 import { loadSettings } from '../shared/storage.js';
+import { getStoreReviewUrl, ISSUES_URL } from '../shared/store-links.js';
 
 const PAGE_SIZE = 200;
 const DATA_FAVICON_RE =
@@ -245,7 +247,34 @@ async function reloadBackupStatus() {
     settings = backupStatus.settings;
   }
   renderBackupHeader();
+  renderReviewBanner();
   return backupStatus;
+}
+
+function isReviewBannerBlocked() {
+  if (!settings.firstRunComplete) return true;
+  if (!$('#onboarding').classList.contains('hidden')) return true;
+  if ($('#import-dialog').open) return true;
+  return false;
+}
+
+function renderReviewBanner() {
+  const banner = $('#review-banner');
+  if (!backupStatus?.ok) {
+    banner.classList.add('hidden');
+    return;
+  }
+  const st = backupStatus.settings || settings;
+  const show =
+    shouldShowReviewPrompt({
+      settings: st,
+      backupState: backupStatus.state,
+    }) && !isReviewBannerBlocked();
+  if (!show) {
+    banner.classList.add('hidden');
+    return;
+  }
+  banner.classList.remove('hidden');
 }
 
 function renderCollapseBanner() {
@@ -346,6 +375,7 @@ async function updateOnboarding() {
     tips.classList.remove('hidden');
   } else {
     onboarding.classList.add('hidden');
+    tips.classList.add('hidden');
   }
 
   const preview = await send('getCollapsePreview');
@@ -443,6 +473,32 @@ function setupEventListeners() {
     }
     $('#onboarding-tips').classList.add('hidden');
     $('#onboarding').classList.add('hidden');
+    renderReviewBanner();
+  });
+
+  $('#link-review-report').href = ISSUES_URL;
+
+  $('#btn-review-write').addEventListener('click', async () => {
+    browserApi.tabs.create({ url: getStoreReviewUrl() });
+    const res = await send('updateSettings', { patch: { reviewPrompt: 'rated' } });
+    if (res?.ok) {
+      settings = res.settings || { ...settings, reviewPrompt: 'rated' };
+      if (backupStatus?.ok) {
+        backupStatus = { ...backupStatus, settings };
+      }
+    }
+    renderReviewBanner();
+  });
+
+  $('#btn-review-dismiss').addEventListener('click', async () => {
+    const res = await send('updateSettings', { patch: { reviewPrompt: 'dismissed' } });
+    if (res?.ok) {
+      settings = res.settings || { ...settings, reviewPrompt: 'dismissed' };
+      if (backupStatus?.ok) {
+        backupStatus = { ...backupStatus, settings };
+      }
+    }
+    renderReviewBanner();
   });
 
   $('#btn-collapse-primary').addEventListener('click', async () => {
@@ -484,7 +540,10 @@ function setupEventListeners() {
 
   $('#btn-import-merge').addEventListener('click', () => doImport('merge'));
   $('#btn-import-replace').addEventListener('click', () => doImport('replace'));
-  $('#btn-import-cancel').addEventListener('click', () => $('#import-dialog').close());
+  $('#btn-import-cancel').addEventListener('click', () => {
+    $('#import-dialog').close();
+    renderReviewBanner();
+  });
 
   $('#btn-export-download').addEventListener('click', handleExport);
   $('#btn-export-cancel').addEventListener('click', () => $('#export-dialog').close());
@@ -563,6 +622,7 @@ function showImportPreview() {
     `<p>${escapeHtml(t('importMergeImpact', [mergeImpact.groupsAdded, mergeImpact.linksAdded, mergeImpact.duplicatesSkipped]))}</p>` +
     `<p>${escapeHtml(t('importReplaceImpact', [replaceImpact.groupsTrashed, replaceImpact.lockedKept, replaceImpact.groupsAdded]))}</p>`;
   $('#import-dialog').showModal();
+  renderReviewBanner();
 }
 
 async function doImport(mode) {
@@ -573,6 +633,7 @@ async function doImport(mode) {
   }
   pendingImportGroups = [];
   $('#import-dialog').close();
+  renderReviewBanner();
   await reloadGroups();
   await reloadBackupStatus();
   render();
@@ -954,6 +1015,7 @@ async function init() {
   await reloadGroups();
   await reloadBackupStatus();
   await updateOnboarding();
+  renderReviewBanner();
   render();
 
   if (new URLSearchParams(location.search).get('collapsed') === '1') {

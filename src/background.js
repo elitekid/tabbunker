@@ -867,6 +867,10 @@ async function commitAndClose(windowId, browserTabs) {
     windowId,
   });
 
+  if (closed > 0) {
+    await incrementCollapseCount();
+  }
+
   return {
     ok: true,
     groupId: group.id,
@@ -874,6 +878,12 @@ async function commitAndClose(windowId, browserTabs) {
     closed,
     remaining,
   };
+}
+
+async function incrementCollapseCount() {
+  const settings = await loadSettings();
+  const collapseCount = (settings.collapseCount ?? 0) + 1;
+  await saveSettings({ ...settings, collapseCount });
 }
 
 async function doCollapse(hints) {
@@ -1592,6 +1602,8 @@ browserApi.runtime.onInstalled.addListener((details) => {
     await registerContextMenus();
     await reconcileStartup();
     if (details.reason === 'install') {
+      const settings = await loadSettings();
+      await saveSettings({ ...settings, installedAt: Date.now() });
       const url = browserApi.runtime.getURL('vault/vault.html');
       await tabs.create({ url });
     }
