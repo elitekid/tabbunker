@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tab list recovery and converter (works offline, nothing is uploaded) - TabBunker</title>
 <meta name="description" content="Paste a OneTab export, a Session Buddy JSON, or a TabBunker backup file and get your links back as a list, an HTML bookmarks file, or a TabBunker JSON. Runs entirely in your browser. No upload, no account.">
+<link rel="canonical" href="https://elitekid.github.io/tabbunker/recover/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tab list recovery and converter - TabBunker">
+<meta property="og:description" content="Rebuild a saved-tab list from an export or backup file inside your browser. No upload and no account.">
+<meta property="og:url" content="https://elitekid.github.io/tabbunker/recover/">
 <style>
   :root { --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea; --bg:#fafbfc; --card:#fff; --accent:#1f5fbf; --warn:#b3540b; --navy:#16213a; --gold:#f5b83d; }
   * { box-sizing:border-box; }
@@ -65,7 +70,8 @@
 
   <div class="card install">
     <b>3. Optional: keep it from happening again</b>
-    <p class="muted">TabBunker is a free, open-source extension that saves all tabs in one click and writes a backup file to your Downloads folder automatically. Close your tabs. Keep a backup. No account, no server. <span id="store-links"><a href="https://github.com/elitekid/tabbunker">Source code and install links</a></span></p>
+    <p class="muted">TabBunker is a free, open-source extension that saves the tabs you pick to a vault on your device. With file backup on, each change writes a JSON copy to Downloads/TabBunker. Restore and import show a preview first. No account, no server. <span id="store-links"><a href="https://github.com/elitekid/tabbunker">Source code and install links</a></span></p>
+    <p class="muted">Need to find the original file first? Read the <a href="../guides/recover-lost-tabs/">step-by-step recovery guide</a>. To compare backup and restore behavior before choosing a tool, see the <a href="../guides/tab-backup-extensions-compared/">dated comparison</a>.</p>
   </div>
 
   <div class="card">
@@ -78,7 +84,7 @@
     <p class="muted">OneTab 내보내기 텍스트, Session Buddy JSON, TabBunker 백업 파일을 붙여 넣거나 선택하면 브라우저 안에서만 읽어 링크 목록을 다시 만들어 줍니다. 어디로도 전송하지 않습니다. 이미 비어 버린 목록은 파일이 없으면 살릴 수 없으니, 확장을 지우거나 다시 설치하기 전에 내보내기 파일과 다른 프로필, 타임머신 백업부터 확인하세요.</p>
   </div>
 </main>
-<footer class="wrap">TabBunker recovery tool. Runs offline. Source: <a href="https://github.com/elitekid/tabbunker">GitHub</a>.</footer>
+<footer class="wrap">TabBunker recovery tool. Runs offline. <a href="../guides/">Guides</a> · Source: <a href="https://github.com/elitekid/tabbunker">GitHub</a>.</footer>
 <script type="module">
   import { importAutoDetect } from './shared/importers.js';
   import { exportHtmlBookmarks, exportTabBunkerJson, exportOneTabText } from './shared/exporters.js';

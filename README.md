@@ -2,9 +2,11 @@
 
 **Close your tabs. Keep a backup.**
 
+TabBunker is a Chrome, Edge, and Firefox extension that saves the tabs you pick to a vault on your own device. No account, no server. With file backup on by default, each change writes `Downloads/TabBunker/tabbunker-latest.json`, which stays after uninstall. Restore and import show a preview first. MIT licensed. No device sync. File backup can be turned off.
+
 [Website](https://elitekid.github.io/tabbunker/) · [Recovery tool](https://elitekid.github.io/tabbunker/recover/) · [Privacy policy](PRIVACY.md) · [Report a problem](https://github.com/elitekid/tabbunker/issues)
 
-Store listings for Chrome, Edge, and Firefox are in review. Install links will be added here once they are live.
+[Chrome Web Store](https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm) and [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf) offer version 1.1.0. The Firefox listing is still in review.
 
 ![TabBunker demo](docs/store/demo.gif)
 
@@ -21,7 +23,7 @@ File backup is optional. If you turn it off, no files are created. TabBunker can
 
 ## Features
 
-- **One-click collapse** — toolbar icon or `Alt+Shift+S` closes every tab in the current window and saves them as a vault group.
+- **Choose and save tabs** — the toolbar icon opens a panel where you pick tabs, then save and close the selection or save it without closing. `Alt+Shift+S` keeps the quick action: it saves and closes the current window's tabs immediately.
 - **Vault** — search, rename, lock, and drag tabs between groups; restore a single tab or a whole group.
 - **Restore preview** — the vault lists every link before you restore, and asks first when a group has 30 or more tabs.
 - **Automatic dual backup** — in-browser snapshot ring (20) plus optional JSON files in Downloads.
@@ -138,9 +140,9 @@ Bug reports, import failures, and data-recovery questions are welcome via GitHub
 
 ## 한국어 요약
 
-**TabBunker**는 툴바 아이콘 또는 `Alt+Shift+S` 한 번으로 현재 창의 탭을 모두 닫고 보관함(vault) 그룹으로 저장하는 브라우저 확장입니다.
+**TabBunker**는 창의 탭을 골라 내 기기 보관함에 저장하는 크롬·엣지·파이어폭스 확장입니다. 가입할 계정도, 목록을 보관하는 서버도 없습니다. 툴바 아이콘으로 선택 화면을 열어 고른 탭만 닫아 보관하거나 닫지 않고 보관할 수 있습니다. `Alt+Shift+S`는 현재 창의 탭을 바로 닫아 보관하는 빠른 동작입니다.
 
-변경마다 자동 이중 백업을 합니다: 브라우저 안 스냅샷 링(최근 20개)과 `Downloads/TabBunker/tabbunker-latest.json`(변경 후 30초, 설정에서 5분·30분 선택)에 덮어쓰는 최신본, 그리고 한 시간에 최대 하나씩 남기는 날짜 파일(최근 30개 유지). 확장을 지우거나 프로필을 초기화해도 파일은 남습니다. 파일 백업을 끄면 파일은 생성되지 않습니다.
+보관함이 바뀔 때마다 브라우저 안 스냅샷 링(최근 20개)을 갱신합니다. 기본으로 켜진 파일 백업은 `Downloads/TabBunker/tabbunker-latest.json`(변경 후 30초, 설정에서 5분·30분 선택)에 최신본을 덮어쓰고, 한 시간에 최대 하나씩 날짜 파일을 남깁니다(최근 30개 유지). 확장을 지우거나 프로필을 초기화해도 파일은 남습니다. 파일 백업을 끄면 파일은 생성되지 않습니다.
 
 복원 미리보기, 단일 탭·그룹 복원, 잠금, 이름 변경, 검색, 드래그, 휴지통(30일), 되돌리기 1회를 지원합니다. OneTab 텍스트, Session Buddy JSON, TabBunker JSON 가져오기와 JSON·OneTab 텍스트·HTML 북마크 내보내기가 가능합니다.
 

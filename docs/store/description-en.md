@@ -15,10 +15,10 @@ Too many tabs? Click the TabBunker icon in the toolbar and a small menu opens. S
 
 Saved something by mistake? Undo it right there. From the same menu you can reopen a single tab or a whole group.
 
-What makes TabBunker different is what happens after you save: every change is backed up automatically, twice.
+The in-browser history updates after each change. With file backup on by default, a separate JSON copy is also written after a short delay.
 
 - In-browser history: the last 20 snapshots are kept inside the extension.
-- On disk: a JSON file is written to Downloads/TabBunker. It survives extension resets, browser profile wipes, and reinstalls, and opens in any text editor. In Chrome and Edge the download popup stays hidden while the file is saved.
+- On disk, when file backup is on: a JSON file is written to Downloads/TabBunker. It survives extension resets, browser profile wipes, and reinstalls, and opens in any text editor. In Chrome and Edge the download popup stays hidden while the file is saved. File backup can be turned off.
 
 No account. No server. No network requests. Your tab list never leaves your computer. The code is open source.
 
@@ -29,7 +29,7 @@ Features
 - Keyboard shortcut (Alt+Shift+S on Windows by default) and right-click menu: save this window, this tab, or a link instantly, without picking.
 - Full vault page when you need it: search everything, drag tabs between groups, trash, and restore from a backup file.
 - Opening a group with 30 or more tabs asks first.
-- Automatic backup: in-browser snapshot ring plus tabbunker-latest.json in your Downloads folder, overwritten after every change, and an hourly dated copy (30 kept). The last save time shows in the toolbar menu, the vault, and settings.
+- Backup: the in-browser snapshot ring updates after changes. With file backup on, tabbunker-latest.json is overwritten after each change and a dated copy is kept at most hourly (30 kept). The last file save time shows in the toolbar menu, the vault, and settings.
 - Import: OneTab text export, Session Buddy JSON, and TabBunker backup files, with a merge preview and one-step undo.
 - Export: TabBunker JSON, OneTab-compatible text, or an HTML bookmarks file you can import into any browser.
 - Favicons next to every saved tab in Chrome and Edge (from the browser's local cache, never fetched from the web). Firefox shows domain initials. Dark mode follows your system.
