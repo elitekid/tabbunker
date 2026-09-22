@@ -6,7 +6,7 @@ TabBunker is a Chrome, Edge, and Firefox extension that saves the tabs you pick 
 
 [Website](https://elitekid.github.io/tabbunker/) · [Recovery tool](https://elitekid.github.io/tabbunker/recover/) · [Privacy policy](PRIVACY.md) · [Report a problem](https://github.com/elitekid/tabbunker/issues)
 
-[Chrome Web Store](https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm) and [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf) offer version 1.1.0. The Firefox listing is still in review.
+[Chrome Web Store](https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm), [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf), and [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tabbunker/) offer version 1.1.0.
 
 ![TabBunker demo](docs/store/demo.gif)
 
