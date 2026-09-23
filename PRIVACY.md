@@ -28,7 +28,7 @@ TabBunker **makes no network requests**.
 | `unlimitedStorage` | Store large tab collections |
 | `alarms` | Debounce backups and run trash cleanup |
 | `contextMenus` | Register right-click menu items only |
-| `favicon` (Chrome only) | Read favicons from the browser local cache. No network requests |
+| `favicon` (Chrome, Edge) | Read favicons from the browser local cache. No network requests |
 
 `host_permissions` are not used. TabBunker does not access specific websites.
 
@@ -68,7 +68,7 @@ TabBunker는 **네트워크 요청을 하지 않습니다**.
 | `unlimitedStorage` | 대량 탭 저장 |
 | `alarms` | 백업 디바운스·휴지통 정리 |
 | `contextMenus` | 우클릭 메뉴 항목 등록에만 사용 |
-| `favicon` (크롬만) | 브라우저가 이미 저장한 파비콘을 로컬 캐시에서 읽음. 네트워크 없음 |
+| `favicon` (크롬·엣지) | 브라우저가 이미 저장한 파비콘을 로컬 캐시에서 읽음. 네트워크 없음 |
 
 `host_permissions`는 사용하지 않습니다. 특정 웹사이트에 접근하지 않습니다.
 

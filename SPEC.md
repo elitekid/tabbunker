@@ -8,7 +8,7 @@ OneTab 200만 사용자, 최근 리뷰 "업데이트하니 탭 전부 사라짐"
 
 ## 원칙
 - 서버 없음, 계정 없음, 네트워크 요청 0. 모든 데이터는 브라우저 로컬(chrome.storage.local + IndexedDB)과 사용자 파일.
-- 권한 최소: tabs, storage, downloads(자동 백업용), unlimitedStorage, alarms, contextMenus, 크롬만 favicon·downloads.ui(백업 중 다운로드 표시 숨김). host_permissions 없음.
+- 권한 최소: tabs, storage, downloads(자동 백업용), unlimitedStorage, alarms, contextMenus, 크롬·엣지만 favicon·downloads.ui(백업 중 다운로드 표시 숨김). host_permissions 없음.
 - Manifest V3. 크롬·엣지·파이어폭스 한 코드베이스(browser 네임스페이스 shim). 사파리는 이후.
 - 이모지 금지. UI 언어: 영어 기본, 한국어 로케일(_locales/en, ko).
 

@@ -53,7 +53,7 @@ Backup files are plain JSON with a version field. You can open them in any text 
 | `downloads.ui` (Chrome, Edge) | Hide the download popup only while an automatic backup file is being saved |
 | `alarms` | Schedule debounced file backups and daily trash cleanup |
 | `contextMenus` | Register right-click menu items only (send tab, send link, send window, open vault) |
-| `favicon` (Chrome only) | Read favicons from the browser local cache for vault display. No network requests |
+| `favicon` (Chrome, Edge) | Read favicons from the browser local cache for vault display. No network requests |
 
 No `host_permissions`. No access to specific websites. No account. No analytics SDK.
 
@@ -147,7 +147,7 @@ Bug reports, import failures, and data-recovery questions are welcome via GitHub
 
 복원 미리보기, 단일 탭·그룹 복원, 잠금, 이름 변경, 검색, 드래그, 휴지통(30일), 되돌리기 1회를 지원합니다. OneTab 텍스트, Session Buddy JSON, TabBunker JSON 가져오기와 JSON·OneTab 텍스트·HTML 북마크 내보내기가 가능합니다.
 
-권한은 `tabs`, `storage`/`unlimitedStorage`, `downloads`, `alarms`, `contextMenus`, 크롬·엣지는 `downloads.ui`(자동 백업 파일을 저장하는 동안만 다운로드 창 숨기기)가 더 있고, 크롬만 `favicon`이며 호스트 권한·네트워크 요청·계정·분석 SDK는 없습니다. Chrome·Edge(동일 zip), Firefox(별도 zip), 영어·한국어 UI를 지원합니다.
+권한은 `tabs`, `storage`/`unlimitedStorage`, `downloads`, `alarms`, `contextMenus`, 크롬·엣지는 `downloads.ui`(자동 백업 파일을 저장하는 동안만 다운로드 창 숨기기)가 더 있고, 크롬·엣지는 `favicon`도 쓰며 호스트 권한·네트워크 요청·계정·분석 SDK는 없습니다. Chrome·Edge(동일 zip), Firefox(별도 zip), 영어·한국어 UI를 지원합니다.
 
 같은 개발자의 [PageBunker](https://elitekid.github.io/pagebunker/)는 같은 방식으로 만든 나중에 읽기 확장입니다. 읽던 글을 저장해 인터넷 없이 읽고 본문 전체를 검색하며, 다운로드 폴더에 자동으로 백업합니다. Pocket·Instapaper 내보내기를 가져올 수 있고 가입·서버가 없습니다.
 
