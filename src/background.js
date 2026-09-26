@@ -559,20 +559,20 @@ async function settleDownload(item) {
       revokeUrl(id);
 
       const now = Date.now();
-      const shouldDate =
+      if (state.lastDatedAt !== null && now < state.lastDatedAt) {
+        /* 시계 역행: 기준 시각만 지금으로 보정하고 이번에는 만들지 않는다(설계 5.3).
+           생성 조건 안에 두면 간격이 음수라 닿지 않아 옛 시각 +60분까지 날짜 파일이 멈췄다. */
+        state = { ...state, lastDatedAt: now };
+        await saveBackupState(state);
+      } else if (
         !state.datedError &&
         !state.cleanupBlocked &&
         (state.lastDatedAt === null ||
           (now - state.lastDatedAt >= DATED_INTERVAL_MS &&
-            state.lastDatedRevision !== R));
-
-      if (shouldDate) {
-        if (state.lastDatedAt !== null && now < state.lastDatedAt) {
-          await saveBackupState({ ...state, lastDatedAt: now });
-        } else {
-          const sub = sanitizeSubfolder(settings.backupSubfolder);
-          state = await startDatedDownload(state, R, sub);
-        }
+            state.lastDatedRevision !== R))
+      ) {
+        const sub = sanitizeSubfolder(settings.backupSubfolder);
+        state = await startDatedDownload(state, R, sub);
       }
 
       await ensureBackupAlarm();
