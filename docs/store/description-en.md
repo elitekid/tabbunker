@@ -56,8 +56,8 @@ Privacy policy: https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md
 
 1. tab manager
 2. save tabs
-3. close all tabs
-4. backup
-5. session
-6. restore tabs
+3. tab backup
+4. session manager
+5. restore tabs
+6. close all tabs
 7. import tabs
