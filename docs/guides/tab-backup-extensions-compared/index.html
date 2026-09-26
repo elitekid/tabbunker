@@ -317,5 +317,23 @@
 </script>
 <!-- 확인 필요: OneTab의 엣지·파이어폭스 지원은 위기 복구 글 초안이 인용한 OneTab 문제 해결 문서(크롬/엣지 폴더, Firefox Refresh 언급)에서 간접 확인한 것이다. 게시 전 OneTab 공식 사이트의 브라우저 목록을 직접 확인할 것. -->
 <!-- 확인 필요: Session Buddy, TheTab, Toby의 계정 필요 여부와 다른 브라우저 지원 여부는 자료에 없어 "확인 못함"으로 두었다. 게시 전 채울 수 있으면 채울 것. -->
+<script>
+  (() => {
+    const inbound = new URLSearchParams(location.search);
+    let tags = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].filter((k) => inbound.get(k)).map((k) => [k, inbound.get(k).slice(0, 40)]);
+    if (!tags.length) {
+      let ref = '';
+      try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch {}
+      tags = ref && ref !== location.hostname
+        ? [['utm_source', ref.slice(0, 40)], ['utm_medium', 'referral'], ['utm_campaign', 'tb-guide-compared']]
+        : [['utm_source', 'site'], ['utm_medium', 'direct'], ['utm_campaign', 'tb-guide-compared']];
+    }
+    document.querySelectorAll('a[href^="https://chromewebstore.google.com/"], a[href^="https://addons.mozilla.org/"], a[href^="https://microsoftedge.microsoft.com/"]').forEach((a) => {
+      const url = new URL(a.href);
+      for (const [k, v] of tags) url.searchParams.set(k, v);
+      a.href = url.toString();
+    });
+  })();
+</script>
 </body>
 </html>
