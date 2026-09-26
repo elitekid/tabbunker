@@ -2,6 +2,9 @@
   "extName": {
     "message": "TabBunker"
   },
+  "extStoreName": {
+    "message": "TabBunker - Save Tabs & Auto Backup"
+  },
   "extDescription": {
     "message": "Pick the tabs to save from the toolbar, reopen them anytime, and keep an automatic backup file in Downloads. No account needed."
   },

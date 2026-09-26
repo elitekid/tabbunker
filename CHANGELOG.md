@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.1 (2026-09-26)
+
+### Fixed
+
+- If the computer clock is moved back, dated backup files (tabbunker-YYYYMMDD-HHMM.json) resume on the normal hourly schedule. Before, no new dated file was made until the clock reached one hour past the time of the last dated file (about a day and an hour after moving the clock back a day). The latest backup file was not affected.
+
+### Changed
+
+- The Chrome Web Store and Edge Add-ons name is now "TabBunker - Save Tabs & Auto Backup" (Korean: "TabBunker - 탭 저장·자동 백업"). The toolbar menu still says TabBunker, backups still go to Downloads/TabBunker, and the Firefox name is unchanged.
+
 ## 1.1.0 (2026-09-17)
 
 ### Added
