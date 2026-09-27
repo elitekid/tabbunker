@@ -133,6 +133,8 @@ Bug reports, import failures, and data-recovery questions are welcome via GitHub
 - [Import failed](.github/ISSUE_TEMPLATE/import_failed.md)
 - [Data recovery](.github/ISSUE_TEMPLATE/data_recovery.md)
 
+Using TabBunker? You can also leave an optional [usage note](https://github.com/elitekid/tabbunker/issues/new?template=usage_note.md) — where you found it, what you used before, and the first thing you did. No review or rating needed.
+
 ## Sister extension: PageBunker
 
 [PageBunker](https://elitekid.github.io/pagebunker/) is a read-later extension built the same way: save the article you are reading, read it offline, search the full text, and keep an automatic backup in your Downloads folder. It imports Pocket and Instapaper exports. No account, no server. Source: [elitekid/pagebunker](https://github.com/elitekid/pagebunker).
