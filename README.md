@@ -2,11 +2,13 @@
 
 **Close your tabs. Keep a backup.**
 
-TabBunker is a Chrome, Edge, and Firefox extension that saves the tabs you pick to a vault on your own device. No account, no server. With file backup on by default, each change writes `Downloads/TabBunker/tabbunker-latest.json`, which stays after uninstall. Restore and import show a preview first. MIT licensed. No device sync. File backup can be turned off.
+TabBunker is a Chrome, Edge, Firefox, and Whale extension that saves the tabs you pick to a vault on your own device. No account, no server. With file backup on by default, each change writes `Downloads/TabBunker/tabbunker-latest.json`, which stays after uninstall. Restore and import show a preview first. MIT licensed. No device sync. File backup can be turned off.
 
 [Website](https://elitekid.github.io/tabbunker/) · [Recovery tool](https://elitekid.github.io/tabbunker/recover/) · [Privacy policy](PRIVACY.md) · [Report a problem](https://github.com/elitekid/tabbunker/issues)
 
 [Chrome Web Store](https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm), [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf), and [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tabbunker/) offer version 1.1.1.
+
+[Whale Store](https://store.whale.naver.com/detail/aflkomgdpmpgpngdifmfhefcknllhkob) offers version 1.1.0 as of September 30, 2026.
 
 ![TabBunker demo](docs/store/demo.gif)
 
