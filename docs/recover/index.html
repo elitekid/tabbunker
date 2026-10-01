@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tab list recovery and converter (works offline, nothing is uploaded) - TabBunker</title>
-<meta name="description" content="Paste a OneTab export, a Session Buddy JSON, or a TabBunker backup file and get your links back as a list, an HTML bookmarks file, or a TabBunker JSON. Runs entirely in your browser. No upload, no account.">
+<title>Read a leftover tab-list file after the extension is gone - TabBunker</title>
+<meta name="description" content="If a JSON or text export is still on disk after the extension is removed, this page reads it in your browser and rebuilds links and titles. No upload. No file means no recovery.">
 <link rel="canonical" href="https://elitekid.github.io/tabbunker/recover/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Tab list recovery and converter - TabBunker">
-<meta property="og:description" content="Rebuild a saved-tab list from an export or backup file inside your browser. No upload and no account.">
+<meta property="og:title" content="Read a leftover tab-list file after the extension is gone - TabBunker">
+<meta property="og:description" content="If a JSON or text export is still on disk after the extension is removed, this page reads it in your browser and rebuilds links and titles. No upload. No file means no recovery.">
 <meta property="og:url" content="https://elitekid.github.io/tabbunker/recover/">
 <style>
   :root { --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea; --bg:#fafbfc; --card:#fff; --accent:#1f5fbf; --warn:#b3540b; --navy:#16213a; --gold:#f5b83d; }
@@ -34,19 +34,59 @@
   code { background:#f1f3f6; padding:1px 5px; border-radius:4px; font-size:13px; }
   .install { border:1px dashed var(--line); }
   a { color:var(--accent); }
+  .lang { border:1px solid #7d8aa8; border-radius:999px; padding:3px 10px; font-size:13px; background:#fff; color:var(--ink); cursor:pointer; }
+  header .top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .steps { margin:8px 0 0; padding-left:22px; }
+  .steps li { margin:6px 0; }
+  .btns { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .btns a { display:inline-block; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px; border:1px solid var(--line); background:#fff; }
+  body:not(.ko) [data-lang="ko"] { display:none !important; }
+  body.ko [data-lang="en"] { display:none !important; }
 </style>
 </head>
 <body>
 <header><div class="wrap">
-  <h1>Get your saved tabs back from an export file</h1>
-  <p>Paste a OneTab export, a Session Buddy JSON, or a TabBunker backup. Everything runs inside this page. Nothing is uploaded anywhere.</p>
+  <div class="top">
+    <div>
+      <h1 data-lang="en">Read the file that is still on disk</h1>
+      <h1 data-lang="ko">디스크에 남은 파일을 다시 읽기</h1>
+      <p data-lang="en">After the extension is gone, the vault inside the browser is gone with it. If a JSON or text file remains, this page reads that file here. Nothing is uploaded.</p>
+      <p data-lang="ko">확장이 지워지면 브라우저 안의 보관함도 함께 사라집니다. JSON이나 텍스트 파일이 남아 있으면 이 페이지가 그 파일을 여기서 읽습니다. 아무것도 올리지 않습니다.</p>
+    </div>
+    <button class="lang" id="lang-toggle" type="button">한국어</button>
+  </div>
 </div></header>
 <main class="wrap">
-  <div class="notice"><b>Read this first.</b> This page can only rebuild a list from a file you still have (an export, a backup, a copy). If your saved list is already empty and you never exported it, this page cannot bring it back. Before you uninstall or reinstall anything, look for an export file, check your browser's other profiles, and check Time Machine or File History for the browser profile folder.</div>
+  <div class="notice" data-lang="en"><b>No file, no recovery.</b> This page rebuilds a list from a file you still have. It does not search the browser profile, and it does not recreate a list that was never exported. If the other extension is still installed, export first and follow <a href="../guides/import-onetab-session-buddy/">the import guide</a>. If the list is already empty, the <a href="../guides/recover-lost-tabs/">recovery guide</a> is the place to look for a leftover file.</div>
+  <div class="notice" data-lang="ko"><b>파일이 없으면 복구할 수 없습니다.</b> 이 페이지는 아직 가지고 있는 파일로 목록을 다시 만듭니다. 브라우저 프로필을 검색하지 않고, 한 번도 내보내지 않은 목록을 만들어 내지도 않습니다. 다른 확장이 아직 설치돼 있다면 먼저 내보내고 <a href="../guides/import-onetab-session-buddy/">가져오기 안내</a>를 따르세요. 목록이 이미 비어 있다면 <a href="../guides/recover-lost-tabs/">복구 안내</a>에서 남은 파일을 찾습니다.</div>
 
   <div class="card">
-    <label for="src"><b>1. Paste the text, or choose the file</b></label>
-    <p class="muted">Accepted: OneTab "Export" text (one URL per line, optional " | title", blank line between groups), Session Buddy JSON export, TabBunker backup JSON (Downloads/TabBunker/tabbunker-latest.json or a dated tabbunker-*.json).</p>
+    <b data-lang="en">Order, once the extension is already gone</b>
+    <b data-lang="ko">확장을 이미 지운 뒤의 순서</b>
+    <ol class="steps" data-lang="en">
+      <li>Do not look for the list in the extension screen. Uninstalling removes the extension's storage. The file, if it exists, is on disk.</li>
+      <li>Look for an export you saved, or a TabBunker JSON in the TabBunker folder inside Downloads. The usual names are <code>tabbunker-latest.json</code> and <code>tabbunker-YYYYMMDD-HHMM.json</code>. There is no file when backup was off, the download was canceled, or the file was deleted.</li>
+      <li>If there is no file, stop. Reinstalling does not create one.</li>
+      <li>If there is a file, paste it or choose it in the box below. The reading stays in this page. The network check further down is how you can see that no request is sent.</li>
+      <li>What comes back is links and titles. A TabBunker file also keeps group titles, including groups that were in Trash, because this page lists every group in the file. The vault's Import skips trash groups and counts them as excluded. OneTab text groups are titled Imported 1, Imported 2. A login, a form, and unsaved text from those tabs are not in the file, so they do not come back.</li>
+      <li>Download the list or copy the links. To put a TabBunker JSON back into the extension, reinstall, open the vault, choose Import, and read the preview before Merge or Replace All.</li>
+    </ol>
+    <ol class="steps" data-lang="ko">
+      <li>확장 화면에서 목록을 찾지 마세요. 삭제하면 확장 저장소가 사라집니다. 파일이 있다면 디스크에 있습니다.</li>
+      <li>직접 저장한 내보내기, 또는 다운로드 폴더 안 TabBunker 폴더의 TabBunker JSON을 찾습니다. 흔한 이름은 <code>tabbunker-latest.json</code>과 <code>tabbunker-YYYYMMDD-HHMM.json</code>입니다. 백업이 꺼져 있었거나, 다운로드가 취소됐거나, 파일을 지웠다면 파일이 없습니다.</li>
+      <li>파일이 없으면 여기서 멈춥니다. 다시 설치해도 파일이 생기지 않습니다.</li>
+      <li>파일이 있으면 아래 칸에 붙여 넣거나 고릅니다. 읽기는 이 페이지 안에서 끝납니다. 요청이 나가지 않는 것은 아래 네트워크 확인으로 볼 수 있습니다.</li>
+      <li>돌아오는 것은 링크와 제목입니다. TabBunker 파일은 그룹 제목도 남기며, 휴지통에 있던 그룹도 포함합니다. 이 페이지는 파일 안의 그룹을 모두 보여 주기 때문입니다. 보관함의 가져오기는 휴지통 그룹을 건너뛰고 제외 수에 넣습니다. OneTab 텍스트 그룹 제목은 Imported 1, Imported 2입니다. 그 탭의 로그인, 폼, 저장하지 않은 글은 파일에 없으므로 돌아오지 않습니다.</li>
+      <li>목록을 받거나 링크를 복사합니다. TabBunker JSON을 확장으로 다시 넣으려면 다시 설치한 뒤 보관함에서 가져오기를 고르고, 합치기나 전체 바꾸기 전에 미리보기를 읽습니다.</li>
+    </ol>
+    <p class="muted" data-lang="en">A dated Chrome recovery check and its limits are in the <a href="../guides/import-onetab-session-buddy/#after">import guide</a>.</p>
+    <p class="muted" data-lang="ko">당시 크롬 복구 확인과 그 한계는 <a href="../guides/import-onetab-session-buddy/#after">가져오기 안내</a>에 있습니다.</p>
+  </div>
+
+  <div class="card">
+    <label for="src"><b data-lang="en">Paste the text, or choose the file</b><b data-lang="ko">텍스트를 붙여 넣거나 파일을 고르세요</b></label>
+    <p class="muted" data-lang="en">Accepts OneTab-style address text, some older Session Buddy JSON files, and TabBunker backups. Current Session Buddy JSON is not supported; export URLs instead if addresses alone are sufficient. See <a href="../guides/import-onetab-session-buddy/#formats">supported formats and limits</a>. The result buttons and counts below are in English.</p>
+    <p class="muted" data-lang="ko">OneTab 방식 주소 텍스트, 일부 예전 Session Buddy JSON, TabBunker 백업을 읽습니다. 현재 Session Buddy JSON은 지원하지 않습니다. 주소만 필요하면 URLs로 내보내세요. <a href="../guides/import-onetab-session-buddy/#formats">지원 형식과 한계</a>를 확인하세요. 아래 결과 버튼과 수는 영어로 표시됩니다.</p>
     <textarea id="src" placeholder="https://example.com/ | Example&#10;https://developer.mozilla.org/ | MDN&#10;&#10;https://news.ycombinator.com/ | Hacker News" spellcheck="false"></textarea>
     <div class="row">
       <input type="file" id="file" accept=".txt,.json,text/plain,application/json">
@@ -65,26 +105,37 @@
       <button id="dl-onetab">Download as OneTab-style text</button>
       <button id="copy">Copy all links</button>
     </div>
-    <p class="muted">HTML bookmarks can be imported into any browser (Bookmarks manager, Import). The TabBunker JSON can be imported into the TabBunker vault with a merge preview.</p>
+    <p class="muted" data-lang="en">HTML bookmarks can be imported into any browser (Bookmarks manager, Import). The TabBunker JSON can be imported into the TabBunker vault with a merge preview.</p>
+    <p class="muted" data-lang="ko">HTML 북마크는 브라우저의 북마크 관리자에서 가져올 수 있습니다. TabBunker JSON은 보관함에서 합치기 미리보기와 함께 가져올 수 있습니다.</p>
   </div>
 
   <div class="card install">
-    <b>3. Optional: keep it from happening again</b>
-    <p class="muted">TabBunker is a free, open-source extension that saves the tabs you pick to a vault on your device. With file backup on, each change writes a JSON copy to Downloads/TabBunker. Restore and import show a preview first. No account, no server. <span id="store-links"><a href="https://github.com/elitekid/tabbunker">Source code and install links</a></span></p>
-    <p class="muted">Need to find the original file first? Read the <a href="../guides/recover-lost-tabs/">step-by-step recovery guide</a>. To compare backup and restore behavior before choosing a tool, see the <a href="../guides/tab-backup-extensions-compared/">dated comparison</a>.</p>
+    <b data-lang="en">Optional: keep a file next time</b>
+    <b data-lang="ko">선택: 다음에는 파일을 남기기</b>
+    <p class="muted" data-lang="en">TabBunker is free and open source. It saves the tabs you pick on your device. With file backup on, each change writes a JSON file under Downloads. Restore and import show a preview first. There is no account and no server. It does not bring back a list when the file is gone. Written by the TabBunker author.</p>
+    <p class="muted" data-lang="ko">TabBunker는 무료 오픈소스입니다. 고른 탭을 기기에 저장합니다. 파일 백업을 켜 두면 변경마다 다운로드 폴더 아래에 JSON 파일을 씁니다. 복구와 가져오기는 미리보기를 먼저 보여 줍니다. 계정도 서버도 없습니다. 파일이 없으면 목록을 되살리지 못합니다. TabBunker 제작자가 씁니다.</p>
+    <div class="btns">
+      <a href="https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm" data-lang="en">Add to Chrome</a><a href="https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm" data-lang="ko">크롬에 추가</a>
+      <a href="https://addons.mozilla.org/firefox/addon/tabbunker/">Firefox</a>
+      <a href="https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf">Edge</a>
+      <a href="https://store.whale.naver.com/detail/aflkomgdpmpgpngdifmfhefcknllhkob" data-lang="en">Whale (1.1.0)</a><a href="https://store.whale.naver.com/detail/aflkomgdpmpgpngdifmfhefcknllhkob" data-lang="ko">웨일에 추가 (1.1.0)</a>
+      <a href="https://github.com/elitekid/tabbunker">GitHub</a>
+    </div>
+    <p class="muted" data-lang="en">Moving a list while the old extension still works: <a href="../guides/import-onetab-session-buddy/">import guide</a>. Finding a file after a list is already empty: <a href="../guides/recover-lost-tabs/">recovery guide</a>. Dated comparison: <a href="../guides/tab-backup-extensions-compared/">tab backup extensions compared</a>.</p>
+    <p class="muted" data-lang="ko">원래 확장이 아직 있을 때 목록을 옮기는 순서: <a href="../guides/import-onetab-session-buddy/">가져오기 안내</a>. 목록이 이미 비어 파일을 찾는 순서: <a href="../guides/recover-lost-tabs/">복구 안내</a>. 날짜 있는 비교: <a href="../guides/tab-backup-extensions-compared/">탭 백업 확장 비교</a>.</p>
   </div>
 
   <div class="card">
-    <b>How to verify nothing leaves your browser</b>
-    <p class="muted">Open the developer tools (F12), go to the Network tab, then paste your data and click Rebuild. No request is made. The page is a single HTML file plus three small JavaScript modules, all loaded once from the same site. You can also save this page and run it from your disk.</p>
-  </div>
-
-  <div class="card">
-    <b>한국어 안내</b>
-    <p class="muted">OneTab 내보내기 텍스트, Session Buddy JSON, TabBunker 백업 파일을 붙여 넣거나 선택하면 브라우저 안에서만 읽어 링크 목록을 다시 만들어 줍니다. 어디로도 전송하지 않습니다. 이미 비어 버린 목록은 파일이 없으면 살릴 수 없으니, 확장을 지우거나 다시 설치하기 전에 내보내기 파일과 다른 프로필, 타임머신 백업부터 확인하세요.</p>
+    <b data-lang="en">How to verify nothing leaves your browser</b>
+    <b data-lang="ko">브라우저 밖으로 나가지 않는지 확인하는 방법</b>
+    <p class="muted" data-lang="en">Open the developer tools (F12), go to the Network tab, then paste your data and click Rebuild. No request is made. The page is a single HTML file plus three small JavaScript modules, all loaded once from the same site. Offline use requires saving the HTML and its modules together; saving this HTML alone is insufficient.</p>
+    <p class="muted" data-lang="ko">개발자 도구(F12)의 네트워크 탭을 연 뒤 데이터를 붙여 넣고 Rebuild the list를 누르세요. 요청이 나가지 않습니다. 이 페이지는 HTML 파일 하나와 작은 자바스크립트 모듈 세 개이고, 같은 사이트에서 한 번 불러옵니다. 오프라인에서 쓰려면 HTML과 모듈을 함께 저장해야 합니다. HTML만 저장하면 동작하지 않습니다.</p>
   </div>
 </main>
-<footer class="wrap">TabBunker recovery tool. Runs offline. <a href="../guides/">Guides</a> · Source: <a href="https://github.com/elitekid/tabbunker">GitHub</a>.</footer>
+<footer class="wrap">
+  <span data-lang="en">TabBunker recovery tool. Runs in the browser. Nothing is uploaded. <a href="../guides/">Guides</a> · <a href="https://github.com/elitekid/tabbunker">GitHub</a> · <a href="https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md">Privacy policy</a></span>
+  <span data-lang="ko">TabBunker 복구 도구. 브라우저 안에서 동작합니다. 아무것도 올리지 않습니다. <a href="../guides/">안내 글</a> · <a href="https://github.com/elitekid/tabbunker">GitHub</a> · <a href="https://github.com/elitekid/tabbunker/blob/main/PRIVACY.md">개인정보 처리방침</a></span>
+</footer>
 <script type="module">
   import { importAutoDetect } from './shared/importers.js';
   import { exportHtmlBookmarks, exportTabBunkerJson, exportOneTabText } from './shared/exporters.js';
@@ -107,6 +158,31 @@
   $('#dl-json').addEventListener('click', () => download('recovered-tabs.tabbunker.json', exportTabBunkerJson(groups), 'application/json'));
   $('#dl-onetab').addEventListener('click', () => download('recovered-tabs.txt', exportOneTabText(groups), 'text/plain'));
   $('#copy').addEventListener('click', async () => { const text = groups.flatMap((g) => g.tabs.map((t) => t.url)).join('\n'); await navigator.clipboard.writeText(text); $('#copy').textContent = 'Copied'; setTimeout(() => ($('#copy').textContent = 'Copy all links'), 1500); });
+</script>
+<script>
+  const btn = document.getElementById('lang-toggle');
+  const apply = (ko) => { document.body.classList.toggle('ko', ko); document.documentElement.lang = ko ? 'ko' : 'en'; btn.textContent = ko ? 'English' : '한국어'; localStorage.setItem('tb-lang', ko ? 'ko' : 'en'); };
+  const saved = localStorage.getItem('tb-lang');
+  apply(saved ? saved === 'ko' : (navigator.language || '').toLowerCase().startsWith('ko'));
+  btn.addEventListener('click', () => apply(!document.body.classList.contains('ko')));
+</script>
+<script>
+  (() => {
+    const inbound = new URLSearchParams(location.search);
+    let tags = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].filter((k) => inbound.get(k)).map((k) => [k, inbound.get(k).slice(0, 40)]);
+    if (!tags.length) {
+      let ref = '';
+      try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch {}
+      tags = ref && ref !== location.hostname
+        ? [['utm_source', ref.slice(0, 40)], ['utm_medium', 'referral'], ['utm_campaign', 'tb-recovery-guide']]
+        : [['utm_source', 'website'], ['utm_medium', 'guide'], ['utm_campaign', 'tb-recovery-guide']];
+    }
+    document.querySelectorAll('a[href^="https://chromewebstore.google.com/"], a[href^="https://addons.mozilla.org/"], a[href^="https://microsoftedge.microsoft.com/"], a[href^="https://store.whale.naver.com/"]').forEach((a) => {
+      const url = new URL(a.href);
+      for (const [k, v] of tags) url.searchParams.set(k, v);
+      a.href = url.toString();
+    });
+  })();
 </script>
 </body>
 </html>
