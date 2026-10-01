@@ -8,7 +8,7 @@ TabBunker is a Chrome, Edge, Firefox, and Whale extension that saves the tabs yo
 
 [Chrome Web Store](https://chromewebstore.google.com/detail/tabbunker/gcfnjekbodlabpmiejgandamcpcgapgm), [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tabbunker/ndidanjpalpcbjedoolkigdcnnfdhejf), and [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tabbunker/) offer version 1.1.1.
 
-[Whale Store](https://store.whale.naver.com/detail/aflkomgdpmpgpngdifmfhefcknllhkob) offers version 1.1.0 as of September 30, 2026.
+[Whale Store](https://store.whale.naver.com/detail/aflkomgdpmpgpngdifmfhefcknllhkob) offers version 1.1.1 as of October 1, 2026.
 
 ![TabBunker demo](docs/store/demo.gif)
 
